@@ -8,11 +8,11 @@
 
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
-//#include "vsResSurfRevLib.h"
+#include "vsResSurfRevLib.h"
 
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
-//VSResSurfRevLib mySurfRev;
+VSResSurfRevLib mySurfRev;
 
 // Camera Position
 float camX, camY, camZ;
@@ -24,7 +24,7 @@ int startX, startY, tracking = 0;
 float alpha = 39.0f, beta = 51.0f;
 float r = 40.0f;
 
-int modelID, projID, viewID;
+int modelID, projID, viewID, colorInID;
 
 GLuint setupShaders() {
 
@@ -38,6 +38,7 @@ GLuint setupShaders() {
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	//shader.setVertexAttribName(VSShaderLib::VERTEX_ATTRIB1, "colorIn");
 
 	shader.prepareProgram();
 
@@ -140,11 +141,15 @@ void renderScene(void) {
 	// set camera
 	vsml->lookAt(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
 
+	mySurfRev.createCylinder(7.0f, 3.0f, 3);
+
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
+	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(-10.0f, -8.0f, 0.0f);
 	vsml->scale(30.0f, 10.0f, 1.0f);
-	renderCube(vsml, modelID, viewID, projID);
+	renderCube(vsml, modelID, viewID, projID, colorInID);
+	vsml->popMatrix(VSMathLib::MODEL);
 
 	//swap buffers
 	glutSwapBuffers();
@@ -174,6 +179,7 @@ void init()
 	modelID = glGetUniformLocation(shader.getProgramIndex(), "model");
 	viewID = glGetUniformLocation(shader.getProgramIndex(), "view");
 	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
+	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);

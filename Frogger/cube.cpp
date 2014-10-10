@@ -105,6 +105,39 @@ float texCoords[] = {
 	1.0f, 1.0f,
 };
 
+float color[] = { 
+	1.0f, 0.0f, 0.0f, 1.0f, 
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f
+
+};
+
 unsigned int faceIndex[] = {
 	0, 1, 2, 0, 2, 3,
 	4, 5, 6, 4, 6, 7,
@@ -141,6 +174,16 @@ void loadVAO(){
 	glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::NORMAL_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, buffers[3]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
+	//glEnableVertexAttribArray(VSShaderLib::VERTEX_ATTRIB1);
+	//glVertexAttribPointer(VSShaderLib::VERTEX_ATTRIB1, 4, GL_FLOAT, 0, 0, 0);
+
 
 	//index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
@@ -150,17 +193,18 @@ void loadVAO(){
 	glBindVertexArray(0);
 }
 
-void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID){
+void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID){
 	loadVAO();
 
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
 	float* proj = vsml->get(VSMathLib::PROJECTION);
+	float color[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
-
+	glUniform4fv(colorInID, 1, color);
 	// render VAO
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, 0);

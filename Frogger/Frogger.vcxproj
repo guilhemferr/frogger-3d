@@ -83,6 +83,8 @@
     <ClCompile Include="Frogger.cpp" />
     <ClCompile Include="vsLogLib.cpp" />
     <ClCompile Include="vsMathLib.cpp" />
+    <ClCompile Include="vsResourceLib.cpp" />
+    <ClCompile Include="vsResSurfRevLib.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +92,8 @@
     <ClInclude Include="Frogger.h" />
     <ClInclude Include="vsLogLib.h" />
     <ClInclude Include="vsMathLib.h" />
+    <ClInclude Include="vsResourceLib.h" />
+    <ClInclude Include="vsResSurfRevLib.h" />
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
