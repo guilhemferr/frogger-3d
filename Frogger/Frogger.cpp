@@ -18,6 +18,8 @@ int modelID, projID, viewID, colorInID;
 
 Frog* frog;
 
+int selectedCamera = TOPCAMERA;
+
 GLuint setupShaders() {
 
 	// Shader for models
@@ -130,6 +132,9 @@ void renderScene() {
 
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
+	if (selectedCamera == FROGCAM){
+		vsml->lookAt(frog->getX(), frog->getY() - 15.0f, 10.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+	}
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
@@ -180,6 +185,7 @@ void changeSize(int w, int h) {
 
 	float right, left, bottom, top, nearp, farp;
 	float ratio;
+	
 	// Prevent a divide by zero, when window is too short
 	if (h == 0)
 		h = 1;
@@ -188,26 +194,38 @@ void changeSize(int w, int h) {
 	// set the projection matrix
 	ratio = (1.0f * w) / h;
 	vsml->loadIdentity(VSMathLib::PROJECTION);
-
-	if (w > h){
-		right = -16.0f * ratio;
-		left = 16.0f * ratio;
-		bottom = -16.0f;
-		top = 16.0f;
-		nearp = -4.0f;
-		farp = 4.0f;
+	
+	switch (selectedCamera)
+	{
+	case TOPCAMERA: 
+		if (w > h){
+			right = -16.0f * ratio;
+			left = 16.0f * ratio;
+			bottom = -16.0f;
+			top = 16.0f;
+			nearp = -4.0f;
+			farp = 4.0f;
+		}
+		else{
+			right = -16.0f;
+			left = 16.0f;
+			bottom = -16.0f * ratio;
+			top = 16.0f * ratio;
+			nearp = -4.0f;
+			farp = 4.0f;
+		}
+		vsml->ortho(right, left, bottom, top, nearp, farp);
+		break;
+	case PERSPECTIVE:
+		break;
+	case FROGCAM:
+		vsml->perspective(30, ratio, 1000.0f, 1.0f);
+		break;
+	default:
+		break;
 	}
-	else{
-		right = -16.0f;
-		left = 16.0f;
-		bottom = -16.0f * ratio;
-		top = 16.0f * ratio;
-		nearp = -4.0f;
-		farp = 4.0f;
-	}
 
-	//vsml->perspective(53.13f, ratio, 0.1f, 1000.0f);
-	vsml->ortho(right, left, bottom, top, nearp, farp);
+	
 
 }
 

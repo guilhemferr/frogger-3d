@@ -12,6 +12,10 @@
 #include "vsShaderLib.h"
 #include "vsResSurfRevLib.h"
 
+#define TOPCAMERA 1
+#define PERSPECTIVE 2
+#define FROGCAM 3
+
 void renderTerrain();
 
 void changeSize(int w, int h);
