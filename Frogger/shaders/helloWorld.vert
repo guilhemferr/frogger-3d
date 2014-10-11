@@ -9,6 +9,6 @@ out vec4 color;
 
 void main()
 {
-	gl_Position = projection * model * view * position;
+	gl_Position = projection * view * model * position;
 	color = colorIn;
 } 

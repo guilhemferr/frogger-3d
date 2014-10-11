@@ -18,7 +18,7 @@ int modelID, projID, viewID, colorInID;
 
 Frog* frog;
 
-int selectedCamera = TOPCAMERA;
+int selectedCamera = FROGCAM;
 
 GLuint setupShaders() {
 
@@ -219,7 +219,7 @@ void changeSize(int w, int h) {
 	case PERSPECTIVE:
 		break;
 	case FROGCAM:
-		vsml->perspective(30, ratio, 1000.0f, 1.0f);
+		vsml->perspective(30, ratio, 1.0f, 1000.0f);
 		break;
 	default:
 		break;
