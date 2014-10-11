@@ -1,84 +1,84 @@
-#include "cube.h"
+#include "side.h"
 
-GLuint vao;
+GLuint vaoSide;
 
-int verticeCount = 24;
-int faceCount = 12;
+int verticeCountSide = 24;
+int faceCountSide = 12;
 
 /*
 float vertices[] = {
-	0.0f, 1.0f, 1.0f, 1.0f,
-	0.0f, 0.0f, 1.0f, 1.0f,
-	1.0f, 0.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f, 1.0f,
+0.0f, 1.0f, 1.0f, 1.0f,
+0.0f, 0.0f, 1.0f, 1.0f,
+1.0f, 0.0f, 1.0f, 1.0f,
+1.0f, 1.0f, 1.0f, 1.0f,
 
-	1.0f, 1.0f, 0.0f, 1.0f,
-	1.0f, 0.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f, 1.0f,
-	0.0f, 1.0f, 0.0f, 1.0f,
+1.0f, 1.0f, 0.0f, 1.0f,
+1.0f, 0.0f, 0.0f, 1.0f,
+0.0f, 0.0f, 0.0f, 1.0f,
+0.0f, 1.0f, 0.0f, 1.0f,
 
-	1.0f, 1.0f, 1.0f, 1.0f,
-	1.0f, 0.0f, 1.0f, 1.0f,
-	1.0f, 0.0f, 0.0f, 1.0f,
-	1.0f, 1.0f, 0.0f, 1.0f,
+1.0f, 1.0f, 1.0f, 1.0f,
+1.0f, 0.0f, 1.0f, 1.0f,
+1.0f, 0.0f, 0.0f, 1.0f,
+1.0f, 1.0f, 0.0f, 1.0f,
 
-	0.0f, 1.0f, 0.0f, 1.0f,
-	0.0f, 1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 0.0f, 1.0f,
+0.0f, 1.0f, 0.0f, 1.0f,
+0.0f, 1.0f, 1.0f, 1.0f,
+1.0f, 1.0f, 1.0f, 1.0f,
+1.0f, 1.0f, 0.0f, 1.0f,
 
-	0.0f, 1.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 1.0f, 1.0f,
-	0.0f, 1.0f, 1.0f, 1.0f,
+0.0f, 1.0f, 0.0f, 1.0f,
+0.0f, 0.0f, 0.0f, 1.0f,
+0.0f, 0.0f, 1.0f, 1.0f,
+0.0f, 1.0f, 1.0f, 1.0f,
 
-	0.0f, 0.0f, 1.0f, 1.0f,
-	0.0f, 0.0f, 0.0f, 1.0f,
-	1.0f, 0.0f, 0.0f, 1.0f,
-	1.0f, 0.0f, 1.0f, 1.0f
+0.0f, 0.0f, 1.0f, 1.0f,
+0.0f, 0.0f, 0.0f, 1.0f,
+1.0f, 0.0f, 0.0f, 1.0f,
+1.0f, 0.0f, 1.0f, 1.0f
 };
 */
 
-float vertices[] = {
+float verticesSide[] = {
 	//topo
-	-15.0f, -15.0f, 1.0f, 1.0f,
-	 15.0f, -15.0f, 1.0f, 1.0f,
-	 15.0f, 0.0f, 1.0f, 1.0f,
-	-15.0f, 0.0f, 1.0f, 1.0f,
+	-15.0f, -15.0f, 1.5f, 1.0f,
+	15.0f, -15.0f, 1.5f, 1.0f,
+	15.0f, -13.0f, 1.5f, 1.0f,
+	-15.0f, -13.0f, 1.5f, 1.0f,
 
 	//baixo
-	-15.0f, -15.0f, 0.0f, 1.0f,
-	15.0f, -15.0f, 0.0f, 1.0f,
-	15.0f, 0.0f, 0.0f, 1.0f,
-	-15.0f, 0.0f, 0.0f, 1.0f,
+	-15.0f, -15.0f, 1.0f, 1.0f,
+	15.0f, -15.0f, 1.0f, 1.0f,
+	15.0f, -13.0f, 1.0f, 1.0f,
+	-15.0f, -13.0f, 1.0f, 1.0f,
 
 	//lado direito
+	15.0f, -15.0f, 1.5f, 1.0f,
+	15.0f, -13.0f, 1.5f, 1.0f,
+	15.0f, -13.0f, 1.0f, 1.0f,
 	15.0f, -15.0f, 1.0f, 1.0f,
-	15.0f, 0.0f, 1.0f, 1.0f,
-	15.0f, 0.0f, 0.0f, 1.0f,
-	15.0f, -15.0f, 0.0f, 1.0f,
 
 	//lado esquerdo
+	-15.0f, -15.0f, 1.5f, 1.0f,
+	-15.0f, -13.0f, 1.5f, 1.0f,
 	-15.0f, -15.0f, 1.0f, 1.0f,
-	-15.0f, 0.0f, 1.0f, 1.0f,
-	-15.0f, 0.0f, 0.0f, 1.0f,
-	-15.0f, -15.0f, 0.0f, 1.0f,
+	-15.0f, -15.0f, 1.0f, 1.0f,
 
 	//frente
-	-15.0f, -15.0f, 1.0f, 1.0f,
+	-15.0f, -15.0f, 1.5f, 1.0f,
+	15.0f, -15.0f, 1.5f, 1.0f,
 	15.0f, -15.0f, 1.0f, 1.0f,
-	15.0f, -15.0f, 0.0f, 1.0f,
-	-15.0f, -15.0f, 0.0f, 1.0f,
+	-15.0f, -15.0f, 1.0f, 1.0f,
 
 	//tras
-	-15.0f, 0.0f, 1.0f, 1.0f,
-	15.0f, 0.0f, 1.0f, 1.0f,
-	15.0f, 0.0f, 0.0f, 1.0f,
-	-15.0f, 0.0f, 0.0f, 1.0f,
+	-15.0f, -13.0f, 1.5f, 1.0f,
+	15.0f, -13.0f, 1.5f, 1.0f,
+	15.0f, -13.0f, 1.0f, 1.0f,
+	-15.0f, -13.0f, 1.0f, 1.0f,
 
 };
 
-float normals[] = {
+float normalsSide[] = {
 	0.0f, 0.0f, 1.0f,
 	0.0f, 0.0f, 1.0f,
 	0.0f, 0.0f, 1.0f,
@@ -110,7 +110,7 @@ float normals[] = {
 	0.0f, -1.0f, 0.0f
 };
 
-float texCoords[] = {
+float texCoordsSide[] = {
 	0.0f, 1.0f,
 	0.0f, 0.0f,
 	1.0f, 0.0f,
@@ -142,7 +142,7 @@ float texCoords[] = {
 	1.0f, 1.0f,
 };
 
-unsigned int faceIndex[] = {
+unsigned int faceIndexSide[] = {
 	0, 1, 2, 0, 2, 3,
 	4, 5, 6, 4, 6, 7,
 	8, 9, 10, 8, 10, 11,
@@ -151,10 +151,10 @@ unsigned int faceIndex[] = {
 	20, 21, 22, 20, 22, 23
 };
 
-void loadVAO(){
+void loadVAOSide(){
 	// create the VAO
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenVertexArrays(1, &vaoSide);
+	glBindVertexArray(vaoSide);
 
 	// create buffers for our vertex data
 	GLuint buffers[4];
@@ -162,36 +162,36 @@ void loadVAO(){
 
 	//vertex coordinates buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
 
 	//texture coordinates buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoordsSide), texCoordsSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::TEXTURE_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::TEXTURE_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
 
 	//normals buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(normalsSide), normalsSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::NORMAL_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
 
 	//index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndex), faceIndex, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndexSide), faceIndexSide, GL_STATIC_DRAW);
 
 	// unbind the VAO
 	glBindVertexArray(0);
 }
 
-void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
-	loadVAO();
+void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
+	loadVAOSide();
 
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
@@ -202,8 +202,8 @@ void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorI
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
 	// render VAO
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(vaoSide);
+	glDrawElements(GL_TRIANGLES, faceCountSide * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	//swap buffers
 	//glutSwapBuffers();

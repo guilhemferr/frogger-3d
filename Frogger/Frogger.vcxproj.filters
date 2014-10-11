@@ -39,6 +39,12 @@
     <ClCompile Include="vsResSurfRevLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="side.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frogger.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vsResSurfRevLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="side.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

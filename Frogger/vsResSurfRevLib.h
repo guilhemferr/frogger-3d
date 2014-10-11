@@ -78,7 +78,7 @@ public:
 	virtual void setTexture(unsigned int unit, unsigned int textureID,
 							GLenum textureType = GL_TEXTURE_2D);
 #endif
-protected:
+public:
 
 	// A model can be made of many meshes. Each is stored
 	// in the following structure

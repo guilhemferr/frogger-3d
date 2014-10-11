@@ -1,14 +1,4 @@
-#include <math.h>
-#include <string>
-
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-
-#include "cube.h"
-
-#include "vsMathLib.h"
-#include "vsShaderLib.h"
-#include "vsResSurfRevLib.h"
+#include "Frogger.h"
 
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
@@ -25,6 +15,8 @@ float alpha = 39.0f, beta = 51.0f;
 float r = 40.0f;
 
 int modelID, projID, viewID, colorInID;
+
+Frog* frog;
 
 GLuint setupShaders() {
 
@@ -132,31 +124,61 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 	glutPostRedisplay();
 }
 
-void renderScene(void) {
+void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
-	// set camera
-	vsml->lookAt(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
-
-	mySurfRev.createCylinder(7.0f, 3.0f, 3);
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
-	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(-10.0f, -8.0f, 0.0f);
-	vsml->scale(30.0f, 10.0f, 1.0f);
-	renderCube(vsml, modelID, viewID, projID, colorInID);
-	vsml->popMatrix(VSMathLib::MODEL);
+	
+	renderTerrain();
+
+	
+	frog->drawFrog(vsml, mySurfRev);
+	
 
 	//swap buffers
 	glutSwapBuffers();
 }
 
+void renderTerrain(){
+
+	float color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	renderCube(vsml, modelID, viewID, projID, colorInID, color);
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(0.0f, 14.0f, 0.0f);
+	color[0] = 0.0f;
+	color[1] = 0.0f;
+	color[2] = 1.0f;
+	renderCube(vsml, modelID, viewID, projID, colorInID, color);
+	vsml->popMatrix(VSMathLib::MODEL);
+
+	color[0] = 1.0f;
+	color[1] = 0.0f;
+	color[2] = 1.0f;
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
+
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(0.0f, 13.0f, 0.0f);
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
+	vsml->popMatrix(VSMathLib::MODEL);
+
+	color[0] = 0.65f;
+	color[1] = 0.16f;
+	color[2] = 0.16f;
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(0.0f, 28.0f, 0.0f);
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
+	vsml->popMatrix(VSMathLib::MODEL);
+
+}
+
 void changeSize(int w, int h) {
 
+	float right, left, bottom, top, nearp, farp;
 	float ratio;
 	// Prevent a divide by zero, when window is too short
 	if (h == 0)
@@ -166,16 +188,35 @@ void changeSize(int w, int h) {
 	// set the projection matrix
 	ratio = (1.0f * w) / h;
 	vsml->loadIdentity(VSMathLib::PROJECTION);
-	vsml->perspective(53.13f, ratio, 0.1f, 1000.0f);
+
+	if (w > h){
+		right = -16.0f * ratio;
+		left = 16.0f * ratio;
+		bottom = -16.0f;
+		top = 16.0f;
+		nearp = -4.0f;
+		farp = 4.0f;
+	}
+	else{
+		right = -16.0f;
+		left = 16.0f;
+		bottom = -16.0f * ratio;
+		top = 16.0f * ratio;
+		nearp = -4.0f;
+		farp = 4.0f;
+	}
+
+	//vsml->perspective(53.13f, ratio, 0.1f, 1000.0f);
+	vsml->ortho(right, left, bottom, top, nearp, farp);
+
 }
 
 void init()
 {
-
 	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camY = r *   						     sin(beta * 3.14f / 180.0f);
-
+	
 	modelID = glGetUniformLocation(shader.getProgramIndex(), "model");
 	viewID = glGetUniformLocation(shader.getProgramIndex(), "view");
 	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
@@ -186,7 +227,10 @@ void init()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
 
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	frog = new Frog(modelID, viewID, projID, colorInID);
+
 }
 
 void initVSL() {
@@ -220,10 +264,10 @@ int main(int argc, char **argv) {
 	//	Mouse and Keyboard Callbacks
 	
 	//glutKeyboardFunc(processKeys);
-	glutMouseFunc(processMouseButtons);
-	glutMotionFunc(processMouseMotion);
+	//glutMouseFunc(processMouseButtons);
+	//glutMotionFunc(processMouseMotion);
 
-	glutMouseWheelFunc(mouseWheel);
+	//glutMouseWheelFunc(mouseWheel);
 	
 	//	return from main loop
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
