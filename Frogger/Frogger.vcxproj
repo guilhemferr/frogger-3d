@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Frogger.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Car.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Frogger.h" />

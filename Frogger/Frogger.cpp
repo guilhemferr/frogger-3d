@@ -1,4 +1,5 @@
 #include "Frogger.h"
+#include "Car.h"
 
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
@@ -19,6 +20,8 @@ float r = 15.0f;
 int modelID, projID, viewID, colorInID;
 
 Frog* frog;
+
+Car* car;
 
 int selectedCamera = TOPCAMERA;
 
@@ -179,6 +182,7 @@ void renderScene() {
 	
 	frog->drawFrog(vsml, mySurfRev);
 	
+	car->drawCar(vsml, mySurfRev);
 
 	//swap buffers
 	glutSwapBuffers();
@@ -279,6 +283,7 @@ void init()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	frog = new Frog(modelID, viewID, projID, colorInID);
+	car = new Car(modelID, viewID, projID, colorInID);
 
 	camX = frog->getX();
 	camY = frog->getY() - 15.0f;
