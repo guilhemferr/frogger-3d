@@ -7,6 +7,8 @@ VSResSurfRevLib mySurfRev;
 // Camera Position
 float camX, camY, camZ;
 
+int width, height;
+
 // Mouse Tracking Variables
 int startX, startY, tracking = 0;
 
@@ -18,7 +20,7 @@ int modelID, projID, viewID, colorInID;
 
 Frog* frog;
 
-int selectedCamera = FROGCAM;
+int selectedCamera = TOPCAMERA;
 
 GLuint setupShaders() {
 
@@ -130,6 +132,30 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 	}
 }
 
+void processKeys(unsigned char key, int xx, int yy)
+{
+	switch (key) {
+
+	case 27:
+		glutLeaveMainLoop();
+		break;
+
+	case '1':
+		selectedCamera = TOPCAMERA;
+		break;
+	case '2':
+		selectedCamera = PERSPECTIVE;
+		break;
+	case '3':
+		selectedCamera = FROGCAM;
+		break;
+
+	}
+	changeSize(width, height);
+	//  uncomment this if not using an idle func
+		glutPostRedisplay();
+}
+
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -137,8 +163,12 @@ void renderScene() {
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
 	if (selectedCamera == FROGCAM){
-		//vsml->lookAt(frog->getX() + 0.0f, frog->getY() - 15.0f, 5.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
 		vsml->lookAt(camX, camY, camZ, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+	if (selectedCamera == PERSPECTIVE){
+		//vsml->lookAt(frog->getX() + 0.0f, frog->getY() - 15.0f, 5.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		vsml->lookAt(0.0f, -50.0f, 48.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	// use our shader
@@ -166,9 +196,9 @@ void renderTerrain(){
 	renderCube(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
-	color[0] = 1.0f;
-	color[1] = 0.0f;
-	color[2] = 1.0f;
+	color[0] = 0.6f;
+	color[1] = 0.20f;
+	color[2] = 0.8f;
 	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
@@ -187,7 +217,8 @@ void renderTerrain(){
 }
 
 void changeSize(int w, int h) {
-
+	width = w;
+	height = h;
 	float right, left, bottom, top, nearp, farp;
 	float ratio;
 	
@@ -222,11 +253,10 @@ void changeSize(int w, int h) {
 		vsml->ortho(right, left, bottom, top, nearp, farp);
 		break;
 	case PERSPECTIVE:
+		vsml->perspective(30, ratio, 1.0f, 1000.0f);
 		break;
 	case FROGCAM:
 		vsml->perspective(30, ratio, 1.0f, 1000.0f);
-		break;
-	default:
 		break;
 	}
 
@@ -285,7 +315,7 @@ int main(int argc, char **argv) {
 
 	//	Mouse and Keyboard Callbacks
 	
-	//glutKeyboardFunc(processKeys);
+	glutKeyboardFunc(processKeys);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
 
