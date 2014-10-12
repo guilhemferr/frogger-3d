@@ -16,6 +16,13 @@
 #define PERSPECTIVE 2
 #define FROGCAM 3
 
+#define TIMEOUT 17
+
+#define UP 0
+#define LEFT 90
+#define DOWN 180
+#define RIGHT 270
+
 void renderTerrain();
 
 void changeSize(int w, int h);

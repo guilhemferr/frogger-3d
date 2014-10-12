@@ -4,6 +4,7 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(Frog::xcoord, Frog::ycoord, Frog::zcoord);
+	vsml->rotate(Frog::getDir(), 0, 0, 1);
 	mySurfRev.createSphere(radius, 20);
 	
 	float* model = vsml->get(VSMathLib::MODEL);
@@ -56,6 +57,61 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
 	vsml->popMatrix(VSMathLib::MODEL);
+
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(0.0f, -0.4f, 0.0f);
+	vsml->rotate(180, 0, 0, 1);
+	mySurfRev.createCone(0.5f, 0.5f, 10);
+	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
+	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
+	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
+	glUniform4fv(colorInID, 1, color);
+
+	glBindVertexArray(mySurfRev.mMyMesh.vao);
+	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
 
+	vsml->popMatrix(VSMathLib::MODEL);
+
+}
+
+void Frog::moveFrog(int direction){
+	
+	setDir(direction);
+
+	float delta = 2.0f;
+
+	switch (getDir()){
+	case UP:
+		setY(getY() + delta);
+		break;
+
+	case DOWN:
+		setY(getY() - delta);
+		break;
+
+	case LEFT:
+		setX(getX() - delta);
+		break;
+
+	case RIGHT:
+		setX(getX() + delta);
+		break;
+
+	default:
+		break;
+	}
+	
+}
+
+float Frog::updateFrogPos()
+{
+	int t = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTime = t - getTime();
+	float delta = elapsedTime * 0.00001;
+	setTime(t);
+
+	return delta;
 }

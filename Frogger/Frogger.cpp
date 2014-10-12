@@ -111,9 +111,9 @@ void processMouseMotion(int xx, int yy)
 				rAux = 0.1f;
 		}
 		
-		camX = frog->getX() + rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-		camY = frog->getY() + rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-		camZ = frog->getZ() + rAux *   						       sin(betaAux * 3.14f / 180.0f);
+		camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+		camY = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+		camZ = rAux *   						       sin(betaAux * 3.14f / 180.0f);
 		
 		glutPostRedisplay();
 	}
@@ -152,6 +152,20 @@ void processKeys(unsigned char key, int xx, int yy)
 	case '3':
 		selectedCamera = FROGCAM;
 		break;
+	case 'q':
+		frog->moveFrog(UP);
+		break;
+	case 'a':
+		frog->moveFrog(DOWN);
+		break;
+	case 'o':
+		frog->moveFrog(LEFT);
+		break;
+	case 'p':
+		frog->moveFrog(RIGHT);
+		break;
+	default:
+		break;
 
 	}
 	changeSize(width, height);
@@ -166,7 +180,7 @@ void renderScene() {
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
 	if (selectedCamera == FROGCAM){
-		vsml->lookAt(camX, camY, camZ, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		vsml->lookAt(frog->getX() + camX, frog->getY() + camY, camZ, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	if (selectedCamera == PERSPECTIVE){
@@ -193,7 +207,7 @@ void renderTerrain(){
 	float color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	renderCube(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 14.0f, 0.0f);
+	vsml->translate(0.0f, 16.0f, 0.0f);
 	color[0] = 0.0f;
 	color[1] = 0.0f;
 	color[2] = 1.0f;
@@ -206,7 +220,7 @@ void renderTerrain(){
 	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 13.0f, 0.0f);
+	vsml->translate(0.0f, 16.0f, 0.0f);
 	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -214,7 +228,7 @@ void renderTerrain(){
 	color[1] = 0.16f;
 	color[2] = 0.16f;
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 28.0f, 0.0f);
+	vsml->translate(0.0f, 32.0f, 0.0f);
 	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -241,16 +255,16 @@ void changeSize(int w, int h) {
 		if (w > h){
 			right = -16.0f * ratio;
 			left = 16.0f * ratio;
-			bottom = -16.0f;
-			top = 16.0f;
+			bottom = -18.0f;
+			top = 18.0f;
 			nearp = -4.0f;
 			farp = 4.0f;
 		}
 		else{
 			right = -16.0f;
 			left = 16.0f;
-			bottom = -16.0f * ratio;
-			top = 16.0f * ratio;
+			bottom = -18.0f * ratio;
+			top = 18.0f * ratio;
 			nearp = -4.0f;
 			farp = 4.0f;
 		}
@@ -266,6 +280,12 @@ void changeSize(int w, int h) {
 
 	
 
+}
+
+void fpsTimer(int value){
+
+	glutPostRedisplay();
+	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 }
 
 void init()
@@ -286,7 +306,7 @@ void init()
 	car = new Car(modelID, viewID, projID, colorInID);
 
 	camX = frog->getX();
-	camY = frog->getY() - 15.0f;
+	camY = - 15.0f;
 	camZ = 5.0f;
 }
 
@@ -317,6 +337,7 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
+	glutTimerFunc(0, fpsTimer, 0);
 
 	//	Mouse and Keyboard Callbacks
 	
