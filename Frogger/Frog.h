@@ -17,7 +17,7 @@ class Frog {
 public:
 
 	Frog(int modelID, int viewID, int projID, int colorInID) : 
-		radius(0.65f), xcoord(0.0f), ycoord(-14.0f), zcoord(2.5f){
+		radius(0.65f), xcoord(0.0f), ycoord(-14.0f), zcoord(2.0f){
 		Frog::modelID = modelID;
 		Frog::viewID = viewID;
 		Frog::projID = projID;

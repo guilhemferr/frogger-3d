@@ -12,7 +12,7 @@ int startX, startY, tracking = 0;
 
 // Camera Spherical Coordinates
 float alpha = 39.0f, beta = 51.0f;
-float r = 40.0f;
+float r = 15.0f;
 
 int modelID, projID, viewID, colorInID;
 
@@ -43,28 +43,30 @@ GLuint setupShaders() {
 
 void processMouseButtons(int button, int state, int xx, int yy)
 {
-	// start tracking the mouse
-	if (state == GLUT_DOWN)  {
-		startX = xx;
-		startY = yy;
-		if (button == GLUT_LEFT_BUTTON)
-			tracking = 1;
-		else if (button == GLUT_RIGHT_BUTTON)
-			tracking = 2;
-	}
+	if (selectedCamera == FROGCAM){
+		// start tracking the mouse
+		if (state == GLUT_DOWN)  {
+			startX = xx;
+			startY = yy;
+			if (button == GLUT_LEFT_BUTTON)
+				tracking = 1;
+			else if (button == GLUT_RIGHT_BUTTON)
+				tracking = 2;
+		}
 
-	//stop tracking the mouse
-	else if (state == GLUT_UP) {
-		if (tracking == 1) {
-			alpha -= (xx - startX);
-			beta += (yy - startY);
+		//stop tracking the mouse
+		else if (state == GLUT_UP) {
+			if (tracking == 1) {
+				alpha -= (xx - startX);
+				beta += (yy - startY);
+			}
+			else if (tracking == 2) {
+				r += (yy - startY) * 0.01f;
+				if (r < 0.1f)
+					r = 0.1f;
+			}
+			tracking = 0;
 		}
-		else if (tracking == 2) {
-			r += (yy - startY) * 0.01f;
-			if (r < 0.1f)
-				r = 0.1f;
-		}
-		tracking = 0;
 	}
 }
 
@@ -77,53 +79,55 @@ void processMouseMotion(int xx, int yy)
 	float alphaAux, betaAux;
 	float rAux;
 
-	deltaX = -xx + startX;
-	deltaY = yy - startY;
+	if (selectedCamera == FROGCAM){
+		deltaX = -xx + startX;
+		deltaY = yy - startY;
 
-	// left mouse button: move camera
-	if (tracking == 1) {
+		// left mouse button: move camera
+		if (tracking == 1) {
 
 
-		alphaAux = alpha + deltaX;
-		betaAux = beta + deltaY;
+			alphaAux = alpha + deltaX;
+			betaAux = beta + deltaY;
 
-		if (betaAux > 85.0f)
-			betaAux = 85.0f;
-		else if (betaAux < -85.0f)
-			betaAux = -85.0f;
-		rAux = r;
+			if (betaAux > 85.0f)
+				betaAux = 85.0f;
+			else if (betaAux < -85.0f)
+				betaAux = -85.0f;
+			rAux = r;
+		}
+		// right mouse button: zoom
+		else if (tracking == 2) {
+
+			alphaAux = alpha;
+			betaAux = beta;
+			rAux = r + (deltaY * 0.01f);
+			if (rAux < 0.1f)
+				rAux = 0.1f;
+		}
+		
+		camX = frog->getX() + rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+		camY = frog->getY() + rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+		camZ = frog->getZ() + rAux *   						       sin(betaAux * 3.14f / 180.0f);
+		
+		glutPostRedisplay();
 	}
-	// right mouse button: zoom
-	else if (tracking == 2) {
-
-		alphaAux = alpha;
-		betaAux = beta;
-		rAux = r + (deltaY * 0.01f);
-		if (rAux < 0.1f)
-			rAux = 0.1f;
-	}
-
-	camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camZ = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camY = rAux *   						       sin(betaAux * 3.14f / 180.0f);
-
-	
-	glutPostRedisplay();
 }
 
 
 void mouseWheel(int wheel, int direction, int x, int y) {
+	if (selectedCamera == FROGCAM){
+		r += direction * 0.1f;
+		if (r < 0.1f)
+			r = 0.1f;
 
-	r += direction * 0.1f;
-	if (r < 0.1f)
-		r = 0.1f;
+		camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
+		camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
+		camY = r *   						     sin(beta * 3.14f / 180.0f);
 
-	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camY = r *   						     sin(beta * 3.14f / 180.0f);
 
-	
-	glutPostRedisplay();
+		glutPostRedisplay();
+	}
 }
 
 void renderScene() {
@@ -133,7 +137,8 @@ void renderScene() {
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
 	if (selectedCamera == FROGCAM){
-		vsml->lookAt(frog->getX(), frog->getY() - 15.0f, 10.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		//vsml->lookAt(frog->getX() + 0.0f, frog->getY() - 15.0f, 5.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		vsml->lookAt(camX, camY, camZ, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	// use our shader
@@ -230,11 +235,7 @@ void changeSize(int w, int h) {
 }
 
 void init()
-{
-	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camY = r *   						     sin(beta * 3.14f / 180.0f);
-	
+{	
 	modelID = glGetUniformLocation(shader.getProgramIndex(), "model");
 	viewID = glGetUniformLocation(shader.getProgramIndex(), "view");
 	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
@@ -249,6 +250,9 @@ void init()
 
 	frog = new Frog(modelID, viewID, projID, colorInID);
 
+	camX = frog->getX();
+	camY = frog->getY() - 15.0f;
+	camZ = 5.0f;
 }
 
 void initVSL() {
@@ -282,8 +286,8 @@ int main(int argc, char **argv) {
 	//	Mouse and Keyboard Callbacks
 	
 	//glutKeyboardFunc(processKeys);
-	//glutMouseFunc(processMouseButtons);
-	//glutMotionFunc(processMouseMotion);
+	glutMouseFunc(processMouseButtons);
+	glutMotionFunc(processMouseMotion);
 
 	//glutMouseWheelFunc(mouseWheel);
 	

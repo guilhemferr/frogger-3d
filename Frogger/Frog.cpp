@@ -21,10 +21,12 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(0.0f, 0.0f, -0.25f);
 	//Legs front left and back right
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->rotate(45, 0, 0, 1);
+
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
 	
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
@@ -52,6 +54,7 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	vsml->popMatrix(VSMathLib::MODEL);
 	vsml->popMatrix(VSMathLib::MODEL);
 	vsml->popMatrix(VSMathLib::MODEL);
 
