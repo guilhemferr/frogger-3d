@@ -21,7 +21,7 @@ int modelID, projID, viewID, colorInID;
 
 Frog* frog;
 
-Car* car;
+Car* cars[5];
 
 int selectedCamera = TOPCAMERA;
 
@@ -195,9 +195,9 @@ void renderScene() {
 
 	
 	frog->drawFrog(vsml, mySurfRev);
-	
-	car->drawCar(vsml, mySurfRev);
-
+	for (int i = 0; i < 5; i++){
+		cars[i]->drawCar(vsml, mySurfRev);
+	}
 	//swap buffers
 	glutSwapBuffers();
 }
@@ -303,8 +303,14 @@ void init()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	frog = new Frog(modelID, viewID, projID, colorInID);
-	car = new Car(modelID, viewID, projID, colorInID);
 
+	for (int i = 0; i < 3; i++){
+		cars[i] = new Car( 12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID);
+	}
+
+	for (int i = 0; i < 2; i++){
+		cars[i+3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID);
+	}
 	camX = frog->getX();
 	camY = - 15.0f;
 	camZ = 5.0f;

@@ -16,8 +16,11 @@ class Car {
 
 public:
 
-	Car(int modelID, int viewID, int projID, int colorInID) :
-		xcoord(12.0f), ycoord(-3.5f), zcoord(2.0f){
+	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID) {
+		Car::xcoord = xcoord;
+		Car::ycoord = ycoord;
+		Car::zcoord = zcoord;
+
 		Car::modelID = modelID;
 		Car::viewID = viewID;
 		Car::projID = projID;
