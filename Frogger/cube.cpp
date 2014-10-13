@@ -1,6 +1,7 @@
 #include "cube.h"
 
 GLuint vao;
+GLuint buffers[4];
 
 int verticeCount = 24;
 int faceCount = 12;
@@ -157,7 +158,6 @@ void loadVAO(){
 	glBindVertexArray(vao);
 
 	// create buffers for our vertex data
-	GLuint buffers[4];
 	glGenBuffers(4, buffers);
 
 	//vertex coordinates buffer
@@ -190,6 +190,11 @@ void loadVAO(){
 	glBindVertexArray(0);
 }
 
+void unLoadVAO(){
+	glDeleteBuffers(4, buffers);
+	glDeleteVertexArrays(1, &vao);
+}
+
 void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
 	loadVAO();
 
@@ -205,6 +210,8 @@ void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorI
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	unLoadVAO();
 	//swap buffers
 	//glutSwapBuffers();
 }

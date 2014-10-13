@@ -1,6 +1,7 @@
 #include "side.h"
 
 GLuint vaoSide;
+GLuint buffersSide[4];
 
 int verticeCountSide = 24;
 int faceCountSide = 12;
@@ -157,37 +158,44 @@ void loadVAOSide(){
 	glBindVertexArray(vaoSide);
 
 	// create buffers for our vertex data
-	GLuint buffers[4];
-	glGenBuffers(4, buffers);
+	
+	glGenBuffers(4, buffersSide);
 
 	//vertex coordinates buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
 
 	//texture coordinates buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[1]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoordsSide), texCoordsSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::TEXTURE_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::TEXTURE_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
 
 	//normals buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[2]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(normalsSide), normalsSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::NORMAL_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
 	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
 
 	//index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersSide[3]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndexSide), faceIndexSide, GL_STATIC_DRAW);
 
 	// unbind the VAO
 	glBindVertexArray(0);
+}
+
+void unLoadVAOSide(){
+	
+	glDeleteBuffers(4, buffersSide);
+	glDeleteVertexArrays(1, &vaoSide);
+
 }
 
 void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
@@ -205,6 +213,8 @@ void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorI
 	glBindVertexArray(vaoSide);
 	glDrawElements(GL_TRIANGLES, faceCountSide * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	unLoadVAOSide();
 	//swap buffers
 	//glutSwapBuffers();
 }

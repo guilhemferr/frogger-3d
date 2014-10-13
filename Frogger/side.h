@@ -6,4 +6,6 @@
 
 void loadVAOSide();
 
+void unLoadVAOSide();
+
 void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color);

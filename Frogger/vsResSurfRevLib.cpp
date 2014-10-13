@@ -327,7 +327,7 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 	glGenVertexArrays(1, &mMyMesh.vao);
 	glBindVertexArray(mMyMesh.vao);
 
-	GLuint buffers[4];
+	//GLuint buffers[4];
 	glGenBuffers(4, buffers);
 	//vertex coordinates buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);

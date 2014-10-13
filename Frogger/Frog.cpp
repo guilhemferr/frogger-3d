@@ -22,6 +22,9 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, 0.0f, -0.25f);
 	//Legs front left and back right
@@ -39,6 +42,9 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	//Legs front right and back left
@@ -55,6 +61,9 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+
 	vsml->popMatrix(VSMathLib::MODEL);
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -71,6 +80,9 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->popMatrix(VSMathLib::MODEL);

@@ -95,6 +95,8 @@ public:
 
 	/// the mesh collection
 	struct MyMesh mMyMesh;
+
+	GLuint buffers[4];
 	
 private:
 	void computeVAO(int numP, float *p, float *points, int sides, float smoothCos);

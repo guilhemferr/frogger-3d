@@ -21,6 +21,8 @@ void Car::drawCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
 
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -40,6 +42,8 @@ void Car::drawCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
 
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -57,6 +61,8 @@ void Car::drawCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
 
 	vsml->popMatrix(VSMathLib::MODEL);
 
@@ -75,6 +81,8 @@ void Car::drawCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+	glDeleteBuffers(4, mySurfRev.buffers);
+	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
 
 	vsml->popMatrix(VSMathLib::MODEL);
 	
