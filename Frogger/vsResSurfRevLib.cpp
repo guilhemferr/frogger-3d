@@ -34,6 +34,7 @@
 #include <vector>
 
 
+
 VSResSurfRevLib::VSResSurfRevLib()
 {
 }
@@ -322,10 +323,11 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 	}
 
 	int numVertices = numP*2 * (numSides+1);
-	mMyMesh.numIndexes = count;
 
-	glGenVertexArrays(1, &mMyMesh.vao);
-	glBindVertexArray(mMyMesh.vao);
+	mesh[objId].numIndexes = count;
+	//mMyMesh.numIndexes = count;
+	glGenVertexArrays(1, &mesh[objId].vao);
+	glBindVertexArray(mesh[objId].vao);
 
 	//GLuint buffers[4];
 	glGenBuffers(4, buffers);
@@ -349,28 +351,28 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 
 	//index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mMyMesh.numIndexes, faceIndex , GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh[objId].numIndexes, faceIndex, GL_STATIC_DRAW);
 
 	// unbind the VAO
 	glBindVertexArray(0);
 
-	mMyMesh.type = GL_TRIANGLES;
-	mMyMesh.mat.ambient[0] = 0.2f;
-	mMyMesh.mat.ambient[1] = 0.2f;
-	mMyMesh.mat.ambient[2] = 0.2f;
-	mMyMesh.mat.ambient[3] = 1.0f;
+	mesh[objId].type = GL_TRIANGLES;
+	mesh[objId].mat.ambient[0] = 0.2f;
+	mesh[objId].mat.ambient[1] = 0.2f;
+	mesh[objId].mat.ambient[2] = 0.2f;
+	mesh[objId].mat.ambient[3] = 1.0f;
 	
-	mMyMesh.mat.diffuse[0] = 0.8f;
-	mMyMesh.mat.diffuse[1] = 0.8f;
-	mMyMesh.mat.diffuse[2] = 0.8f;
-	mMyMesh.mat.diffuse[3] = 1.0f;
+	mesh[objId].mat.diffuse[0] = 0.8f;
+	mesh[objId].mat.diffuse[1] = 0.8f;
+	mesh[objId].mat.diffuse[2] = 0.8f;
+	mesh[objId].mat.diffuse[3] = 1.0f;
 
-	mMyMesh.mat.specular[0] = 0.8f;
-	mMyMesh.mat.specular[1] = 0.8f;
-	mMyMesh.mat.specular[2] = 0.8f;
-	mMyMesh.mat.specular[3] = 1.0f;
+	mesh[objId].mat.specular[0] = 0.8f;
+	mesh[objId].mat.specular[1] = 0.8f;
+	mesh[objId].mat.specular[2] = 0.8f;
+	mesh[objId].mat.specular[3] = 1.0f;
 
-	mMyMesh.mat.shininess = 100.0f;
+	mesh[objId].mat.shininess = 100.0f;
 }
 
 
@@ -381,25 +383,25 @@ VSResSurfRevLib::render () {
 	mVSML->matricesToGL();
 
 	// set material
-	setMaterial(mMyMesh.mat);
+	setMaterial(mesh[objId].mat);
 
 	// bind texture
-	for (unsigned int j = 0; j < VSResourceLib::MAX_TEXTURES; ++j) {
-		if (mMyMesh.texUnits[j] != 0) {
+	for (unsigned int j = 0; j < MAX_TEXTURES; ++j) {
+		if (mesh[objId].texUnits[j] != 0) {
 			glActiveTexture(GL_TEXTURE0 + j);
-			glBindTexture(mMyMesh.texTypes[j], 
-						mMyMesh.texUnits[j]);
+			glBindTexture(mesh[objId].texTypes[j],
+				mesh[objId].texUnits[j]);
 		}
 	}
 	// bind VAO
-	glBindVertexArray(mMyMesh.vao);
-	glDrawElements(mMyMesh.type, mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[objId].vao);
+	glDrawElements(mesh[objId].type, mesh[objId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	for (unsigned int j = 0; j < VSResourceLib::MAX_TEXTURES; ++j) {
-		if (mMyMesh.texUnits[j] != 0) {
+	for (unsigned int j = 0; j < MAX_TEXTURES; ++j) {
+		if (mesh[objId].texUnits[j] != 0) {
 			glActiveTexture(GL_TEXTURE0 + j);
-			glBindTexture(mMyMesh.texTypes[j], 0);
+			glBindTexture(mesh[objId].texTypes[j], 0);
 		}
 	}
 
@@ -416,19 +418,19 @@ VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values) {
 
 	switch(m) {
 		case SHININESS:
-			mMyMesh.mat.shininess = *values;
+			mesh[objId].mat.shininess = *values;
 			break;
 		case DIFFUSE:
-			memcpy(mMyMesh.mat.diffuse, values, sizeof(float)*4);
+			memcpy(mesh[objId].mat.diffuse, values, sizeof(float) * 4);
 			break;
 		case AMBIENT:
-			memcpy(mMyMesh.mat.ambient, values, sizeof(float)*4);
+			memcpy(mesh[objId].mat.ambient, values, sizeof(float) * 4);
 			break;
 		case SPECULAR:
-			memcpy(mMyMesh.mat.specular, values, sizeof(float)*4);
+			memcpy(mesh[objId].mat.specular, values, sizeof(float) * 4);
 			break;
 		case EMISSIVE:
-			memcpy(mMyMesh.mat.emissive, values, sizeof(float)*4);
+			memcpy(mesh[objId].mat.emissive, values, sizeof(float) * 4);
 			break;
 	}
 }
@@ -438,9 +440,9 @@ VSResSurfRevLib::setColor(VSResourceLib::MaterialSemantics m, float *values) {
 void 
 VSResSurfRevLib::setTexture(unsigned int unit, unsigned int textureID, GLenum textureType) {
 
-	mMyMesh.texUnits[unit] = textureID;
-	mMyMesh.texTypes[unit] = textureType;
-	mMyMesh.mat.texCount = 1;
+	mesh[objId].texUnits[unit] = textureID;
+	mesh[objId].texTypes[unit] = textureType;
+	mesh[objId].mat.texCount = 1;
 }
 
 
@@ -448,9 +450,9 @@ void
 VSResSurfRevLib::addTexture(unsigned int unit, std::string filename) {
 
 	int textID = loadRGBATexture(filename, true);
-	mMyMesh.texUnits[unit] = textID;
-	mMyMesh.texTypes[unit] = GL_TEXTURE_2D;
-	mMyMesh.mat.texCount = 1;
+	mesh[objId].texUnits[unit] = textID;
+	mesh[objId].texTypes[unit] = GL_TEXTURE_2D;
+	mesh[objId].mat.texCount = 1;
 }
 
 
@@ -460,9 +462,9 @@ VSResSurfRevLib::addCubeMapTexture(unsigned int unit, std::string posX, std::str
 									std::string posZ, std::string negZ) {
 
 	int textID = loadCubeMapTexture(posX, negX, posY, negY, posZ, negZ);
-	mMyMesh.texUnits[unit] = textID;
-	mMyMesh.texTypes[unit] = GL_TEXTURE_CUBE_MAP;
-	mMyMesh.mat.texCount = 1;
+	mesh[objId].texUnits[unit] = textID;
+	mesh[objId].texTypes[unit] = GL_TEXTURE_CUBE_MAP;
+	mesh[objId].mat.texCount = 1;
 }
 
 #endif

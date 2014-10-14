@@ -1,5 +1,6 @@
 #include "Frogger.h"
 #include "Car.h"
+#include "vsResSurfRevLib.h"
 
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
@@ -22,6 +23,10 @@ int modelID, projID, viewID, colorInID;
 Frog* frog;
 
 Car* cars[5];
+
+int objId = 0;
+
+struct MyMesh mesh[8];
 
 int selectedCamera = TOPCAMERA;
 
@@ -53,10 +58,26 @@ void processMouseButtons(int button, int state, int xx, int yy)
 		if (state == GLUT_DOWN)  {
 			startX = xx;
 			startY = yy;
-			if (button == GLUT_LEFT_BUTTON)
+			if (button == GLUT_LEFT_BUTTON){
 				tracking = 1;
-			else if (button == GLUT_RIGHT_BUTTON)
+			}
+			else if (button == GLUT_RIGHT_BUTTON){
 				tracking = 2;
+				float betaAux = (yy);
+				if ((betaAux >= 0 && betaAux < 45) || (betaAux >= 315 && betaAux < 360)){
+					frog->moveFrog(RIGHT);
+				}
+				if (betaAux >= 45 && betaAux < 135){
+					frog->moveFrog(UP);
+				}
+				if (betaAux >= 135 && betaAux < 225){
+					frog->moveFrog(LEFT);
+				}
+				if (betaAux >= 225 && betaAux < 315){
+					frog->moveFrog(DOWN);
+				}
+				glutPostRedisplay();
+			}
 		}
 
 		//stop tracking the mouse
@@ -66,9 +87,11 @@ void processMouseButtons(int button, int state, int xx, int yy)
 				beta += (yy - startY);
 			}
 			else if (tracking == 2) {
+				/*Old zoom stuff
 				r += (yy - startY) * 0.01f;
 				if (r < 0.1f)
 					r = 0.1f;
+				*/
 			}
 			tracking = 0;
 		}
@@ -100,22 +123,26 @@ void processMouseMotion(int xx, int yy)
 			else if (betaAux < -85.0f)
 				betaAux = -85.0f;
 			rAux = r;
+
+			camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+			camY = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
+			camZ = rAux *   						       sin(betaAux * 3.14f / 180.0f);
+
+			glutPostRedisplay();
 		}
 		// right mouse button: zoom
 		else if (tracking == 2) {
-
+			/* Old zoom camera
 			alphaAux = alpha;
 			betaAux = beta;
 			rAux = r + (deltaY * 0.01f);
 			if (rAux < 0.1f)
 				rAux = 0.1f;
+			*/
+		
 		}
 		
-		camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-		camY = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-		camZ = rAux *   						       sin(betaAux * 3.14f / 180.0f);
 		
-		glutPostRedisplay();
 	}
 }
 
@@ -194,9 +221,9 @@ void renderScene() {
 	renderTerrain();
 
 	
-	frog->drawFrog(vsml, mySurfRev);
+	frog->drawFrog(vsml, mesh);
 	for (int i = 0; i < 5; i++){
-		cars[i]->drawCar(vsml, mySurfRev);
+		cars[i]->drawCar(vsml, mesh);
 	}
 	//swap buffers
 	glutSwapBuffers();
@@ -302,15 +329,19 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	frog = new Frog(modelID, viewID, projID, colorInID);
+	frog = new Frog(modelID, viewID, projID, colorInID, objId);
 
+	frog->createFrog(vsml, mySurfRev);
+	
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car( 12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID);
+		cars[i] = new Car( 12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
 	}
 
 	for (int i = 0; i < 2; i++){
-		cars[i+3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID);
+		cars[i+3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
 	}
+	cars[0]->createCar(vsml, mySurfRev);
+
 	camX = frog->getX();
 	camY = - 15.0f;
 	camZ = 5.0f;

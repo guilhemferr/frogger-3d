@@ -1,11 +1,22 @@
 #include "Frog.h"
 
-void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
-	
+void Frog::createFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+	mySurfRev.createSphere(radius, 20);
+	objId++;
+	mySurfRev.createCylinder(2.3f, 0.2f, 10);
+	objId++;
+	mySurfRev.createCylinder(2.3f, 0.2f, 10);
+	objId++;
+	mySurfRev.createCone(0.5f, 0.5f, 10);
+	objId++;
+}
+
+void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
+	int currentObjId = Frog::frogObjId;
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(Frog::xcoord, Frog::ycoord, Frog::zcoord);
 	vsml->rotate(Frog::getDir(), 0, 0, 1);
-	mySurfRev.createSphere(radius, 20);
+	//mySurfRev.createSphere(radius, 20);
 	
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
@@ -18,12 +29,11 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	
 	// render VAO
-	glBindVertexArray(mySurfRev.mMyMesh.vao);
-	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mMyMesh[currentObjId].vao);
+	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-	glDeleteBuffers(4, mySurfRev.buffers);
-	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+	currentObjId++;
 
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, 0.0f, -0.25f);
@@ -31,38 +41,36 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->rotate(45, 0, 0, 1);
 
-	mySurfRev.createCylinder(2.3f, 0.2f, 10);
+	//mySurfRev.createCylinder(2.3f, 0.2f, 10);
 	
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
 	
-	glBindVertexArray(mySurfRev.mMyMesh.vao);
-	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mMyMesh[currentObjId].vao);
+	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-	glDeleteBuffers(4, mySurfRev.buffers);
-	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+	currentObjId++;
 
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	//Legs front right and back left
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->rotate(135, 0, 0, 1);
-	mySurfRev.createCylinder(2.3f, 0.2f, 10);
+	//mySurfRev.createCylinder(2.3f, 0.2f, 10);
 
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
 
-	glBindVertexArray(mySurfRev.mMyMesh.vao);
-	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mMyMesh[currentObjId].vao);
+	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-	glDeleteBuffers(4, mySurfRev.buffers);
-	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+	currentObjId++;
 
 	vsml->popMatrix(VSMathLib::MODEL);
 	vsml->popMatrix(VSMathLib::MODEL);
@@ -70,18 +78,17 @@ void Frog::drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, -0.4f, 0.0f);
 	vsml->rotate(180, 0, 0, 1);
-	mySurfRev.createCone(0.5f, 0.5f, 10);
+	//mySurfRev.createCone(0.5f, 0.5f, 10);
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
 
-	glBindVertexArray(mySurfRev.mMyMesh.vao);
-	glDrawElements(mySurfRev.mMyMesh.type, mySurfRev.mMyMesh.numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mMyMesh[currentObjId].vao);
+	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
-	glDeleteBuffers(4, mySurfRev.buffers);
-	glDeleteVertexArrays(1, &(mySurfRev.mMyMesh.vao));
+	currentObjId++;
 
 	vsml->popMatrix(VSMathLib::MODEL);
 

@@ -13,10 +13,11 @@ class Car {
 	int modelID, viewID, projID, colorInID;
 	float colorBody[4];
 	float colorWheels[4];
+	int carObjId;
 
 public:
 
-	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID) {
+	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID, int carObjId) {
 		Car::xcoord = xcoord;
 		Car::ycoord = ycoord;
 		Car::zcoord = zcoord;
@@ -25,6 +26,8 @@ public:
 		Car::viewID = viewID;
 		Car::projID = projID;
 		Car::colorInID = colorInID;
+
+		Car::carObjId = carObjId;
 
 		colorBody[0] = 0.184f;
 		colorBody[1] = 0.184f;
@@ -39,7 +42,9 @@ public:
 
 	virtual ~Car() {}
 
-	void drawCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void createCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+
+	void drawCar(VSMathLib* vsml, MyMesh* mMyMesh);
 
 	int getX(){
 		return xcoord;

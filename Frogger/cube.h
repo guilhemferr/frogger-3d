@@ -6,6 +6,4 @@
 
 void loadVAO();
 
-void unLoadVAO();
-
 void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color);

@@ -3,6 +3,8 @@
 GLuint vao;
 GLuint buffers[4];
 
+bool notLoaded = true;
+
 int verticeCount = 24;
 int faceCount = 12;
 
@@ -190,13 +192,11 @@ void loadVAO(){
 	glBindVertexArray(0);
 }
 
-void unLoadVAO(){
-	glDeleteBuffers(4, buffers);
-	glDeleteVertexArrays(1, &vao);
-}
-
 void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
-	loadVAO();
+	if (notLoaded){
+		loadVAO();
+		notLoaded = false;
+	}
 
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
@@ -211,7 +211,6 @@ void renderCube(VSMathLib *vsml, int modelID, int viewID, int projID, int colorI
 	glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	unLoadVAO();
 	//swap buffers
 	//glutSwapBuffers();
 }

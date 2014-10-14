@@ -20,15 +20,17 @@ class Frog {
 	float color[4];
 	int direction;
 	int elapsedTime;
+	int frogObjId;
 
 public:
 
-	Frog(int modelID, int viewID, int projID, int colorInID) : 
+	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId) : 
 		radius(0.65f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0){
 		Frog::modelID = modelID;
 		Frog::viewID = viewID;
 		Frog::projID = projID;
 		Frog::colorInID = colorInID;
+		Frog::frogObjId = frogObjId;
 
 
 		color[0] = 0.3f;
@@ -39,7 +41,9 @@ public:
 
 	virtual ~Frog() {}
 
-	void drawFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void createFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+
+	void drawFrog(VSMathLib* vsml, MyMesh* mMyMesh);
 
 	void moveFrog(int direction);
 

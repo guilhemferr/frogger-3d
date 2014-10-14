@@ -38,6 +38,23 @@
 #include <GL/glew.h>
 
 #include "vsResourceLib.h"
+#define MAX_TEXTURES 4
+
+
+struct MyMesh{
+	GLuint vao;
+	GLuint texUnits[MAX_TEXTURES];
+	GLuint texTypes[MAX_TEXTURES];
+	GLuint uniformBlockIndex;
+	float transform[16];
+	int numIndexes;
+	unsigned int type;
+	struct Material mat;
+};
+
+extern struct MyMesh mesh[8];
+extern int objId;
+
 
 
 class VSResSurfRevLib : public VSResourceLib{
@@ -82,21 +99,14 @@ public:
 
 	// A model can be made of many meshes. Each is stored
 	// in the following structure
-	struct MyMesh{
-		GLuint vao;
-		GLuint texUnits[MAX_TEXTURES];
-		GLuint texTypes[MAX_TEXTURES];
-		GLuint uniformBlockIndex;
-		float transform[16];
-		int numIndexes;
-		unsigned int type;
-		struct Material mat;
-	};
+	
 
 	/// the mesh collection
 	struct MyMesh mMyMesh;
 
 	GLuint buffers[4];
+
+
 	
 private:
 	void computeVAO(int numP, float *p, float *points, int sides, float smoothCos);

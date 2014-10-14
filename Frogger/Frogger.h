@@ -10,7 +10,7 @@
 
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
-#include "vsResSurfRevLib.h"
+
 
 #define TOPCAMERA 1
 #define PERSPECTIVE 2

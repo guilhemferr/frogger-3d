@@ -67,6 +67,15 @@
 // VSShaderLib is required to enable and set the 
 // semantic of the vertex arrays
 #include "vsShaderLib.h"
+struct Material{
+
+	float diffuse[4];
+	float ambient[4];
+	float specular[4];
+	float emissive[4];
+	float shininess;
+	int texCount;
+};
 
 
 class VSResourceLib {
@@ -74,16 +83,7 @@ class VSResourceLib {
 protected:
 
 	/// helper structure for derived classes
-	struct Material{
-
-		float diffuse[4];
-		float ambient[4];
-		float specular[4];
-		float emissive[4];
-		float shininess;
-		int texCount;
-	};
-
+	
 public:
 
 	/// material semantics

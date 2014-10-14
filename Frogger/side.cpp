@@ -3,6 +3,8 @@
 GLuint vaoSide;
 GLuint buffersSide[4];
 
+bool notLoadedSide = true;
+
 int verticeCountSide = 24;
 int faceCountSide = 12;
 
@@ -191,15 +193,12 @@ void loadVAOSide(){
 	glBindVertexArray(0);
 }
 
-void unLoadVAOSide(){
-	
-	glDeleteBuffers(4, buffersSide);
-	glDeleteVertexArrays(1, &vaoSide);
-
-}
 
 void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorInID, float* color){
-	loadVAOSide();
+	if (notLoadedSide){
+		loadVAOSide();
+		notLoadedSide = false;
+	}
 
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
@@ -214,7 +213,6 @@ void renderSide(VSMathLib *vsml, int modelID, int viewID, int projID, int colorI
 	glDrawElements(GL_TRIANGLES, faceCountSide * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	unLoadVAOSide();
 	//swap buffers
 	//glutSwapBuffers();
 }
