@@ -63,19 +63,22 @@ void processMouseButtons(int button, int state, int xx, int yy)
 			}
 			else if (button == GLUT_RIGHT_BUTTON){
 				tracking = 2;
-				float betaAux = (yy);
-				if ((betaAux >= 0 && betaAux < 45) || (betaAux >= 315 && betaAux < 360)){
+
+				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
+					if (yy > (frog->getY())){
+						frog->moveFrog(UP);
+					}
+					else {
+						frog->moveFrog(DOWN);
+					}
+				}
+				else if (xx > frog->getX()){
 					frog->moveFrog(RIGHT);
 				}
-				if (betaAux >= 45 && betaAux < 135){
-					frog->moveFrog(UP);
-				}
-				if (betaAux >= 135 && betaAux < 225){
+				else{
 					frog->moveFrog(LEFT);
 				}
-				if (betaAux >= 225 && betaAux < 315){
-					frog->moveFrog(DOWN);
-				}
+
 				glutPostRedisplay();
 			}
 		}
