@@ -13,9 +13,11 @@ void Car::createCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Car::carObjId;
-
+	int auxX = 0.0001;
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord+0.1);
+	vsml->translate(Car::xcoord + auxX, Car::ycoord, Car::zcoord+0.1);
+	setXcoord(-0.0001);
+	
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
 	//mySurfRev.createCylinder(4.0f, 1.2f, 4);
@@ -94,4 +96,13 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 
 	vsml->popMatrix(VSMathLib::MODEL);
 	
+}
+
+float Car::moveCar(){
+	int t = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTime = t - getTime();
+	float delta = elapsedTime * 0.00000001;
+	setTime(t);
+	setXcoord(-delta);
+	return delta;
 }

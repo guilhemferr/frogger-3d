@@ -14,6 +14,7 @@ class Car {
 	float colorBody[4];
 	float colorWheels[4];
 	int carObjId;
+	int elapsedTime;
 
 public:
 
@@ -46,6 +47,8 @@ public:
 
 	void drawCar(VSMathLib* vsml, MyMesh* mMyMesh);
 
+	float moveCar();
+
 	int getX(){
 		return xcoord;
 	}
@@ -54,6 +57,15 @@ public:
 	}
 	int getZ(){
 		return zcoord;
+	}
+	int getTime(){
+		return elapsedTime;
+	}
+	void setTime(int t){
+		elapsedTime = t;
+	}
+	void setXcoord(float x){
+		xcoord = xcoord + x;
 	}
 
 };
