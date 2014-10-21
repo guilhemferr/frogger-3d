@@ -1,22 +1,24 @@
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "vsMathLib.h"
-#include "vsShaderLib.h"
-#include "vsResSurfRevLib.h"
+#ifndef _DYNAMICOBJECT_H_
+#define _DYNAMICOBJECT_H_
+#include "DynamicObject.h" 
+#endif
 
 #define UP 0
 #define LEFT 90
 #define DOWN 180
 #define RIGHT 270
 
-class Frog {
+class Frog : public DynamicObject {
 
 	const float radius;
 	float xcoord;
 	float ycoord;
 	float zcoord;
-	int modelID, viewID, projID, colorInID;
+	int modelID, viewID, projID, colorInID, normalID;
 	float color[4];
 	int direction;
 	int elapsedTime;
@@ -24,13 +26,14 @@ class Frog {
 
 public:
 
-	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId) : 
+	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId, int normalID) :
 		radius(0.65f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0){
 		Frog::modelID = modelID;
 		Frog::viewID = viewID;
 		Frog::projID = projID;
 		Frog::colorInID = colorInID;
 		Frog::frogObjId = frogObjId;
+		Frog::normalID = normalID;
 
 
 		color[0] = 0.3f;
@@ -41,19 +44,19 @@ public:
 
 	virtual ~Frog() {}
 
-	void createFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-	void drawFrog(VSMathLib* vsml, MyMesh* mMyMesh);
+	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 
 	void moveFrog(int direction);
 
-	int getX(){
+	float getX(){
 		return xcoord;
 	}
-	int getY(){
+	float getY(){
 		return ycoord;
 	}
-	int getZ(){
+	float getZ(){
 		return zcoord;
 	}
 

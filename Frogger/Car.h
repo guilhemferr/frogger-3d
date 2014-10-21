@@ -1,3 +1,4 @@
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -5,12 +6,17 @@
 #include "vsShaderLib.h"
 #include "vsResSurfRevLib.h"
 
-class Car {
+#ifndef _DYNAMICOBJECT_H_
+#define _DYNAMICOBJECT_H_
+#include "DynamicObject.h" 
+#endif
+
+class Car : public DynamicObject {
 
 	float xcoord;
 	float ycoord;
 	float zcoord;
-	int modelID, viewID, projID, colorInID;
+	int modelID, viewID, projID, colorInID, normalID;
 	float colorBody[4];
 	float colorWheels[4];
 	int carObjId;
@@ -18,7 +24,7 @@ class Car {
 
 public:
 
-	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID, int carObjId) {
+	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID, int carObjId, int normalID) {
 		Car::xcoord = xcoord;
 		Car::ycoord = ycoord;
 		Car::zcoord = zcoord;
@@ -27,6 +33,7 @@ public:
 		Car::viewID = viewID;
 		Car::projID = projID;
 		Car::colorInID = colorInID;
+		Car::normalID = normalID;
 
 		Car::carObjId = carObjId;
 
@@ -43,19 +50,19 @@ public:
 
 	virtual ~Car() {}
 
-	void createCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-	void drawCar(VSMathLib* vsml, MyMesh* mMyMesh);
+	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 
 	float moveCar();
 
-	int getX(){
+	float getX(){
 		return xcoord;
 	}
-	int getY(){
+	float getY(){
 		return ycoord;
 	}
-	int getZ(){
+	float getZ(){
 		return zcoord;
 	}
 	int getTime(){

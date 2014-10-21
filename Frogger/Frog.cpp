@@ -1,6 +1,6 @@
 #include "Frog.h"
 
-void Frog::createFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.createSphere(radius, 20);
 	objId++;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
@@ -11,7 +11,7 @@ void Frog::createFrog(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	objId++;
 }
 
-void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
+void Frog::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Frog::frogObjId;
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(Frog::xcoord, Frog::ycoord, Frog::zcoord);
@@ -27,6 +27,8 @@ void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
 
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	
 	// render VAO
 	glBindVertexArray(mMyMesh[currentObjId].vao);
@@ -47,7 +49,8 @@ void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
-	
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -65,7 +68,8 @@ void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -83,7 +87,8 @@ void Frog::drawFrog(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, color);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 

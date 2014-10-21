@@ -368,7 +368,7 @@ class VSMathLib {
 
 		/// The normal matrix
 		float mNormal[12];
-		float mNormal3x3[9];
+		
 		float mNormalView3x3[9];		
 		float mNormalView[12];
 		float mNormalModel[12];
@@ -388,8 +388,7 @@ class VSMathLib {
 
 		/// Computes the 3x4 normal matrix based on the modelview matrix
 		void computeNormalMatrix();
-		/// Computes the 3x3 normal matrix for use with glUniform
-		void computeNormalMatrix3x3();
+
 		/// Computes the 3x4 normal matrix considering only the view matrix
 		void computeNormalViewMatrix3x3();
 		/// Computes the 3x3 normal matrix for the view matrix for use with glUniform
@@ -405,7 +404,10 @@ class VSMathLib {
 		//resMatrix = resMatrix * aMatrix
 		void multMatrix(float *resMatrix, float *aMatrix);
 
-
+public:
+	float mNormal3x3[9];
+	/// Computes the 3x3 normal matrix for use with glUniform
+	void computeNormalMatrix3x3();
 };
 
 #endif

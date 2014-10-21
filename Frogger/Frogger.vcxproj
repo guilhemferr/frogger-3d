@@ -81,8 +81,11 @@
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="cube.cpp" />
+    <ClCompile Include="DynamicObject.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Frogger.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="side.cpp" />
     <ClCompile Include="vsLogLib.cpp" />
     <ClCompile Include="vsMathLib.cpp" />
@@ -93,9 +96,13 @@
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="cube.h" />
+    <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Frogger.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="side.h" />
+    <ClInclude Include="StaticObject.h" />
     <ClInclude Include="vsLogLib.h" />
     <ClInclude Include="vsMathLib.h" />
     <ClInclude Include="vsResourceLib.h" />
@@ -103,6 +110,8 @@
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="lighting.frag" />
+    <None Include="lighting.vert" />
     <None Include="shaders\helloWorld.frag" />
     <None Include="shaders\helloWorld.vert" />
   </ItemGroup>

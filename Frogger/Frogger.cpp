@@ -18,11 +18,11 @@ int startX, startY, tracking = 0;
 float alpha = 39.0f, beta = 51.0f;
 float r = 15.0f;
 
-int modelID, projID, viewID, colorInID;
+int modelID, projID, viewID, colorInID, normalID;
 
 Frog* frog;
 
-Car* cars[5];
+GameObject* cars[5];
 
 int objId = 0;
 
@@ -42,7 +42,6 @@ GLuint setupShaders() {
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
-	//shader.setVertexAttribName(VSShaderLib::VERTEX_ATTRIB1, "colorIn");
 
 	shader.prepareProgram();
 
@@ -224,9 +223,9 @@ void renderScene() {
 	renderTerrain();
 
 	
-	frog->drawFrog(vsml, mesh);
+	frog->draw(vsml, mesh);
 	for (int i = 0; i < 5; i++){
-		cars[i]->drawCar(vsml, mesh);
+		cars[i]->draw(vsml, mesh);
 	}
 	//swap buffers
 	glutSwapBuffers();
@@ -324,7 +323,7 @@ void init()
 	viewID = glGetUniformLocation(shader.getProgramIndex(), "view");
 	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
-
+	normalID = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -332,18 +331,18 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	frog = new Frog(modelID, viewID, projID, colorInID, objId);
+	frog = new Frog(modelID, viewID, projID, colorInID, objId, normalID);
 
-	frog->createFrog(vsml, mySurfRev);
+	frog->create(vsml, mySurfRev);
 	
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car( 12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
+		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID, objId, normalID);
 	}
 
 	for (int i = 0; i < 2; i++){
-		cars[i+3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
+		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID, objId, normalID);
 	}
-	cars[0]->createCar(vsml, mySurfRev);
+	cars[0]->create(vsml, mySurfRev);
 
 	camX = frog->getX();
 	camY = - 15.0f;

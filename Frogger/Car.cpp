@@ -1,6 +1,6 @@
 #include "Car.h"
 
-void Car::createCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.createCylinder(4.0f, 1.2f, 4);
 	objId++;
 	mySurfRev.createCylinder(2.0f, 0.6f, 4);
@@ -11,12 +11,12 @@ void Car::createCar(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	objId++;
 }
 
-void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
+void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Car::carObjId;
-	int auxX = 0.0001;
+	float auxX = 0.01f;
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord + auxX, Car::ycoord, Car::zcoord+0.1);
-	setXcoord(-0.0001);
+	vsml->translate(Car::xcoord + auxX, Car::ycoord, Car::zcoord+0.1f);
+	setXcoord(-0.01f);
 	
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
@@ -30,7 +30,8 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, colorBody);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -40,7 +41,7 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord+0.1);
+	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord+0.1f);
 	vsml->translate(0.8f, 0.0f, 1.0f);
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
@@ -50,7 +51,8 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, colorBody);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -68,7 +70,8 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, colorWheels);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -87,7 +90,8 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 	glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 	glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 	glUniform4fv(colorInID, 1, colorWheels);
-
+	vsml->computeNormalMatrix3x3();
+	glUniformMatrix3fv(normalID, 1, GL_FALSE, vsml->mNormal3x3);
 	glBindVertexArray(mMyMesh[currentObjId].vao);
 	glDrawElements(mMyMesh[currentObjId].type, mMyMesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
@@ -101,7 +105,7 @@ void Car::drawCar(VSMathLib* vsml, MyMesh* mMyMesh){
 float Car::moveCar(){
 	int t = glutGet(GLUT_ELAPSED_TIME);
 	int elapsedTime = t - getTime();
-	float delta = elapsedTime * 0.00000001;
+	float delta = elapsedTime * 0.00000001f;
 	setTime(t);
 	setXcoord(-delta);
 	return delta;
