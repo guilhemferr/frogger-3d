@@ -13,9 +13,6 @@
 
 class Car : public DynamicObject {
 
-	float xcoord;
-	float ycoord;
-	float zcoord;
 	int modelID, viewID, projID, colorInID, normalID;
 	float colorBody[4];
 	float colorWheels[4];
@@ -25,9 +22,9 @@ class Car : public DynamicObject {
 public:
 
 	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID, int carObjId, int normalID) {
-		Car::xcoord = xcoord;
-		Car::ycoord = ycoord;
-		Car::zcoord = zcoord;
+		setX(xcoord);
+		setY(ycoord);
+		setZ(zcoord);
 
 		Car::modelID = modelID;
 		Car::viewID = viewID;
@@ -56,23 +53,11 @@ public:
 
 	float moveCar();
 
-	float getX(){
-		return xcoord;
-	}
-	float getY(){
-		return ycoord;
-	}
-	float getZ(){
-		return zcoord;
-	}
 	int getTime(){
 		return elapsedTime;
 	}
 	void setTime(int t){
 		elapsedTime = t;
-	}
-	void setXcoord(float x){
-		xcoord = xcoord + x;
 	}
 
 };

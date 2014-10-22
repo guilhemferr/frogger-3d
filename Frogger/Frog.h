@@ -15,9 +15,6 @@
 class Frog : public DynamicObject {
 
 	const float radius;
-	float xcoord;
-	float ycoord;
-	float zcoord;
 	int modelID, viewID, projID, colorInID, normalID;
 	float color[4];
 	int direction;
@@ -27,13 +24,16 @@ class Frog : public DynamicObject {
 public:
 
 	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId, int normalID) :
-		radius(0.65f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0){
+		radius(0.65f), direction(UP), elapsedTime(0){
 		Frog::modelID = modelID;
 		Frog::viewID = viewID;
 		Frog::projID = projID;
 		Frog::colorInID = colorInID;
 		Frog::frogObjId = frogObjId;
 		Frog::normalID = normalID;
+		setX(0.0f);
+		setY(-16.0f);
+		setZ(2.0f);
 
 
 		color[0] = 0.3f;
@@ -50,16 +50,7 @@ public:
 
 	void moveFrog(int direction);
 
-	float getX(){
-		return xcoord;
-	}
-	float getY(){
-		return ycoord;
-	}
-	float getZ(){
-		return zcoord;
-	}
-
+	
 	int getDir(){
 		return direction;
 	}
@@ -75,17 +66,7 @@ public:
 		elapsedTime = time;
 	}
 
-	void setX(float x){
-		xcoord = x;
-	}
-
-	void setY(float y){
-		ycoord = y;
-	}
-
-	void setZ(float z){
-		zcoord = z;
-	}
+	
 
 private:
 

@@ -14,7 +14,7 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 void Frog::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Frog::frogObjId;
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Frog::xcoord, Frog::ycoord, Frog::zcoord);
+	vsml->translate(Frog::getX(), Frog::getY(), Frog::getZ());
 	vsml->rotate(Frog::getDir(), 0, 0, 1);
 	//mySurfRev.createSphere(radius, 20);
 	

@@ -1,17 +1,11 @@
 #include "GameObject.h"
 class DynamicObject : public GameObject{
-public:
+
 	/**
 	 * Attributes
 	 */
 	double _speed[3];
-
-	/**
-	 * Constructor & Deconstructor
-	 */
-	DynamicObject(){}
-	~DynamicObject(){}
-
+public:
 	/**
 	* Methods
 	*/
