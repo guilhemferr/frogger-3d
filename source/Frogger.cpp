@@ -2,6 +2,8 @@
 #include "Car.h"
 #include "vsResSurfRevLib.h"
 
+#include <iostream>
+
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
 VSResSurfRevLib mySurfRev;
@@ -202,6 +204,28 @@ void processKeys(unsigned char key, int xx, int yy)
 		glutPostRedisplay();
 }
 
+// Callback function. Process arrows commands
+void arrowPressed(int key, int x, int y){
+
+	switch (key)
+	{
+	case GLUT_KEY_LEFT:
+		frog->moveFrog(LEFT);
+		break;
+	case GLUT_KEY_RIGHT:
+		frog->moveFrog(RIGHT);
+		break;
+	case GLUT_KEY_UP:
+		frog->moveFrog(UP);
+		break;
+	case GLUT_KEY_DOWN:
+		frog->moveFrog(DOWN);
+		break;
+	default:
+		break;
+	  }
+}
+
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -383,6 +407,7 @@ int main(int argc, char **argv) {
 	glutKeyboardFunc(processKeys);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
+	glutSpecialFunc(arrowPressed);
 
 	//glutMouseWheelFunc(mouseWheel);
 	
