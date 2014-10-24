@@ -1,6 +1,4 @@
 #include "Frogger.h"
-#include "Car.h"
-#include "vsResSurfRevLib.h"
 
 #include <iostream>
 
@@ -210,16 +208,16 @@ void arrowPressed(int key, int x, int y){
 	switch (key)
 	{
 	case GLUT_KEY_LEFT:
-		frog->moveFrog(LEFT);
+		frog->queueCommand(LEFT);
 		break;
 	case GLUT_KEY_RIGHT:
-		frog->moveFrog(RIGHT);
+		frog->queueCommand(RIGHT);
 		break;
 	case GLUT_KEY_UP:
-		frog->moveFrog(UP);
+		frog->queueCommand(UP);
 		break;
 	case GLUT_KEY_DOWN:
-		frog->moveFrog(DOWN);
+		frog->queueCommand(DOWN);
 		break;
 	default:
 		break;
@@ -248,6 +246,8 @@ void renderScene() {
 
 	
 	frog->draw(vsml, mesh);
+	frog->update();
+
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml, mesh);
 	}

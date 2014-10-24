@@ -10,32 +10,32 @@ int faceCountSide = 12;
 
 /*
 float vertices[] = {
-0.0f, 1.0f, 1.0f, 1.0f,
-0.0f, 0.0f, 1.0f, 1.0f,
-1.0f, 0.0f, 1.0f, 1.0f,
-1.0f, 1.0f, 1.0f, 1.0f,
+0.0f, ZZ_MIN, 1.0f, 1.0f,
+0.0f, 0.0f, ZZ_MIN, 1.0f,
+1.0f, 0.0f, ZZ_MIN, 1.0f,
+1.0f, ZZ_MIN, 1.0f, 1.0f,
 
 1.0f, 1.0f, 0.0f, 1.0f,
 1.0f, 0.0f, 0.0f, 1.0f,
 0.0f, 0.0f, 0.0f, 1.0f,
 0.0f, 1.0f, 0.0f, 1.0f,
 
-1.0f, 1.0f, 1.0f, 1.0f,
-1.0f, 0.0f, 1.0f, 1.0f,
+1.0f, ZZ_MIN, 1.0f, 1.0f,
+1.0f, 0.0f, ZZ_MIN, 1.0f,
 1.0f, 0.0f, 0.0f, 1.0f,
 1.0f, 1.0f, 0.0f, 1.0f,
 
 0.0f, 1.0f, 0.0f, 1.0f,
-0.0f, 1.0f, 1.0f, 1.0f,
-1.0f, 1.0f, 1.0f, 1.0f,
+0.0f, ZZ_MIN, 1.0f, 1.0f,
+1.0f, ZZ_MIN, 1.0f, 1.0f,
 1.0f, 1.0f, 0.0f, 1.0f,
 
 0.0f, 1.0f, 0.0f, 1.0f,
 0.0f, 0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f, 1.0f,
-0.0f, 1.0f, 1.0f, 1.0f,
+0.0f, 0.0f, ZZ_MIN, 1.0f,
+0.0f, ZZ_MIN, 1.0f, 1.0f,
 
-0.0f, 0.0f, 1.0f, 1.0f,
+0.0f, 0.0f, ZZ_MIN, 1.0f,
 0.0f, 0.0f, 0.0f, 1.0f,
 1.0f, 0.0f, 0.0f, 1.0f,
 1.0f, 0.0f, 1.0f, 1.0f
@@ -44,40 +44,40 @@ float vertices[] = {
 
 float verticesSide[] = {
 	//topo
-	-15.0f, -15.0f, 1.3f, 1.0f,
-	-15.0f, -17.0f, 1.3f, 1.0f,
-	 15.0f, -17.0f, 1.3f, 1.0f,
-	 15.0f, -15.0f, 1.3f, 1.0f,
+	XX_MIN, XX_MIN, ZZ_MAX, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MAX, 1.0f,
+	 XX_MAX, YY_MIN, ZZ_MAX, 1.0f,
+	 XX_MAX, XX_MIN, ZZ_MAX, 1.0f,
 
 	//baixo
-	15.0f, -15.0f, 1.0f, 1.0f,
-	15.0f, -17.0f, 1.0f, 1.0f,
-	-15.0f, -17.0f, 1.0f, 1.0f,
-	-15.0f, -15.0f, 1.0f, 1.0f,
+	XX_MAX, XX_MIN, ZZ_MIN, 1.0f,
+	XX_MAX, YY_MIN, ZZ_MIN, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MIN, 1.0f,
+	XX_MIN, XX_MIN, ZZ_MIN, 1.0f,
 
 	//lado direito
-	15.0f, -15.0f, 1.3f, 1.0f,
-	15.0f, -17.0f, 1.3f, 1.0f,
-	15.0f, -17.0f, 1.0f, 1.0f,
-	15.0f, -15.0f, 1.0f, 1.0f,
+	XX_MAX, XX_MIN, ZZ_MAX, 1.0f,
+	XX_MAX, YY_MIN, ZZ_MAX, 1.0f,
+	XX_MAX, YY_MIN, ZZ_MIN, 1.0f,
+	XX_MAX, XX_MIN, ZZ_MIN, 1.0f,
 
 	//lado esquerdo
-	-15.0f, -15.0f, 1.0f, 1.0f,
-	-15.0f, -15.0f, 1.3f, 1.0f,
-	 15.0f, -15.0f, 1.3f, 1.0f,
-	 15.0f, -15.0f, 1.0f, 1.0f,
+	XX_MIN, XX_MIN, ZZ_MIN, 1.0f,
+	XX_MIN, XX_MIN, ZZ_MAX, 1.0f,
+	 XX_MAX, XX_MIN, ZZ_MAX, 1.0f,
+	 XX_MAX, XX_MIN, ZZ_MIN, 1.0f,
 
 	//frente
-	-15.0f, -15.0f, 1.0f, 1.0f,
-	-15.0f, -17.0f, 1.0f, 1.0f,
-	-15.0f, -17.0f, 1.3f, 1.0f,
-	 15.0f, -15.0f, 1.3f, 1.0f,
+	XX_MIN, XX_MIN, ZZ_MIN, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MIN, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MAX, 1.0f,
+	 XX_MAX, XX_MIN, ZZ_MAX, 1.0f,
 
 	//tras
-	-15.0f, -17.0f, 1.3f, 1.0f,
-	-15.0f, -17.0f, 1.0f, 1.0f,
-	 15.0f, -17.0f, 1.0f, 1.0f,
-	 15.0f, -17.0f, 1.3f, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MAX, 1.0f,
+	XX_MIN, YY_MIN, ZZ_MIN, 1.0f,
+	 XX_MAX, YY_MIN, ZZ_MIN, 1.0f,
+	 XX_MAX, YY_MIN, ZZ_MAX, 1.0f,
 
 };
 
