@@ -1,12 +1,13 @@
 #include "GameObject.h"
 class DynamicObject : public GameObject{
-public:
+
 	/**
 	 * Attributes
 	 */
 	double _speed[3];
-	int idVector[8];
 
+	int idVector[8];
+public:
 	/**
 	 * Constructor & Deconstructor
 	 */
@@ -21,6 +22,8 @@ public:
 		DynamicObject::idVector[SHININESS] = idVector[SHININESS];
 	}
 	~DynamicObject(){}
+
+
 
 	/**
 	* Methods

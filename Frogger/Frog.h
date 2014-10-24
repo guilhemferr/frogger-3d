@@ -15,9 +15,7 @@
 class Frog : public DynamicObject {
 
 	const float radius;
-	float xcoord;
-	float ycoord;
-	float zcoord;
+
 	float color[4];
 	int direction;
 	int elapsedTime;
@@ -26,15 +24,20 @@ class Frog : public DynamicObject {
 public:
 
 	Frog(int frogObjId, int* idVector) : DynamicObject(idVector),
-		radius(0.65f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0){
+		radius(0.65f), direction(UP), elapsedTime(0){
 		Frog::frogObjId = frogObjId;
+
+		setX(0.0f);
+		setY(-16.0f);
+		setZ(2.0f);
+
 		color[0] = 0.3f;
 		color[1] = 0.7f;
 		color[2] = 0.3f;
 		color[3] = 1.0f;
 	}
 
-	virtual ~Frog() {}
+	 ~Frog() {}
 
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh);
 
@@ -42,16 +45,7 @@ public:
 
 	void moveFrog(int direction);
 
-	float getX(){
-		return xcoord;
-	}
-	float getY(){
-		return ycoord;
-	}
-	float getZ(){
-		return zcoord;
-	}
-
+	
 	int getDir(){
 		return direction;
 	}
@@ -67,17 +61,7 @@ public:
 		elapsedTime = time;
 	}
 
-	void setX(float x){
-		xcoord = x;
-	}
-
-	void setY(float y){
-		ycoord = y;
-	}
-
-	void setZ(float z){
-		zcoord = z;
-	}
+	
 
 private:
 

@@ -56,8 +56,8 @@ void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Car::carObjId;
 	float auxX = 0.01f;
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord + auxX, Car::ycoord, Car::zcoord+0.1f);
-	setXcoord(-0.01f);
+	vsml->translate(getX() + auxX, getY(), getZ()+0.1f);
+	setX(getX() - 0.01f);
 	
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
@@ -86,7 +86,7 @@ void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord+0.1f);
+	vsml->translate(getX(), getY(), getZ()+0.1f);
 	vsml->translate(0.8f, 0.0f, 1.0f);
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
@@ -111,7 +111,7 @@ void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord - 0.3f);
+	vsml->translate(getX(), getY(), getZ() - 0.3f);
 	vsml->translate(1.5f, 0.0f, -0.4f);
 
 	//mySurfRev.createCylinder(2.30f, 0.35f, 10);
@@ -135,7 +135,7 @@ void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord -0.3f);
+	vsml->translate(getX(), getY(), getZ() -0.3f);
 	vsml->translate(-1.5f, 0.0f, -0.4f);
 
 	//mySurfRev.createCylinder(2.30f, 0.35f, 10);
@@ -164,6 +164,6 @@ float Car::moveCar(){
 	int elapsedTime = t - getTime();
 	float delta = elapsedTime * 0.00000001f;
 	setTime(t);
-	setXcoord(-delta);
+	setX(getX() - delta);
 	return delta;
 }

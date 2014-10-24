@@ -18,4 +18,5 @@ class StaticObject : public GameObject{
 	int* getIdVector(){
 		return idVector;
 	}
+
 };

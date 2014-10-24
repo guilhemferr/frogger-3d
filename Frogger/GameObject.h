@@ -1,6 +1,7 @@
-#include "vsMathLib.h"
-#include "vsShaderLib.h"
-#include "vsResSurfRevLib.h"
+#include "Entity.h"
+
+
+	/*Attributes*/
 
 #define MODELID 0
 #define VIEWID 1
@@ -11,10 +12,9 @@
 #define SPECULAR 6
 #define SHININESS 7
 
-class GameObject {
+class GameObject : public Entity {
+
 public:
-	GameObject(){}
-	~GameObject(){}
 
 	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh) = 0;
 	virtual void draw(VSMathLib* vsml, MyMesh* mMyMesh) = 0;
