@@ -110,8 +110,10 @@
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lighting.frag" />
-    <None Include="lighting.vert" />
+    <None Include="pointLight.frag" />
+    <None Include="pointLight.vert" />
+    <None Include="shaders\dirLight.frag" />
+    <None Include="shaders\dirLight.vert" />
     <None Include="shaders\helloWorld.frag" />
     <None Include="shaders\helloWorld.vert" />
   </ItemGroup>

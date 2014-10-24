@@ -7,6 +7,7 @@
 #include "cube.h"
 #include "side.h"
 #include "Frog.h"
+#include "LightSource.h"
 
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
@@ -22,6 +23,15 @@
 #define LEFT 90
 #define DOWN 180
 #define RIGHT 270
+
+#define MODELID 0
+#define VIEWID 1
+#define PROJID 2
+#define NORMALID 3
+#define AMBIENT 4
+#define DIFFUSE 5
+#define SPECULAR 6
+#define SHININESS 7
 
 void renderTerrain();
 

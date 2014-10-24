@@ -18,7 +18,6 @@ class Frog : public DynamicObject {
 	float xcoord;
 	float ycoord;
 	float zcoord;
-	int modelID, viewID, projID, colorInID, normalID;
 	float color[4];
 	int direction;
 	int elapsedTime;
@@ -26,16 +25,9 @@ class Frog : public DynamicObject {
 
 public:
 
-	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId, int normalID) :
+	Frog(int frogObjId, int* idVector) : DynamicObject(idVector),
 		radius(0.65f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0){
-		Frog::modelID = modelID;
-		Frog::viewID = viewID;
-		Frog::projID = projID;
-		Frog::colorInID = colorInID;
 		Frog::frogObjId = frogObjId;
-		Frog::normalID = normalID;
-
-
 		color[0] = 0.3f;
 		color[1] = 0.7f;
 		color[2] = 0.3f;
@@ -44,7 +36,7 @@ public:
 
 	virtual ~Frog() {}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh);
 
 	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 

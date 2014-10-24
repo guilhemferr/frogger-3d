@@ -16,7 +16,6 @@ class Car : public DynamicObject {
 	float xcoord;
 	float ycoord;
 	float zcoord;
-	int modelID, viewID, projID, colorInID, normalID;
 	float colorBody[4];
 	float colorWheels[4];
 	int carObjId;
@@ -24,16 +23,10 @@ class Car : public DynamicObject {
 
 public:
 
-	Car(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID, int colorInID, int carObjId, int normalID) {
+	Car(float xcoord, float ycoord, float zcoord, int carObjId, int* idVector) : DynamicObject(idVector){
 		Car::xcoord = xcoord;
 		Car::ycoord = ycoord;
 		Car::zcoord = zcoord;
-
-		Car::modelID = modelID;
-		Car::viewID = viewID;
-		Car::projID = projID;
-		Car::colorInID = colorInID;
-		Car::normalID = normalID;
 
 		Car::carObjId = carObjId;
 
@@ -50,7 +43,7 @@ public:
 
 	virtual ~Car() {}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh);
 
 	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 

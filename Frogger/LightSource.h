@@ -2,7 +2,7 @@
 #include <GL/freeglut.h>
 
 class LightSource{
-public:
+
 	/*Attributes*/
 	float ambient[4];
 	float diffuse[4];
@@ -10,12 +10,10 @@ public:
 	float position[4];
 	float direction[3];
 	double cutOff, exponent;
-	GLenum num;
 	bool state;
-
+public:
 	/*Constructor*/
-	LightSource(GLenum number){
-		LightSource::num = number;
+	LightSource(){
 	}
 	~LightSource(){}
 
@@ -23,9 +21,7 @@ public:
 	bool getState(){
 		return state;
 	}
-	GLenum getNum(){
-		return num;
-	}
+	
 	void setState(bool state){
 		LightSource::state = state;
 	}
@@ -63,5 +59,9 @@ public:
 		LightSource::specular[1] = specular[1];
 		LightSource::specular[2] = specular[2];
 		LightSource::specular[3] = specular[3];
+	}
+
+	float* getDirection(){
+		return direction;
 	}
 };

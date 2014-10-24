@@ -1,51 +1,22 @@
-#include "Frogger.h"
-#include "Car.h"
-#include "vsResSurfRevLib.h"
-
-VSMathLib *vsml;
-VSShaderLib shader, shaderF;
-VSResSurfRevLib mySurfRev;
-
-// Camera Position
-float camX, camY, camZ;
-
-int width, height;
-
-// Mouse Tracking Variables
-int startX, startY, tracking = 0;
-
-// Camera Spherical Coordinates
-float alpha = 39.0f, beta = 51.0f;
-float r = 15.0f;
-
-int modelID, projID, viewID, colorInID, normalID;
-int idVector[8];
-int locLDir;
-
-Frog* frog;
-
-GameObject* cars[5];
-
-LightSource* lSource;
-
+#include "GameManager.h"
+/*Extern Variables*/
 int objId = 0;
-
 struct MyMesh mesh[8];
+/*------------------*/
 
-int selectedCamera = TOPCAMERA;
-
-GLuint setupShaders() {
+GLuint GameManager::setupShaders() {
 
 	// Shader for models
 	shader.init();
 	//TODO Change shader name
-	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLight.vert");
-	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLight.frag");
+	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/helloWorld.vert");
+	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/helloWorld.frag");
 
 
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	//shader.setVertexAttribName(VSShaderLib::VERTEX_ATTRIB1, "colorIn");
 
 	shader.prepareProgram();
 
@@ -54,7 +25,7 @@ GLuint setupShaders() {
 	return(shader.isProgramValid());
 }
 
-void processMouseButtons(int button, int state, int xx, int yy)
+void GameManager::processMouseButtons(int button, int state, int xx, int yy)
 {
 	if (selectedCamera == FROGCAM){
 		// start tracking the mouse
@@ -68,7 +39,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 				tracking = 2;
 
 				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
-					if (yy > (frog->getY())){
+					if (yy >(frog->getY())){
 						frog->moveFrog(UP);
 					}
 					else {
@@ -96,7 +67,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 				/*Old zoom stuff
 				r += (yy - startY) * 0.01f;
 				if (r < 0.1f)
-					r = 0.1f;
+				r = 0.1f;
 				*/
 			}
 			tracking = 0;
@@ -104,9 +75,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 	}
 }
 
-// Track mouse motion while buttons are pressed
-
-void processMouseMotion(int xx, int yy)
+void GameManager::processMouseMotion(int xx, int yy)
 {
 
 	int deltaX, deltaY;
@@ -143,17 +112,16 @@ void processMouseMotion(int xx, int yy)
 			betaAux = beta;
 			rAux = r + (deltaY * 0.01f);
 			if (rAux < 0.1f)
-				rAux = 0.1f;
+			rAux = 0.1f;
 			*/
-		
+
 		}
-		
-		
+
+
 	}
 }
 
-
-void mouseWheel(int wheel, int direction, int x, int y) {
+void GameManager::mouseWheel(int wheel, int direction, int x, int y) {
 	if (selectedCamera == FROGCAM){
 		r += direction * 0.1f;
 		if (r < 0.1f)
@@ -168,7 +136,7 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 	}
 }
 
-void processKeys(unsigned char key, int xx, int yy)
+void GameManager::processKeys(unsigned char key, int xx, int yy)
 {
 	switch (key) {
 
@@ -203,10 +171,10 @@ void processKeys(unsigned char key, int xx, int yy)
 	}
 	changeSize(width, height);
 	//  uncomment this if not using an idle func
-		glutPostRedisplay();
+	glutPostRedisplay();
 }
 
-void renderScene() {
+void GameManager::renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -223,44 +191,38 @@ void renderScene() {
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
-	
-	float res[4];
-	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);   //lightPos definido em World Coord so is converted to eye space
-	glUniform4fv(locLDir, 1, res);
 
 	renderTerrain();
 
-	
-	frog->draw(vsml, mesh);
-	/*
+
+	frog->drawFrog(vsml, mesh);
 	for (int i = 0; i < 5; i++){
-		cars[i]->draw(vsml, mesh);
+		cars[i]->drawCar(vsml, mesh);
 	}
-	*/
 	//swap buffers
 	glutSwapBuffers();
 }
 
-void renderTerrain(){
+void GameManager::renderTerrain(){
 
 	float color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	renderCube(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
+	renderCube(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, 16.0f, 0.0f);
 	color[0] = 0.0f;
 	color[1] = 0.0f;
 	color[2] = 1.0f;
-	renderCube(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
+	renderCube(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	color[0] = 0.6f;
 	color[1] = 0.20f;
 	color[2] = 0.8f;
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, 16.0f, 0.0f);
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	color[0] = 0.65f;
@@ -268,17 +230,17 @@ void renderTerrain(){
 	color[2] = 0.16f;
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(0.0f, 32.0f, 0.0f);
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
+	renderSide(vsml, modelID, viewID, projID, colorInID, color);
 	vsml->popMatrix(VSMathLib::MODEL);
 
 }
 
-void changeSize(int w, int h) {
+void GameManager::changeSize(int w, int h) {
 	width = w;
 	height = h;
 	float right, left, bottom, top, nearp, farp;
 	float ratio;
-	
+
 	// Prevent a divide by zero, when window is too short
 	if (h == 0)
 		h = 1;
@@ -287,10 +249,10 @@ void changeSize(int w, int h) {
 	// set the projection matrix
 	ratio = (1.0f * w) / h;
 	vsml->loadIdentity(VSMathLib::PROJECTION);
-	
+
 	switch (selectedCamera)
 	{
-	case TOPCAMERA: 
+	case TOPCAMERA:
 		if (w > h){
 			right = -16.0f * ratio;
 			left = 16.0f * ratio;
@@ -317,32 +279,16 @@ void changeSize(int w, int h) {
 		break;
 	}
 
-	
+
 
 }
 
-void fpsTimer(int value){
-
-	glutPostRedisplay();
-	glutTimerFunc(TIMEOUT, fpsTimer, 0);
-}
-
-void init()
-{	
-	
-	idVector[MODELID] = glGetUniformLocation(shader.getProgramIndex(), "model");
-	idVector[VIEWID] = glGetUniformLocation(shader.getProgramIndex(), "view");
-	idVector[PROJID] = glGetUniformLocation(shader.getProgramIndex(), "projection");
-	
+void GameManager::init()
+{
+	modelID = glGetUniformLocation(shader.getProgramIndex(), "model");
+	viewID = glGetUniformLocation(shader.getProgramIndex(), "view");
+	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
-	
-	idVector[NORMALID] = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
-	idVector[AMBIENT] = glGetUniformLocation(shader.getProgramIndex(), "mat.ambient");
-	idVector[DIFFUSE] = glGetUniformLocation(shader.getProgramIndex(), "mat.diffuse");
-	idVector[SPECULAR] = glGetUniformLocation(shader.getProgramIndex(), "mat.specular");
-	idVector[SHININESS] = glGetUniformLocation(shader.getProgramIndex(), "mat.shininess");
-
-	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
@@ -351,35 +297,38 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	frog = new Frog(objId, idVector);
+	frog = new Frog(modelID, viewID, projID, colorInID, objId);
 
-	frog->create(vsml, mySurfRev, mesh);
-	
+	frog->createFrog(vsml, mySurfRev);
+
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, idVector);
+		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
 	}
 
 	for (int i = 0; i < 2; i++){
-		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, idVector);
+		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID, objId);
 	}
-	cars[0]->create(vsml, mySurfRev, mesh);
+	cars[0]->createCar(vsml, mySurfRev);
 
 	camX = frog->getX();
-	camY = - 15.0f;
+	camY = -15.0f;
 	camZ = 5.0f;
-
-	lSource = new LightSource();
-	float dirLight[3] = { 0.0f, 0.0f, 5.0f };
-	lSource->setDirection(dirLight);
 }
 
-void initVSL() {
-
+void GameManager::initVSL() {
 	//	 Init VSML
 	vsml = VSMathLib::getInstance();
 	vsml->setUniformName(VSMathLib::PROJ_VIEW_MODEL, "m_pvm");
 	vsml->setUniformName(VSMathLib::NORMAL, "m_normal");
 	vsml->setUniformName(VSMathLib::VIEW_MODEL, "m_viewModel");
+}
+
+/*End of class methods*/
+
+void fpsTimer(int value){
+
+	glutPostRedisplay();
+	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 }
 
 int main(int argc, char **argv) {
@@ -390,24 +339,26 @@ int main(int argc, char **argv) {
 
 	glutInitContextVersion(3, 3);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
-	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
 
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(512, 512);
 	glutCreateWindow("Frogger Demo");
 
+	// Creation of GameManager
+	GameManager* GM = new GameManager();
+
 
 	//  Callback Registration
-	glutDisplayFunc(renderScene);
-	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
+	glutDisplayFunc(GM->renderScene);
+	glutReshapeFunc(GM->changeSize);
+	glutIdleFunc(GM->renderScene);
 	glutTimerFunc(0, fpsTimer, 0);
 
 	//	Mouse and Keyboard Callbacks
 	
-	glutKeyboardFunc(processKeys);
-	glutMouseFunc(processMouseButtons);
-	glutMotionFunc(processMouseMotion);
+	glutKeyboardFunc(GM->processKeys);
+	glutMouseFunc(GM->processMouseButtons);
+	glutMotionFunc(GM->processMouseMotion);
 
 	//glutMouseWheelFunc(mouseWheel);
 	
@@ -429,12 +380,12 @@ int main(int argc, char **argv) {
 	else
 		printf("Context Profile: Compatibility\n");
 
-	if (!setupShaders())
+	if (!GM->setupShaders())
 		exit(1);
 
-	init();
+	GM->init();
 
-	initVSL();
+	GM->initVSL();
 
 	//  GLUT main loop
 	glutMainLoop();
@@ -442,3 +393,7 @@ int main(int argc, char **argv) {
 	return(0);
 
 }
+
+
+
+
