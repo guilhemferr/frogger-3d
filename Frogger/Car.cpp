@@ -1,6 +1,6 @@
 #include "Car.h"
 
-void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	float ambBody[] = { 0.25f, 0.25f, 0.25f, 1.0f };
 	float diffBody[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 	float specBody[] = { 0.774597f, 0.774597f, 0.774597f, 1.0f };

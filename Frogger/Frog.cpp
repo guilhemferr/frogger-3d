@@ -1,6 +1,6 @@
 #include "Frog.h"
 
-void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	float amb[] = {0.0f, 0.05f, 0.0f, 1.0f};
 	float diff[] = {0.4f, 0.5f, 0.4f, 1.0f};
 	float spec[] = {0.04f, 0.7f, 0.04f, 1.0f};
@@ -8,39 +8,39 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float shininess = 128.0f * 0.078125f;
 	int texcount = 0;
 	
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
+	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
+	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
+	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
+	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
+	m[objId].mat.shininess = shininess;
+	m[objId].mat.texCount = texcount;
 	mySurfRev.createSphere(radius, 20);
 
 	objId++;
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
+	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
+	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
+	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
+	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
+	m[objId].mat.shininess = shininess;
+	m[objId].mat.texCount = texcount;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
 
 	objId++;
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
+	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
+	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
+	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
+	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
+	m[objId].mat.shininess = shininess;
+	m[objId].mat.texCount = texcount;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
 
 	objId++;
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
+	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
+	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
+	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
+	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
+	m[objId].mat.shininess = shininess;
+	m[objId].mat.texCount = texcount;
 	mySurfRev.createCone(0.5f, 0.5f, 10);
 	objId++;
 }

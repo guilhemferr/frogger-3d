@@ -1,6 +1,6 @@
 #include "TimberLog.h"
 
-void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
+void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float diff[] = { 0.5f, 0.0f, 0.0f, 1.0f };
 	float spec[] = { 0.7f, 0.6f, 0.6f, 1.0f };

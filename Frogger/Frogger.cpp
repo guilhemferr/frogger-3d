@@ -231,8 +231,7 @@ void renderScene() {
 	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
 
-	//renderTerrain();
-
+	renderTerrain();
 	
 	frog->draw(vsml);
 	
@@ -357,7 +356,7 @@ void init()
 
 	frog = new Frog(objId, idVector);
 
-	frog->create(vsml, mySurfRev);
+	frog->create(vsml, mySurfRev, mesh);
 
 	for (int i = 0; i < 3; i++){
 		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, idVector);
@@ -368,7 +367,7 @@ void init()
 		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, idVector);
 		
 	}
-	cars[0]->create(vsml, mySurfRev);
+	cars[0]->create(vsml, mySurfRev, mesh);
 
 	for (int i = 0; i < 3; i++){
 		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, idVector);
@@ -376,7 +375,7 @@ void init()
 	for (int i = 0; i < 2; i++){
 		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 10.0f, 1.0f, objId, idVector);
 	}
-	logs[0]->create(vsml, mySurfRev);
+	logs[0]->create(vsml, mySurfRev, mesh);
 
 	camX = frog->getX();
 	camY = - 15.0f;

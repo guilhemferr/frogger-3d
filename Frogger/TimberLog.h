@@ -27,7 +27,7 @@ public:
 	}
 	virtual ~TimberLog(){}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m);
 
 	void draw(VSMathLib* vsml);
 

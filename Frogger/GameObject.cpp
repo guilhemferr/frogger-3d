@@ -4,7 +4,6 @@ void GameObject::initShadersVars(VSMathLib* vsml, int currentObjId){
 	float* model = vsml->get(VSMathLib::MODEL);
 	float* view = vsml->get(VSMathLib::VIEW);
 	float* proj = vsml->get(VSMathLib::PROJECTION);
-	
 	int* ids = getIdVector();
 
 	glUniformMatrix4fv(ids[MODELID], 1, GL_FALSE, model);

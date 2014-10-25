@@ -22,16 +22,14 @@ in vec4 position;	// local space
 in vec3 normal;		// local space
 
 // the data to be sent to the fragment shader
-out Data {
-	out vec4 color;
-} DataOut;
 
+out vec4 color;
 
 
 void main () {
 	
 	// set the specular term to black
-	vec4 spec = vec4(0.0);
+	vec4 spec = vec4(0.0); 
 
 	vec3 n = normalize(m_normal * normal);
 
@@ -52,7 +50,7 @@ void main () {
 	}
 	// add the specular color when the vertex is lit
 	
-	DataOut.color = max(intensity *  diffuse + spec, ambient);
+	color = max(intensity *  diffuse + spec, ambient);
 
 	gl_Position = projection * view * model * position;	
 }

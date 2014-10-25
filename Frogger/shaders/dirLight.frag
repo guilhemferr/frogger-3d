@@ -1,12 +1,10 @@
 #version 330
 
-in Data {
-	vec4 color;
-} DataIn;
+in vec4 color;
 
 out vec4 outputF;
 
 void main() {
 
-	outputF = DataIn.color;
+	outputF = color;
 }
