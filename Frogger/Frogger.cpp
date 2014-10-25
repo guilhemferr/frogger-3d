@@ -258,7 +258,7 @@ void renderScene() {
 	glutSwapBuffers();
 }
 
-void renderTerrain(){
+/*void renderTerrain(){
 
 	float color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	renderCube(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
@@ -289,6 +289,7 @@ void renderTerrain(){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 }
+*/
 
 void changeSize(int w, int h) {
 	width = w;

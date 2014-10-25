@@ -30,16 +30,10 @@
     <ClCompile Include="vsLogLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vsResourceLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vsResSurfRevLib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="side.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Frog.cpp">
@@ -63,6 +57,15 @@
     <ClCompile Include="Tortoise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Border.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="River.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Road.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frogger.h">
@@ -77,16 +80,10 @@
     <ClInclude Include="vsLogLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vsResourceLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vsResSurfRevLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="side.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Frog.h">
@@ -114,6 +111,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tortoise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Border.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="River.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Road.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
