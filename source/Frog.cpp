@@ -111,28 +111,26 @@ void Frog::queueCommand(frog_states state) {
 	commandBuffer = state;
 }
 
-float Frog::updateDelta()
-{
-	int t = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTime = t - getTime();
-	float delta = elapsedTime * getVelocity();
-	setTime(t);
-
-	return delta;
-}
-
 void Frog::processNextCmd() {
 	commandBuffer =  IDLE;
 }
 
-void Frog::update() {
-	moveFrog(currentState());
+void Frog::update(double delta_t) {
+	moveFrog(delta_t);
 }
 
-void Frog::moveFrog(frog_states direction){
+float const Frog::getFrogSquare() {
+	// frog_radius + y
+	// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
+	// y ~ 0.35
+	return getRadius() + 0.35f;
+}
+
+void Frog::moveFrog(double dt){
 	
 	//this is calculated every loop
-	float delta = updateDelta();
+	float delta = dt * getVelocity();
+	//position starting from the center
 	float front = delta + getRadius();
 
 	switch (currentState()){

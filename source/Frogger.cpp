@@ -6,6 +6,11 @@ VSMathLib *vsml;
 VSShaderLib shader, shaderF;
 VSResSurfRevLib mySurfRev;
 
+//elapsed time
+int old_t = 0;
+
+float table[LINE][OBJ];
+
 // Camera Position
 float camX, camY, camZ;
 
@@ -22,7 +27,7 @@ int modelID, projID, viewID, colorInID, normalID;
 
 Frog* frog;
 
-GameObject* cars[5];
+Car* cars[5];
 
 int objId = 0;
 
@@ -101,7 +106,6 @@ void processMouseButtons(int button, int state, int xx, int yy)
 }
 
 // Track mouse motion while buttons are pressed
-
 void processMouseMotion(int xx, int yy)
 {
 
@@ -218,10 +222,20 @@ void arrowPressed(int key, int x, int y){
 		break;
 	case GLUT_KEY_DOWN:
 		frog->queueCommand(DOWN);
+		std::cout << frog->getY() << "\n";
 		break;
 	default:
 		break;
 	  }
+}
+
+//calculates the elapsed time delta x
+double calcElapsedTime() {
+	int new_t = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTime = new_t - old_t;
+	old_t = new_t;
+
+	return double(elapsedTime);
 }
 
 void renderScene() {
@@ -231,7 +245,8 @@ void renderScene() {
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
 	if (selectedCamera == FROGCAM){
-		vsml->lookAt(frog->getX() + camX, frog->getY() + camY, camZ, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		vsml->lookAt(frog->getX() + camX, frog->getY() + camY, camZ,
+				frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	if (selectedCamera == PERSPECTIVE){
@@ -244,13 +259,19 @@ void renderScene() {
 	
 	renderTerrain();
 
-	
+	// Draw objects
 	frog->draw(vsml, mesh);
-	frog->update();
-
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml, mesh);
 	}
+	// calculates game elapsed time
+	double delta_t = calcElapsedTime();
+	// Update objects
+	frog->update(delta_t);
+	for (int i = 0; i < 5; i++){
+		cars[i]->update(delta_t);
+	}
+
 	//swap buffers
 	glutSwapBuffers();
 }
@@ -331,8 +352,6 @@ void changeSize(int w, int h) {
 		break;
 	}
 
-	
-
 }
 
 void fpsTimer(int value){
@@ -340,7 +359,14 @@ void fpsTimer(int value){
 	glutPostRedisplay();
 	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 }
+//speedup obstacles
+void tick(int value){
 
+	for (int i = 0; i < 5; i++){
+		cars[i]->speedUp(0.001f);
+	}
+	glutTimerFunc(3000,tick, 0);
+}
 void init()
 {	
 	modelID = glGetUniformLocation(shader.getProgramIndex(), "model");
@@ -348,6 +374,7 @@ void init()
 	projID = glGetUniformLocation(shader.getProgramIndex(), "projection");
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
 	normalID = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
+
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -355,22 +382,29 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	frog = new Frog(modelID, viewID, projID, colorInID, objId, normalID);
+	frog = new Frog(0.0f, -16.0f, 2.0f,modelID, viewID, projID, colorInID,
+			normalID, objId, 0.08f);
 
 	frog->create(vsml, mySurfRev);
 	
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, modelID, viewID, projID, colorInID, objId, normalID);
+		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f,
+				modelID, viewID, projID, colorInID, objId, normalID, 0.01f);
 	}
 
 	for (int i = 0; i < 2; i++){
-		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, modelID, viewID, projID, colorInID, objId, normalID);
+		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f,
+				modelID, viewID, projID, colorInID, objId, normalID, 0.008f);
 	}
 	cars[0]->create(vsml, mySurfRev);
 
 	camX = frog->getX();
 	camY = - 15.0f;
 	camZ = 5.0f;
+
+	//initiating table here...
+	table[0][0] = 0.0f;
+	table[0][0] = 12.0f;
 }
 
 void initVSL() {
@@ -401,6 +435,7 @@ int main(int argc, char **argv) {
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
 	glutTimerFunc(0, fpsTimer, 0);
+	glutTimerFunc(0, tick,0);
 
 	//	Mouse and Keyboard Callbacks
 	

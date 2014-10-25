@@ -5,7 +5,7 @@
 class GameObject {
 public:
 	GameObject(){}
-	~GameObject(){}
+	virtual ~GameObject(){}
 
 	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev) = 0;
 	virtual void draw(VSMathLib* vsml, MyMesh* mMyMesh) = 0;

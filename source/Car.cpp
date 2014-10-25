@@ -1,4 +1,5 @@
 #include "Car.h"
+#include "side.h"
 
 void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.createCylinder(4.0f, 1.2f, 4);
@@ -11,13 +12,28 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	objId++;
 }
 
+void Car::update(double delta_t) {
+	double delta = delta_t * getVelocity();
+	float front = getX() - delta + OFF_SET;
+
+	if(front > XX_MIN) {
+		setX(getX() - delta);
+	} else {
+		setX(XX_MAX + OFF_SET);
+		isRevert(true);
+	}
+}
+
 void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 	int currentObjId = Car::carObjId;
-	float auxX = 0.01f;
+
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(Car::xcoord + auxX, Car::ycoord, Car::zcoord+0.1f);
-	setXcoord(-0.01f);
-	
+	if(isRevert()) {
+		vsml->scale(-1.0f,1.0f,1.0f);
+		isRevert(false);
+	}
+	vsml->translate(Car::xcoord, Car::ycoord, Car::zcoord+0.1f);
+
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
 	//mySurfRev.createCylinder(4.0f, 1.2f, 4);
@@ -100,13 +116,4 @@ void Car::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 
 	vsml->popMatrix(VSMathLib::MODEL);
 	
-}
-
-float Car::moveCar(){
-	int t = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTime = t - getTime();
-	float delta = elapsedTime * 0.00000001f;
-	setTime(t);
-	setXcoord(-delta);
-	return delta;
 }

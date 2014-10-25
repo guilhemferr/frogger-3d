@@ -17,36 +17,36 @@ class Frog : public DynamicObject {
 
 private:
 
-	const float radius;
-	const float legsLen;
 	float xcoord;
 	float ycoord;
 	float zcoord;
+
 	int modelID, viewID, projID, colorInID, normalID;
-	float color[4];
-	int direction;
-	int elapsedTime;
+
 	int frogObjId;
 	float velocity;
+
+	const float radius;
+	const float legsLen;
+
+	int direction;
 	frog_states commandBuffer;
+
+	float color[4];
 
 public:
 
-	Frog(int modelID, int viewID, int projID, int colorInID, int frogObjId, int normalID) :
-		radius(0.65f), legsLen(2.3f), xcoord(0.0f), ycoord(-16.0f), zcoord(2.0f), direction(UP), elapsedTime(0), velocity(0.05) {
-		Frog::modelID = modelID;
-		Frog::viewID = viewID;
-		Frog::projID = projID;
-		Frog::colorInID = colorInID;
-		Frog::frogObjId = frogObjId;
-		Frog::normalID = normalID;
+	Frog(float xcoord, float ycoord, float zcoord, int modelID, int viewID, int projID,
+			int colorInID, int normalID, int frogObjId, float velocity) :
+				xcoord(xcoord), ycoord(ycoord), zcoord(zcoord), modelID(modelID),
+				viewID(viewID), projID(projID), colorInID(colorInID), normalID(normalID),
+				frogObjId(frogObjId), velocity(velocity), radius(0.65f), legsLen(2.3f),
+				direction(UP),commandBuffer(IDLE) {
 
 		color[0] = 0.3f;
 		color[1] = 0.7f;
 		color[2] = 0.3f;
 		color[3] = 1.0f;
-
-		commandBuffer = IDLE;
 	}
 
 	virtual ~Frog() {}
@@ -67,10 +67,6 @@ public:
 		return direction;
 	}
 
-	int getTime(){
-		return elapsedTime;
-	}
-
 	float getVelocity() {
 		return velocity;
 	}
@@ -87,10 +83,6 @@ public:
 
 	void setDir(int dir){
 		Frog::direction = dir;
-	}
-
-	void setTime(int time){
-		elapsedTime = time;
 	}
 
 	void setX(float x){
@@ -117,20 +109,13 @@ public:
 
 	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 
-	void update();
+	void update(double delta_t);
 
-	float const getFrogSquare() {
-		// frog_radius + y
-		// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
-		// y ~ 0.35
-		return getRadius() + 0.35f;
-	}
+	float const getFrogSquare();
 
 private:
 
-	float updateDelta();
-
 	void processNextCmd();
 
-	void moveFrog(frog_states direction);
+	void moveFrog(double dt);
 };

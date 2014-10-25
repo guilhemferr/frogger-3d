@@ -19,6 +19,9 @@
 
 #define TIMEOUT 17
 
+#define LINE 31
+#define OBJ 5
+
 void renderTerrain();
 
 void changeSize(int w, int h);
