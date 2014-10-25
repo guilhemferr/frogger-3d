@@ -1,5 +1,4 @@
 #include "Frogger.h"
-#include "Car.h"
 #include "vsResSurfRevLib.h"
 
 VSMathLib *vsml;
@@ -26,11 +25,15 @@ Frog* frog;
 
 GameObject* cars[5];
 
+GameObject* logs[5];
+
 LightSource* lSource;
 
 int objId = 0;
 
-struct MyMesh mesh[8];
+
+//QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
+struct MyMesh mesh[9];
 
 int selectedCamera = TOPCAMERA;
 
@@ -235,6 +238,7 @@ void renderScene() {
 	
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml);
+		logs[i]->draw(vsml);
 	}
 	
 	//swap buffers
@@ -354,15 +358,25 @@ void init()
 	frog = new Frog(objId, idVector);
 
 	frog->create(vsml, mySurfRev);
-	
+
 	for (int i = 0; i < 3; i++){
 		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, idVector);
+		
 	}
 
 	for (int i = 0; i < 2; i++){
 		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, idVector);
+		
 	}
 	cars[0]->create(vsml, mySurfRev);
+
+	for (int i = 0; i < 3; i++){
+		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, idVector);
+	}
+	for (int i = 0; i < 2; i++){
+		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 10.0f, 1.0f, objId, idVector);
+	}
+	logs[0]->create(vsml, mySurfRev);
 
 	camX = frog->getX();
 	camY = - 15.0f;

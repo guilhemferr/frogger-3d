@@ -7,10 +7,14 @@
 #include "cube.h"
 #include "side.h"
 #include "Frog.h"
+#include "Car.h"
+#include "TimberLog.h"
+
 #include "LightSource.h"
 
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
+
 
 
 #define TOPCAMERA 1

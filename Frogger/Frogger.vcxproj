@@ -87,7 +87,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="side.cpp" />
-    <ClCompile Include="TimberLogcpp.cpp" />
+    <ClCompile Include="TimberLog.cpp" />
     <ClCompile Include="vsLogLib.cpp" />
     <ClCompile Include="vsMathLib.cpp" />
     <ClCompile Include="vsResourceLib.cpp" />

@@ -57,7 +57,7 @@
     <ClCompile Include="LightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimberLogcpp.cpp">
+    <ClCompile Include="TimberLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
