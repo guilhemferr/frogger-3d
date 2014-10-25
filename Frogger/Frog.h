@@ -41,7 +41,7 @@ public:
 
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m);
 
-	void draw(VSMathLib* vsml);
+	void draw(VSMathLib* vsml, MyMesh* m);
 
 	void moveFrog(int direction);
 

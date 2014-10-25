@@ -1,11 +1,11 @@
 #version 330
 
-in vec4 diffuse;
-in vec4 ambient;
-in vec4 specular;
-in vec4 emissive;
-in float shininess;
-in int texCount;
+uniform vec4 diffuse;
+uniform vec4 ambient;
+uniform vec4 specular;
+uniform vec4 emissive;
+uniform float shininess;
+uniform int texCount;
 
 
 uniform mat3 m_normal;

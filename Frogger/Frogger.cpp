@@ -233,11 +233,11 @@ void renderScene() {
 
 	renderTerrain();
 	
-	frog->draw(vsml);
+	frog->draw(vsml, mesh);
 	
 	for (int i = 0; i < 5; i++){
-		cars[i]->draw(vsml);
-		logs[i]->draw(vsml);
+		cars[i]->draw(vsml, mesh);
+		logs[i]->draw(vsml, mesh);
 	}
 	
 	//swap buffers
@@ -340,10 +340,10 @@ void init()
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
 	
 	idVector[NORMALID] = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
-	idVector[AMBIENT] = glGetUniformLocation(shader.getProgramIndex(), "ambient");
-	idVector[DIFFUSE] = glGetUniformLocation(shader.getProgramIndex(), "diffuse");
-	idVector[SPECULAR] = glGetUniformLocation(shader.getProgramIndex(), "specular");
-	idVector[SHININESS] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
+	idVector[AMBIENTID] = glGetUniformLocation(shader.getProgramIndex(), "ambient");
+	idVector[DIFFUSEID] = glGetUniformLocation(shader.getProgramIndex(), "diffuse");
+	idVector[SPECULARID] = glGetUniformLocation(shader.getProgramIndex(), "specular");
+	idVector[SHININESSID] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
 
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 

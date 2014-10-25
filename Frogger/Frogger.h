@@ -32,10 +32,10 @@
 #define VIEWID 1
 #define PROJID 2
 #define NORMALID 3
-#define AMBIENT 4
-#define DIFFUSE 5
-#define SPECULAR 6
-#define SHININESS 7
+#define AMBIENTID 4
+#define DIFFUSEID 5
+#define SPECULARID 6
+#define SHININESSID 7
 
 void renderTerrain();
 

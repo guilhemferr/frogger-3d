@@ -2,23 +2,22 @@
 
 void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float diff[] = { 0.5f, 0.0f, 0.0f, 1.0f };
-	float spec[] = { 0.7f, 0.6f, 0.6f, 1.0f };
+	float diff[] = { 0.5f, 0.1f, 0.1f, 1.0f };
+	float spec[] = { 0.2f, 0.3f, 0.1f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float shininess = 128.0f * 0.25f;
+	float* shininess = new float(128.0f * 0.25f);
 	int texcount = 0;
 
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
 	mySurfRev.createCylinder(4.0f, 1.2f, 20);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 	objId++;
 }
 
-void TimberLog::draw(VSMathLib* vsml){
+void TimberLog::draw(VSMathLib* vsml, MyMesh* m){
 	float auxX = 0.01f;
 	
 	vsml->pushMatrix(VSMathLib::MODEL);
@@ -28,8 +27,8 @@ void TimberLog::draw(VSMathLib* vsml){
 	vsml->rotate(45.0f, 0, 1, 0);
 
 	initShadersVars(vsml, TimberLog::logId);
-	glBindVertexArray(mesh[TimberLog::logId].vao);
-	glDrawElements(mesh[TimberLog::logId].type, mesh[TimberLog::logId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(m[TimberLog::logId].vao);
+	glDrawElements(m[TimberLog::logId].type, m[TimberLog::logId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
 }
