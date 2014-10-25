@@ -17,7 +17,7 @@ out Data {
 
 void main () {
 
-	vec4 pos = m_viewModel * position;
+	vec4 pos = view * model * position;
 
 	DataOut.normal = normalize(m_normal * normal.xyz);
 	DataOut.lightDir = vec3(l_pos - pos);

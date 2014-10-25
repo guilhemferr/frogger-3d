@@ -8,7 +8,7 @@ class LightSource{
 	float diffuse[4];
 	float specular[4];
 	float position[4];
-	float direction[3];
+	float direction[4];
 	double cutOff, exponent;
 	bool state;
 public:
@@ -35,6 +35,7 @@ public:
 		LightSource::direction[0] = direction[0];
 		LightSource::direction[1] = direction[1];
 		LightSource::direction[2] = direction[2];
+		LightSource::direction[3] = 0.0f;
 	}
 	void setCutOff(double cutOff){
 		LightSource::cutOff = cutOff;
@@ -63,5 +64,9 @@ public:
 
 	float* getDirection(){
 		return direction;
+	}
+
+	float* getPosition(){
+		return position;
 	}
 };

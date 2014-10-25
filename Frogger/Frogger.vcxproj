@@ -113,12 +113,12 @@
     <ClInclude Include="vsShaderLib.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="pointLight.frag" />
-    <None Include="pointLight.vert" />
     <None Include="shaders\dirLight.frag" />
     <None Include="shaders\dirLight.vert" />
     <None Include="shaders\helloWorld.frag" />
     <None Include="shaders\helloWorld.vert" />
+    <None Include="shaders\pointLight.frag" />
+    <None Include="shaders\pointLight.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

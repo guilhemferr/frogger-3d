@@ -52,7 +52,7 @@ GLuint setupShaders() {
 
 	shader.prepareProgram();
 
-	printf("InfoLog for Hello World Shader\n%s\n\n", shader.getAllInfoLogs().c_str());
+	printf("InfoLog for used Shader\n%s\n\n", shader.getAllInfoLogs().c_str());
 
 	return(shader.isProgramValid());
 }
@@ -220,7 +220,7 @@ void renderScene() {
 	}
 
 	if (selectedCamera == PERSPECTIVE){
-		//vsml->lookAt(frog->getX() + 0.0f, frog->getY() - 15.0f, 5.0f, frog->getX(), frog->getY(), 1.0f, 0.0f, 0.0f, 1.0f);
+		
 		vsml->lookAt(0.0f, -50.0f, 48.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
@@ -228,10 +228,10 @@ void renderScene() {
 	glUseProgram(shader.getProgramIndex());
 	
 	float res[4];
-	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);   //lightPos definido em World Coord so is converted to eye space
+	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
 
-	renderTerrain();
+	//renderTerrain();
 
 	
 	frog->draw(vsml);
@@ -341,10 +341,10 @@ void init()
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
 	
 	idVector[NORMALID] = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
-	idVector[AMBIENT] = glGetUniformLocation(shader.getProgramIndex(), "mat.ambient");
-	idVector[DIFFUSE] = glGetUniformLocation(shader.getProgramIndex(), "mat.diffuse");
-	idVector[SPECULAR] = glGetUniformLocation(shader.getProgramIndex(), "mat.specular");
-	idVector[SHININESS] = glGetUniformLocation(shader.getProgramIndex(), "mat.shininess");
+	idVector[AMBIENT] = glGetUniformLocation(shader.getProgramIndex(), "ambient");
+	idVector[DIFFUSE] = glGetUniformLocation(shader.getProgramIndex(), "diffuse");
+	idVector[SPECULAR] = glGetUniformLocation(shader.getProgramIndex(), "specular");
+	idVector[SHININESS] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
 
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 
@@ -383,7 +383,7 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 0.0f, 0.0f, 5.0f };
+	float dirLight[3] = { 0.0f, 0.0f, -2.0f };
 	lSource->setDirection(dirLight);
 }
 

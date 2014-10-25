@@ -1,12 +1,11 @@
 #version 330
-struct Materials {
-	vec4 diffuse;
-	vec4 ambient;
-	vec4 specular;
-	vec4 emissive;
-	float shininess;
-	int texCount;
-};
+
+in vec4 diffuse;
+in vec4 ambient;
+in vec4 specular;
+in vec4 emissive;
+in float shininess;
+in int texCount;
 
 
 uniform mat3 m_normal;
@@ -15,9 +14,6 @@ uniform mat4 model;
 uniform mat4 projection;
 
 
-
-
-uniform Materials mat;
 
 in vec3 l_dir;	   // camera space
 
@@ -52,10 +48,11 @@ void main () {
 
 		// compute the specular term into spec
 		float intSpec = max(dot(h,n), 0.0);
-		spec = mat.specular * pow(intSpec, mat.shininess);
+		spec = specular * pow(intSpec, shininess);
 	}
 	// add the specular color when the vertex is lit
-	DataOut.color = max(intensity *  mat.diffuse + spec, mat.ambient);
+	
+	DataOut.color = max(intensity *  diffuse + spec, ambient);
 
 	gl_Position = projection * view * model * position;	
 }

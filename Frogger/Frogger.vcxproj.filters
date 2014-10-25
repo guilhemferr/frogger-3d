@@ -118,16 +118,16 @@
     <None Include="shaders\helloWorld.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="pointLight.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="pointLight.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="shaders\dirLight.frag">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\dirLight.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\pointLight.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\pointLight.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
