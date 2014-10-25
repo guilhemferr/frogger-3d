@@ -21,7 +21,7 @@ void TimberLog::draw(VSMathLib* vsml){
 	float auxX = 0.01f;
 	
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX() + auxX, getY(), getZ());
+	vsml->translate(getX() + auxX, getY(), getZ() - 0.8f);
 	setX(getX() - 0.01f);
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);

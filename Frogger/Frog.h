@@ -29,7 +29,7 @@ public:
 
 		setX(0.0f);
 		setY(-16.0f);
-		setZ(2.0f);
+		setZ(1.8f);
 
 		color[0] = 0.3f;
 		color[1] = 0.7f;

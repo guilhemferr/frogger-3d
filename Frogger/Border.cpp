@@ -6,66 +6,32 @@ void Border::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float diff[] = { 1.0f, 0.829f, 0.829f, 1.0f };
 	float spec[] = { 0.296648f, 0.296648f, 0.296648f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float shininess = 128.0f * 0.088f;
+	float* shininess = new float(128.0f * 0.088f);
 	int texcount = 0;
-	// create the VAO
-	glGenVertexArrays(1, &vaoSide);
-	glBindVertexArray(vaoSide);
-
-	// create buffers for our vertex data
-
-	glGenBuffers(4, buffersSide);
-
-	//vertex coordinates buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
-	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
-
-	//texture coordinates buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoordsSide), texCoordsSide, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(VSShaderLib::TEXTURE_COORD_ATTRIB);
-	glVertexAttribPointer(VSShaderLib::TEXTURE_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
-
-	//normals buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[2]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(normalsSide), normalsSide, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
-	glVertexAttribPointer(VSShaderLib::NORMAL_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, buffersSide[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesSide), verticesSide, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
-	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
-
-	//index buffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersSide[3]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndexSide), faceIndexSide, GL_STATIC_DRAW);
-
-	// unbind the VAO
-	glBindVertexArray(0);
-
-	memcpy(mesh[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(mesh[objId].mat.emissive, emissive, 4 * sizeof(float));
-	mesh[objId].mat.shininess = shininess;
-	mesh[objId].mat.texCount = texcount;
+	
+	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 
 	objId++;
 }
 
 
 void Border::draw(VSMathLib *vsml){
-	int currentObjId = Border::sideObjId;
-
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY(), getZ());
+	vsml->translate(getX(), getY(), getZ() + 0.1f);
+	vsml->scale(1.0f, 1.0f, 1.0f);
+	vsml->rotate(90.0f, 0, 0, 1);
+	vsml->rotate(45.0f, 0, 1, 0);
 
-	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(vaoSide);
-	glDrawElements(GL_TRIANGLES, Border::faceCountSide * 3, GL_UNSIGNED_INT, 0);
+	initShadersVars(vsml, Border::borderObjId);
+
+	// render VAO
+	glBindVertexArray(mesh[Border::borderObjId].vao);
+	glDrawElements(mesh[Border::borderObjId].type, mesh[Border::borderObjId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-
 	vsml->popMatrix(VSMathLib::MODEL);
 }

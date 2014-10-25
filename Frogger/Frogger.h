@@ -12,6 +12,7 @@
 #include "River.h"
 #include "Road.h"
 #include "TimberLog.h"
+#include "Tortoise.h"
 
 #include "LightSource.h"
 

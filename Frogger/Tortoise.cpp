@@ -20,12 +20,13 @@ void Tortoise::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
 
 	objId++;
-	mySurfRev.createSphere(0.1f, 20);
+	mySurfRev.createSphere(0.3f, 20);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambHead);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffHead);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specHead);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessHead);
+	objId++;
 }
 
 void Tortoise::draw(VSMathLib* vsml){
@@ -34,6 +35,7 @@ void Tortoise::draw(VSMathLib* vsml){
 
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX() + auxX, getY(), getZ());
+	vsml->scale(2.5f, 2.0f, 1.5f);
 	setX(getX() - 0.01f);
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -42,7 +44,7 @@ void Tortoise::draw(VSMathLib* vsml){
 	currentObjId++;
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.4f, 0.0f, 0.0f);
+	vsml->translate(-0.8f, 0.0f, 0.0f);
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
 	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);

@@ -20,6 +20,7 @@ float r = 15.0f;
 int modelID, projID, viewID, colorInID, normalID;
 int idVector[8];
 int locLDir;
+int locPos;
 
 Frog* frog;
 
@@ -29,13 +30,15 @@ GameObject* terrain[5];
 
 GameObject* logs[5];
 
+GameObject* tortoise[3];
+
 LightSource* lSource;
 
 int objId = 0;
 
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
-struct MyMesh mesh[12];
+struct MyMesh mesh[20];
 
 int selectedCamera = TOPCAMERA;
 
@@ -44,8 +47,8 @@ GLuint setupShaders() {
 	// Shader for models
 	shader.init();
 	//TODO Change shader name
-	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLight.vert");
-	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLight.frag");
+	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/pointLight.vert");
+	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/pointLight.frag");
 
 
 	// set semantics for the shader variables
@@ -157,7 +160,6 @@ void processMouseMotion(int xx, int yy)
 	}
 }
 
-
 void mouseWheel(int wheel, int direction, int x, int y) {
 	if (selectedCamera == FROGCAM){
 		r += direction * 0.1f;
@@ -230,9 +232,9 @@ void renderScene() {
 	glUseProgram(shader.getProgramIndex());
 	
 	float res[4];
-	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
-	glUniform4fv(locLDir, 1, res);
-
+	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getPosition(), res);//lightPos definido em World Coord so is converted to eye space
+	//glUniform4fv(locLDir, 1, res);
+	glUniform4fv(locPos, 1, res);
 	//renderTerrain();
 
 	for(int i = 0; i < 5; i++){
@@ -245,6 +247,12 @@ void renderScene() {
 		cars[i]->draw(vsml);
 		logs[i]->draw(vsml);
 	}
+
+	for (int i = 0; i < 3; i++){
+		tortoise[i]->draw(vsml);
+	}
+
+	
 	
 	//swap buffers
 	glutSwapBuffers();
@@ -351,7 +359,8 @@ void init()
 	idVector[SPECULARID] = glGetUniformLocation(shader.getProgramIndex(), "specular");
 	idVector[SHININESSID] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
 
-	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
+	//locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
+	locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
@@ -360,15 +369,25 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	terrain[0] = new Road(0.0f, 0.0f, 0.0f, objId, idVector);
+	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 
-	terrain[1] = new River(0.0f, 16.0f, 0.0f, objId, idVector);
+	terrain[0]->create(vsml, mySurfRev);
+
+	terrain[1] = new River(0.0f, 7.5f, -0.8f, objId, idVector);
+
+	terrain[1]->create(vsml, mySurfRev);
 
 	terrain[2] = new Border(0.0f, 0.0f, 0.0f, objId, idVector);
 
+	terrain[2]->create(vsml, mySurfRev);
+
 	terrain[3] = new Border(0.0f, 16.0f, 0.0f, objId, idVector);
 
-	terrain[4] = new Border(0.0f, 32.0f, 0.0f, objId, idVector);
+	terrain[3]->create(vsml, mySurfRev);
+
+	terrain[4] = new Border(0.0f, -16.0f, 0.0f, objId, idVector);
+	
+	terrain[4]->create(vsml, mySurfRev);
 
 	frog = new Frog(objId, idVector);
 
@@ -389,17 +408,24 @@ void init()
 		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, idVector);
 	}
 	for (int i = 0; i < 2; i++){
-		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 10.0f, 1.0f, objId, idVector);
+		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 12.0f, 1.0f, objId, idVector);
 	}
 	logs[0]->create(vsml, mySurfRev);
+
+	for (int i = 0; i < 3; i++){
+		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, idVector);
+	}
+	tortoise[0]->create(vsml, mySurfRev);
 
 	camX = frog->getX();
 	camY = - 15.0f;
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 0.0f, 0.0f, 2.0f };
+	float dirLight[3] = { 1.0f, 1.0f, 10000000.0f };
 	lSource->setDirection(dirLight);
+	float posLight[4] = { 0.0f, 0.0f, 20.0f };
+	lSource->setPosition(posLight);
 }
 
 void initVSL() {
