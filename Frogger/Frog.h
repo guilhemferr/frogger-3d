@@ -7,24 +7,31 @@
 #include "DynamicObject.h" 
 #endif
 
-#define UP 0
-#define LEFT 90
-#define DOWN 180
-#define RIGHT 270
+enum frog_states {
+	UP = 0,
+	LEFT = 90,
+	DOWN = 180,
+	RIGHT = 270,
+	IDLE = -1
+};
 
 class Frog : public DynamicObject {
-
+private:
 	const float radius;
+	const float legsLen;
 
 	float color[4];
 	int direction;
-	int elapsedTime;
 	int frogObjId;
+
+	float velocity;
+
+	frog_states commandBuffer;
 
 public:
 
-	Frog(int frogObjId, int* idVector) : DynamicObject(idVector),
-		radius(0.65f), direction(UP), elapsedTime(0){
+	Frog(int frogObjId, float velocity, int* idVector) : DynamicObject(idVector),
+		radius(0.65f), legsLen(2.3f), direction(UP), velocity(velocity), commandBuffer(IDLE){
 		Frog::frogObjId = frogObjId;
 
 		setX(0.0f);
@@ -37,7 +44,7 @@ public:
 		color[3] = 1.0f;
 	}
 
-	 ~Frog() {}
+	virtual ~Frog() {}
 
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
@@ -49,22 +56,36 @@ public:
 	int getDir(){
 		return direction;
 	}
-	int getTime(){
-		return elapsedTime;
+
+	float getVelocity() {
+		return velocity;
+	}
+
+	float getRadius() {
+		return radius;
+	}
+
+	float getLegsLen() {
+		return legsLen;
 	}
 
 	void setDir(int dir){
 		Frog::direction = dir;
 	}
-
-	void setTime(int time){
-		elapsedTime = time;
+	
+	frog_states currentState() {
+		return commandBuffer;
 	}
 
-	
+	void queueCommand(frog_states state);
+
+	void update(double delta_t);
+
+	float const getFrogSquare();
 
 private:
 
-	float Frog::updateFrogPos();
+	void processNextCmd();
 
+	void moveFrog(double dt);
 };

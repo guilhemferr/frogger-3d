@@ -32,3 +32,5 @@ void TimberLog::draw(VSMathLib* vsml){
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
 }
+
+void TimberLog::update(double delta_t){}

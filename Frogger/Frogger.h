@@ -27,11 +27,6 @@
 
 #define TIMEOUT 17
 
-#define UP 0
-#define LEFT 90
-#define DOWN 180
-#define RIGHT 270
-
 #define MODELID 0
 #define VIEWID 1
 #define PROJID 2
@@ -40,6 +35,9 @@
 #define DIFFUSEID 5
 #define SPECULARID 6
 #define SHININESSID 7
+
+#define LINE 31
+#define OBJ 5
 
 void renderTerrain();
 

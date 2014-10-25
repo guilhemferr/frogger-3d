@@ -29,4 +29,5 @@ public:
 
 	void draw(VSMathLib* vsml);
 
+	void update(double delta_t);
 };

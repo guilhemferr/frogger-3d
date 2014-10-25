@@ -1,4 +1,5 @@
 #include "Car.h"
+#include "Border.h"
 
 void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float ambBody[] = { 0.25f, 0.25f, 0.25f, 1.0f };
@@ -51,10 +52,13 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 void Car::draw(VSMathLib* vsml){
 	int currentObjId = Car::carObjId;
-	float auxX = 0.01f;
+
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX() + auxX, getY(), getZ()+0.1f);
-	setX(getX() - 0.01f);
+	if (isRevert()) {
+		vsml->scale(-1.0f, 1.0f, 1.0f);
+		isRevert(false);
+	}
+	vsml->translate(getX(), getY(), getZ()+0.1f);
 	
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
@@ -113,11 +117,15 @@ void Car::draw(VSMathLib* vsml){
 	
 }
 
-float Car::moveCar(){
-	int t = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTime = t - getTime();
-	float delta = elapsedTime * 0.00000001f;
-	setTime(t);
-	setX(getX() - delta);
-	return delta;
+void Car::update(double delta_t) {
+	double delta = delta_t * getVelocity();
+	float front = getX() - delta + OFF_SET;
+
+	if (front > XX_MIN) {
+		setX(getX() - delta);
+	}
+	else {
+		setX(XX_MAX + OFF_SET);
+		isRevert(true);
+	}
 }

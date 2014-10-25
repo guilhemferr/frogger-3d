@@ -33,4 +33,6 @@ public:
 
 	float moveLog();
 
+	void update(double delta_t);
+
 };

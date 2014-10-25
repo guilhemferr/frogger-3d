@@ -24,10 +24,11 @@ public:
 	/**
 	* Methods
 	*/
-	void update(double delta_t);
+	virtual void update(double delta_t) = 0;
 	void setSpeed(double *speed);
 	void setSpeed(double x, double y, double z);
 	double* getSpeed();
+	void speedUp(float inc);
 	/*
 	int* getIdVector(){
 		return idVector;

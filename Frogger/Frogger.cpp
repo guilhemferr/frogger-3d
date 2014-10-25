@@ -5,6 +5,9 @@ VSMathLib *vsml;
 VSShaderLib shader, shaderF;
 VSResSurfRevLib mySurfRev;
 
+//elapsed time
+int old_t = 0;
+
 // Camera Position
 float camX, camY, camZ;
 
@@ -24,7 +27,7 @@ int locPos;
 
 Frog* frog;
 
-GameObject* cars[5];
+DynamicObject* cars[5];
 
 GameObject* terrain[5];
 
@@ -76,18 +79,18 @@ void processMouseButtons(int button, int state, int xx, int yy)
 				tracking = 2;
 
 				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
-					if (yy > (frog->getY())){
-						frog->moveFrog(UP);
+					if (yy >(frog->getY())){
+						frog->queueCommand(UP);
 					}
 					else {
-						frog->moveFrog(DOWN);
+						frog->queueCommand(DOWN);
 					}
 				}
 				else if (xx > frog->getX()){
-					frog->moveFrog(RIGHT);
+					frog->queueCommand(RIGHT);
 				}
 				else{
-					frog->moveFrog(LEFT);
+					frog->queueCommand(LEFT);
 				}
 
 				glutPostRedisplay();
@@ -104,7 +107,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 				/*Old zoom stuff
 				r += (yy - startY) * 0.01f;
 				if (r < 0.1f)
-					r = 0.1f;
+				r = 0.1f;
 				*/
 			}
 			tracking = 0;
@@ -193,16 +196,16 @@ void processKeys(unsigned char key, int xx, int yy)
 		selectedCamera = FROGCAM;
 		break;
 	case 'q':
-		frog->moveFrog(UP);
+		frog->queueCommand(UP);
 		break;
 	case 'a':
-		frog->moveFrog(DOWN);
+		frog->queueCommand(DOWN);
 		break;
 	case 'o':
-		frog->moveFrog(LEFT);
+		frog->queueCommand(LEFT);
 		break;
 	case 'p':
-		frog->moveFrog(RIGHT);
+		frog->queueCommand(RIGHT);
 		break;
 	default:
 		break;
@@ -210,7 +213,38 @@ void processKeys(unsigned char key, int xx, int yy)
 	}
 	changeSize(width, height);
 	//  uncomment this if not using an idle func
-		glutPostRedisplay();
+	glutPostRedisplay();
+}
+
+// Callback function. Process arrows commands.
+void arrowPressed(int key, int x, int y){
+
+	switch (key)
+	{
+	case GLUT_KEY_LEFT:
+		frog->queueCommand(LEFT);
+		break;
+	case GLUT_KEY_RIGHT:
+		frog->queueCommand(RIGHT);
+		break;
+	case GLUT_KEY_UP:
+		frog->queueCommand(UP);
+		break;
+	case GLUT_KEY_DOWN:
+		frog->queueCommand(DOWN);
+		break;
+	default:
+		break;
+	}
+}
+
+//calculates the elapsed time delta x
+double calcElapsedTime() {
+	int new_t = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTime = new_t - old_t;
+	old_t = new_t;
+
+	return double(elapsedTime);
 }
 
 void renderScene() {
@@ -242,7 +276,7 @@ void renderScene() {
 	}
 	
 	frog->draw(vsml);
-	
+
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml);
 		logs[i]->draw(vsml);
@@ -252,7 +286,13 @@ void renderScene() {
 		tortoise[i]->draw(vsml);
 	}
 
-	
+	// calculates game elapsed time
+	double delta_t = calcElapsedTime();
+	// Update objects
+	frog->update(delta_t);
+	for (int i = 0; i < 5; i++){
+		cars[i]->update(delta_t);
+	}
 	
 	//swap buffers
 	glutSwapBuffers();
@@ -345,6 +385,16 @@ void fpsTimer(int value){
 	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 }
 
+//speedup obstacles
+void tick(int value){
+
+	for (int i = 0; i < 5; i++){
+		cars[i]->speedUp(0.001f);
+	}
+	glutTimerFunc(3000, tick, 0);
+}
+
+
 void init()
 {	
 	
@@ -390,17 +440,17 @@ void init()
 	
 	terrain[4]->create(vsml, mySurfRev);
 
-	frog = new Frog(objId, idVector);
+	frog = new Frog(objId, 0.08f, idVector);
 
 	frog->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, idVector);
+		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, 0.01f, idVector);
 		
 	}
 
 	for (int i = 0; i < 2; i++){
-		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, idVector);
+		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, 0.008f, idVector);
 		
 	}
 	cars[0]->create(vsml, mySurfRev);
@@ -458,12 +508,13 @@ int main(int argc, char **argv) {
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
 	glutTimerFunc(0, fpsTimer, 0);
-
+	glutTimerFunc(0, tick, 0);
 	//	Mouse and Keyboard Callbacks
 	
 	glutKeyboardFunc(processKeys);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
+	glutSpecialFunc(arrowPressed);
 
 	//glutMouseWheelFunc(mouseWheel);
 	

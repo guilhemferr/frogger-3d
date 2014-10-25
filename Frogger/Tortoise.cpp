@@ -56,3 +56,5 @@ void Tortoise::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 }
+
+void Tortoise::update(double delta_t){}

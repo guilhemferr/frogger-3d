@@ -1,4 +1,5 @@
 #include "Frog.h"
+#include "Border.h"
 
 void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float amb[] = {0.0f, 0.05f, 0.0f, 1.0f};
@@ -45,12 +46,9 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 void Frog::draw(VSMathLib* vsml){
 	int currentObjId = Frog::frogObjId;
 
-	
 	vsml->pushMatrix(VSMathLib::MODEL);
-	
 	vsml->translate(Frog::getX(), Frog::getY(), Frog::getZ());
 	vsml->rotate(Frog::getDir(), 0, 0, 1);
-	//mySurfRev.createSphere(radius, 20);
 	
 	initShadersVars(vsml, currentObjId);
 	
@@ -107,41 +105,83 @@ void Frog::draw(VSMathLib* vsml){
 
 }
 
-void Frog::moveFrog(int direction){
-	
-	setDir(direction);
 
-	float delta = 2.0f;
+/**
+* Methods for move */
 
-	switch (getDir()){
+void Frog::queueCommand(frog_states state) {
+	commandBuffer = state;
+}
+
+void Frog::processNextCmd() {
+	commandBuffer = IDLE;
+}
+
+void Frog::update(double delta_t) {
+	moveFrog(delta_t);
+}
+
+float const Frog::getFrogSquare() {
+	// frog_radius + y
+	// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
+	// y ~ 0.35
+	return getRadius() + 0.35f;
+}
+
+void Frog::moveFrog(double dt){
+
+	//this is calculated every loop
+	float delta = dt * getVelocity();
+	//position starting from the center
+	float front = delta + getRadius();
+
+	switch (currentState()){
 	case UP:
-		setY(getY() + delta);
+		if ((getY() + front) < YY_MAX){
+			setY(getY() + delta);
+		}
+		else{
+			setY(YY_MAX - getFrogSquare());
+		}
+		setDir(UP);
+		processNextCmd();
 		break;
 
 	case DOWN:
-		setY(getY() - delta);
+		if ((getY() - front) > YY_MIN){
+			setY(getY() - delta);
+		}
+		else {
+			setY(YY_MIN + getFrogSquare());
+		}
+		setDir(DOWN);
+		processNextCmd();
 		break;
 
 	case LEFT:
-		setX(getX() - delta);
+		if ((getX() - front) > XX_MIN){
+			setX(getX() - delta);
+		}
+		else {
+			setX(XX_MIN + getFrogSquare());
+		}
+		setDir(LEFT);
+		processNextCmd();
 		break;
 
 	case RIGHT:
-		setX(getX() + delta);
+		if ((getX() + front) < XX_MAX){
+			setX(getX() + delta);
+		}
+		else {
+			setX(XX_MAX - getFrogSquare());
+		}
+		setDir(RIGHT);
+		processNextCmd();
 		break;
 
-	default:
+	default: //IDLE
 		break;
 	}
-	
-}
 
-float Frog::updateFrogPos()
-{
-	int t = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTime = t - getTime();
-	float delta = elapsedTime * 0.00001;
-	setTime(t);
-
-	return delta;
 }
