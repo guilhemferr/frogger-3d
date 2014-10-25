@@ -29,7 +29,7 @@ public:
 
 	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev) = 0;
 	virtual void draw(VSMathLib* vsml) = 0;
-	virtual void update(double delta_t) = 0;
+	
 
 	int* getIdVector(){
 		return idVector;

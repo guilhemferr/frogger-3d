@@ -1,4 +1,9 @@
+#ifndef _GAMEOBJECT_H_
+#define _GAMEOBJECT_H_
 #include "GameObject.h"
+
+#endif
+
 class DynamicObject : public GameObject{
 
 	/**

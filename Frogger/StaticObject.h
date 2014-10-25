@@ -1,19 +1,13 @@
+#ifndef _GAMEOBJECT_H_
+#define _GAMEOBJECT_H_
 #include "GameObject.h"
+
+#endif
 class StaticObject : public GameObject{
 
 	//int idVector[8];
-
+public:
 	StaticObject(int* idVector) : GameObject(idVector){
-		/*
-		StaticObject::idVector[MODELID] = idVector[MODELID];
-		StaticObject::idVector[VIEWID] = idVector[VIEWID];
-		StaticObject::idVector[PROJID] = idVector[PROJID];
-		StaticObject::idVector[NORMALID] = idVector[NORMALID];
-		StaticObject::idVector[AMBIENT] = idVector[AMBIENT];
-		StaticObject::idVector[DIFFUSE] = idVector[DIFFUSE];
-		StaticObject::idVector[SPECULAR] = idVector[SPECULAR];
-		StaticObject::idVector[SHININESS] = idVector[SHININESS];
-		*/
 	}
 	~StaticObject(){}
 	/*

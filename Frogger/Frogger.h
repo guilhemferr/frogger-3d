@@ -8,6 +8,9 @@
 #include "side.h"
 #include "Frog.h"
 #include "Car.h"
+#include "Border.h"
+#include "River.h"
+#include "Road.h"
 #include "TimberLog.h"
 
 #include "LightSource.h"

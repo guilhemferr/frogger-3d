@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Border.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
@@ -86,6 +87,8 @@
     <ClCompile Include="Frogger.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="River.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="side.cpp" />
     <ClCompile Include="TimberLog.cpp" />
     <ClCompile Include="Tortoise.cpp" />
@@ -96,6 +99,7 @@
     <ClCompile Include="vsShaderLib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Border.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="DynamicObject.h" />
@@ -104,6 +108,8 @@
     <ClInclude Include="Frogger.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="River.h" />
+    <ClInclude Include="Road.h" />
     <ClInclude Include="side.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="TimberLog.h" />
