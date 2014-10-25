@@ -1,6 +1,6 @@
 #include "Frog.h"
 
-void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
+void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float amb[] = {0.0f, 0.05f, 0.0f, 1.0f};
 	float diff[] = {0.4f, 0.5f, 0.4f, 1.0f};
 	float spec[] = {0.04f, 0.7f, 0.04f, 1.0f};
@@ -15,33 +15,6 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 
-	/*
-	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
-	
-	m[objId].mat.shininess = shininess;
-	m[objId].mat.texCount = texcount;
-	*/
-
-	objId++;
-	mySurfRev.createCylinder(2.3f, 0.2f, 10);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
-	/*
-	memcpy(m[objId].mat.ambient, amb, 4 * sizeof(float));
-	memcpy(m[objId].mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(m[objId].mat.specular, spec, 4 * sizeof(float));
-	memcpy(m[objId].mat.emissive, emissive, 4 * sizeof(float));
-	m[objId].mat.shininess = shininess;
-	m[objId].mat.texCount = texcount;
-	*/
-	
-
 	objId++;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
@@ -50,7 +23,14 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 	
-
+	objId++;
+	mySurfRev.createCylinder(2.3f, 0.2f, 10);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	
 	objId++;
 	mySurfRev.createCone(0.5f, 0.5f, 10);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
@@ -62,7 +42,7 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	objId++;
 }
 
-void Frog::draw(VSMathLib* vsml, MyMesh* m){
+void Frog::draw(VSMathLib* vsml){
 	int currentObjId = Frog::frogObjId;
 
 	
@@ -75,8 +55,8 @@ void Frog::draw(VSMathLib* vsml, MyMesh* m){
 	initShadersVars(vsml, currentObjId);
 	
 	// render VAO
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -89,8 +69,8 @@ void Frog::draw(VSMathLib* vsml, MyMesh* m){
 
 	
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -102,8 +82,8 @@ void Frog::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->rotate(135, 0, 0, 1);
 
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -115,8 +95,8 @@ void Frog::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->translate(0.0f, -0.4f, 0.0f);
 	vsml->rotate(180, 0, 0, 1);
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;

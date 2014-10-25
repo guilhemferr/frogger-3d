@@ -1,6 +1,6 @@
 #include "TimberLog.h"
 
-void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
+void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float diff[] = { 0.5f, 0.1f, 0.1f, 1.0f };
 	float spec[] = { 0.2f, 0.3f, 0.1f, 1.0f };
@@ -17,7 +17,7 @@ void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	objId++;
 }
 
-void TimberLog::draw(VSMathLib* vsml, MyMesh* m){
+void TimberLog::draw(VSMathLib* vsml){
 	float auxX = 0.01f;
 	
 	vsml->pushMatrix(VSMathLib::MODEL);
@@ -27,8 +27,8 @@ void TimberLog::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->rotate(45.0f, 0, 1, 0);
 
 	initShadersVars(vsml, TimberLog::logId);
-	glBindVertexArray(m[TimberLog::logId].vao);
-	glDrawElements(m[TimberLog::logId].type, m[TimberLog::logId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[TimberLog::logId].vao);
+	glDrawElements(mesh[TimberLog::logId].type, mesh[TimberLog::logId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
 }

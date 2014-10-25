@@ -27,8 +27,8 @@ public:
 		GameObject::idVector[SHININESSID] = idVector[SHININESSID];
 	}
 
-	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m) = 0;
-	virtual void draw(VSMathLib* vsml, MyMesh* m) = 0;
+	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev) = 0;
+	virtual void draw(VSMathLib* vsml) = 0;
 	virtual void update(double delta_t) = 0;
 
 	int* getIdVector(){

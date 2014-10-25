@@ -1,6 +1,6 @@
 #include "Car.h"
 
-void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
+void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float ambBody[] = { 0.25f, 0.25f, 0.25f, 1.0f };
 	float diffBody[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 	float specBody[] = { 0.774597f, 0.774597f, 0.774597f, 1.0f };
@@ -49,7 +49,7 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* m){
 	objId++;
 }
 
-void Car::draw(VSMathLib* vsml, MyMesh* m){
+void Car::draw(VSMathLib* vsml){
 	int currentObjId = Car::carObjId;
 	float auxX = 0.01f;
 	vsml->pushMatrix(VSMathLib::MODEL);
@@ -61,8 +61,8 @@ void Car::draw(VSMathLib* vsml, MyMesh* m){
 	//mySurfRev.createCylinder(4.0f, 1.2f, 4);
 
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -76,8 +76,8 @@ void Car::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->rotate(45.0f, 0, 1, 0);
 
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -89,8 +89,8 @@ void Car::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->translate(1.5f, 0.0f, -0.4f);
 
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
@@ -103,8 +103,8 @@ void Car::draw(VSMathLib* vsml, MyMesh* m){
 	vsml->translate(-1.5f, 0.0f, -0.4f);
 
 	initShadersVars(vsml, currentObjId);
-	glBindVertexArray(m[currentObjId].vao);
-	glDrawElements(m[currentObjId].type, m[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	currentObjId++;
