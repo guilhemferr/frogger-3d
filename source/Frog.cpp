@@ -1,6 +1,8 @@
 #include "Frog.h"
 #include "side.h"
 
+
+
 void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.createSphere(radius, 20);
 	objId++;
@@ -131,32 +133,45 @@ void Frog::moveFrog(frog_states direction){
 	
 	//this is calculated every loop
 	float delta = updateDelta();
+	float front = delta + getRadius();
 
 	switch (currentState()){
 	case UP:
-		if((getY() + delta + getRadius()) < YY_MAX){
+		if((getY() + front) < YY_MAX){
 			setY(getY() + delta);
 		} else{
-			setY(YY_MAX - getRadius() - 0.35f);
+			setY(YY_MAX - getFrogSquare());
 		}
 		setDir(UP);
 		processNextCmd();
 		break;
 
 	case DOWN:
-		setY(getY() - delta);
+		if((getY() - front) > YY_MIN){
+			setY(getY() - delta);
+		} else {
+			setY(YY_MIN + getFrogSquare());
+		}
 		setDir(DOWN);
 		processNextCmd();
 		break;
 
 	case LEFT:
-		setX(getX() - delta);
+		if((getX() - front) > XX_MIN){
+			setX(getX() - delta);
+		} else {
+			setX(XX_MIN + getFrogSquare());
+		}
 		setDir(LEFT);
 		processNextCmd();
 		break;
 
 	case RIGHT:
-		setX(getX() + delta);
+		if((getX() + front) < XX_MAX){
+			setX(getX() + delta);
+		} else {
+			setX(XX_MAX - getFrogSquare());
+		}
 		setDir(RIGHT);
 		processNextCmd();
 		break;

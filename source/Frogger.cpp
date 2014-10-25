@@ -65,17 +65,17 @@ void processMouseButtons(int button, int state, int xx, int yy)
 
 				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
 					if (yy > (frog->getY())){
-						frog->moveFrog(UP);
+						frog->queueCommand(UP);
 					}
 					else {
-						frog->moveFrog(DOWN);
+						frog->queueCommand(DOWN);
 					}
 				}
 				else if (xx > frog->getX()){
-					frog->moveFrog(RIGHT);
+					frog->queueCommand(RIGHT);
 				}
 				else{
-					frog->moveFrog(LEFT);
+					frog->queueCommand(LEFT);
 				}
 
 				glutPostRedisplay();
@@ -182,16 +182,16 @@ void processKeys(unsigned char key, int xx, int yy)
 		selectedCamera = FROGCAM;
 		break;
 	case 'q':
-		frog->moveFrog(UP);
+		frog->queueCommand(UP);
 		break;
 	case 'a':
-		frog->moveFrog(DOWN);
+		frog->queueCommand(DOWN);
 		break;
 	case 'o':
-		frog->moveFrog(LEFT);
+		frog->queueCommand(LEFT);
 		break;
 	case 'p':
-		frog->moveFrog(RIGHT);
+		frog->queueCommand(RIGHT);
 		break;
 	default:
 		break;
@@ -202,7 +202,7 @@ void processKeys(unsigned char key, int xx, int yy)
 		glutPostRedisplay();
 }
 
-// Callback function. Process arrows commands
+// Callback function. Process arrows commands.
 void arrowPressed(int key, int x, int y){
 
 	switch (key)

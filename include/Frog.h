@@ -117,9 +117,14 @@ public:
 
 	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
 
-	void moveFrog(frog_states direction);
-
 	void update();
+
+	float const getFrogSquare() {
+		// frog_radius + y
+		// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
+		// y ~ 0.35
+		return getRadius() + 0.35f;
+	}
 
 private:
 
@@ -127,4 +132,5 @@ private:
 
 	void processNextCmd();
 
+	void moveFrog(frog_states direction);
 };
