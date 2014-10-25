@@ -6,12 +6,13 @@ class DynamicObject : public GameObject{
 	 */
 	double _speed[3];
 
-	int idVector[8];
+	//int idVector[8];
 public:
 	/**
 	 * Constructor & Deconstructor
 	 */
-	DynamicObject(int* idVector){
+	DynamicObject(int* idVector) : GameObject(idVector){
+		/*
 		DynamicObject::idVector[MODELID] = idVector[MODELID];
 		DynamicObject::idVector[VIEWID] = idVector[VIEWID];
 		DynamicObject::idVector[PROJID] = idVector[PROJID];
@@ -20,6 +21,7 @@ public:
 		DynamicObject::idVector[DIFFUSE] = idVector[DIFFUSE];
 		DynamicObject::idVector[SPECULAR] = idVector[SPECULAR];
 		DynamicObject::idVector[SHININESS] = idVector[SHININESS];
+		*/
 	}
 	~DynamicObject(){}
 
@@ -32,7 +34,9 @@ public:
 	void setSpeed(double *speed);
 	void setSpeed(double x, double y, double z);
 	double* getSpeed();
+	/*
 	int* getIdVector(){
 		return idVector;
 	}
+	*/
 };
