@@ -1,4 +1,5 @@
 #include "Tortoise.h"
+#include "Border.h"
 
 void Tortoise::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float ambBody[] = { 0.1915f, 0.0735f, 0.0225f, 1.0f };
@@ -57,4 +58,15 @@ void Tortoise::draw(VSMathLib* vsml){
 
 }
 
-void Tortoise::update(double delta_t){}
+void Tortoise::update(double delta_t) {
+	double delta = delta_t * getVelocity();
+	float front = getX() - delta + OFF_SET;
+
+	if (front > XX_MIN) {
+		setX(getX() - delta);
+	}
+	else {
+		setX(XX_MAX + OFF_SET);
+		isRevert(true);
+	}
+}

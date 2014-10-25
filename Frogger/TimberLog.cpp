@@ -1,4 +1,5 @@
 #include "TimberLog.h"
+#include "Border.h"
 
 void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -33,4 +34,15 @@ void TimberLog::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 }
 
-void TimberLog::update(double delta_t){}
+void TimberLog::update(double delta_t) {
+	double delta = delta_t * getVelocity();
+	float front = getX() - delta + OFF_SET;
+
+	if (front > XX_MIN) {
+		setX(getX() - delta);
+	}
+	else {
+		setX(XX_MAX + OFF_SET);
+		isRevert(true);
+	}
+}

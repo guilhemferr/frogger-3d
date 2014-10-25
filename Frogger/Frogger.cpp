@@ -31,9 +31,9 @@ DynamicObject* cars[5];
 
 GameObject* terrain[5];
 
-GameObject* logs[5];
+DynamicObject* logs[5];
 
-GameObject* tortoise[3];
+DynamicObject* tortoise[3];
 
 LightSource* lSource;
 
@@ -292,6 +292,11 @@ void renderScene() {
 	frog->update(delta_t);
 	for (int i = 0; i < 5; i++){
 		cars[i]->update(delta_t);
+		logs[i]->update(delta_t);
+	}
+
+	for (int i = 0; i < 3; i++){
+		tortoise[i]->update(delta_t);
 	}
 	
 	//swap buffers
@@ -456,15 +461,15 @@ void init()
 	cars[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, idVector);
+		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, 0.01f, idVector);
 	}
 	for (int i = 0; i < 2; i++){
-		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 12.0f, 1.0f, objId, idVector);
+		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 12.0f, 1.0f, objId, 0.01f, idVector);
 	}
 	logs[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, idVector);
+		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, 0.008f, idVector);
 	}
 	tortoise[0]->create(vsml, mySurfRev);
 
