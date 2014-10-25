@@ -25,6 +25,8 @@ Frog* frog;
 
 GameObject* cars[5];
 
+GameObject* terrain[5];
+
 GameObject* logs[5];
 
 LightSource* lSource;
@@ -33,7 +35,7 @@ int objId = 0;
 
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
-struct MyMesh mesh[9];
+struct MyMesh mesh[12];
 
 int selectedCamera = TOPCAMERA;
 
@@ -231,7 +233,11 @@ void renderScene() {
 	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
 
-	renderTerrain();
+	//renderTerrain();
+
+	for(int i = 0; i < 5; i++){
+		terrain[i]->draw(vsml);
+	}
 	
 	frog->draw(vsml);
 	
@@ -354,6 +360,16 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+	terrain[0] = new Road(0.0f, 0.0f, 0.0f, objId, idVector);
+
+	terrain[1] = new River(0.0f, 16.0f, 0.0f, objId, idVector);
+
+	terrain[2] = new Border(0.0f, 0.0f, 0.0f, objId, idVector);
+
+	terrain[3] = new Border(0.0f, 16.0f, 0.0f, objId, idVector);
+
+	terrain[4] = new Border(0.0f, 32.0f, 0.0f, objId, idVector);
+
 	frog = new Frog(objId, idVector);
 
 	frog->create(vsml, mySurfRev);
@@ -382,7 +398,7 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 0.0f, 0.0f, -2.0f };
+	float dirLight[3] = { 0.0f, 0.0f, 2.0f };
 	lSource->setDirection(dirLight);
 }
 

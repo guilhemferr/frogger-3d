@@ -1,4 +1,3 @@
-
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
 #include "vsResSurfRevLib.h"
