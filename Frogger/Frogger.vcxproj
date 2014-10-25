@@ -88,6 +88,7 @@
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="side.cpp" />
     <ClCompile Include="TimberLog.cpp" />
+    <ClCompile Include="Tortoise.cpp" />
     <ClCompile Include="vsLogLib.cpp" />
     <ClCompile Include="vsMathLib.cpp" />
     <ClCompile Include="vsResourceLib.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="side.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="TimberLog.h" />
+    <ClInclude Include="Tortoise.h" />
     <ClInclude Include="vsLogLib.h" />
     <ClInclude Include="vsMathLib.h" />
     <ClInclude Include="vsResourceLib.h" />
