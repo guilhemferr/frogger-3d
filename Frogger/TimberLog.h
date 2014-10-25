@@ -10,4 +10,27 @@
 #include "DynamicObject.h" 
 #endif
 
-class TimberLog : public DynamicObject {};
+class TimberLog : public DynamicObject {
+	int logId;
+
+public:
+
+	TimberLog(float xcoord, float ycoord, float zcoord, int logId, int* idVector):DynamicObject(idVector){
+		//Position of TimberLog
+		setX(xcoord);
+		setY(ycoord);
+		setZ(zcoord);
+
+		//The id of the TimberLog in question
+		TimberLog::logId = logId;
+
+	}
+	virtual ~TimberLog(){}
+
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+
+	void draw(VSMathLib* vsml);
+
+	float moveLog();
+
+};

@@ -39,9 +39,9 @@ public:
 
 	 ~Frog() {}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
+	void draw(VSMathLib* vsml);
 
 	void moveFrog(int direction);
 

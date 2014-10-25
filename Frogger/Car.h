@@ -41,9 +41,9 @@ public:
 
 	virtual ~Car() {}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-	void draw(VSMathLib* vsml, MyMesh* mMyMesh);
+	void draw(VSMathLib* vsml);
 
 	float moveCar();
 

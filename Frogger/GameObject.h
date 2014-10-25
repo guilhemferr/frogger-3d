@@ -27,12 +27,14 @@ public:
 		GameObject::idVector[SHININESS] = idVector[SHININESS];
 	}
 
-	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev, MyMesh* mMyMesh) = 0;
-	virtual void draw(VSMathLib* vsml, MyMesh* mMyMesh) = 0;
+	virtual void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev) = 0;
+	virtual void draw(VSMathLib* vsml) = 0;
 	virtual void update(double delta_t) = 0;
 
 	int* getIdVector(){
 		return idVector;
 	}
+
+	void initShadersVars(VSMathLib* vsml, int currentObjId);
 
 };
