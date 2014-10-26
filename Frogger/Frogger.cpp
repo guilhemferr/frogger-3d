@@ -278,10 +278,10 @@ void renderScene() {
 	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
 
-	/*for (int i = 0; i < 6; i++){
+	for (int i = 0; i < 6; i++){
 		vsml->multMatrixPoint(VSMathLib::VIEW, pointLights[i]->getPosition(), res);
 		glUniform4fv(pointLocs[i], 1, res);
-	}*/
+	}
 	
 
 	for(int i = 0; i < 7; i++){
@@ -519,7 +519,8 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 1.0f, 1.0f, 1.0f };
+	//x10 y20 z-10
+	float dirLight[3] = { 0.0f, 0.0f, 3.0f };
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);

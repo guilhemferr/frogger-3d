@@ -7,6 +7,8 @@ uniform mat4 projection;
 
 uniform vec4 positions[6];
 
+uniform vec4 l_dir;	   // camera space
+
 in vec4 position;	// local space
 in vec3 normal;		// local space
 
@@ -14,6 +16,7 @@ in vec3 normal;		// local space
 
 out Data {
 	vec3 normal;
+	vec3 ldir;
 	vec3 eye;
 	vec3 pos6[6];
 } DataOut;
@@ -24,11 +27,13 @@ void main () {
 
 	DataOut.normal = normalize(m_normal * normal.xyz);
 
+	DataOut.ldir = vec3(l_dir);
+
 	for(int i = 0; i < 6; i++){
-		DataOut.pos6[i] = vec3(positions[i] - position);
+		DataOut.pos6[i] = vec3(positions[i] - pos);
 	}
 
-	DataOut.eye = vec3(-position);
+	DataOut.eye = vec3(-pos);
 
 	gl_Position =  projection * view * model * position;	
 
