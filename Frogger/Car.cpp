@@ -24,6 +24,7 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
 
 	objId++;
+	
 	mySurfRev.createCylinder(2.0f, 0.6f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambBody);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffBody);
@@ -32,7 +33,8 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
 
 	objId++;
-	mySurfRev.createCylinder(2.30f, 0.35f, 10);
+
+	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
@@ -40,7 +42,8 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
 
 	objId++;
-	mySurfRev.createCylinder(2.30f, 0.35f, 10);
+
+	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
@@ -48,6 +51,25 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
 
 	objId++;
+
+	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+
+	objId++;
+
+	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+
+	objId++;
+
 }
 
 void Car::draw(VSMathLib* vsml){
@@ -90,7 +112,7 @@ void Car::draw(VSMathLib* vsml){
 
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX(), getY(), getZ() - 0.3f);
-	vsml->translate(1.5f, 0.0f, -0.4f);
+	vsml->translate(1.2f, 1.0f, -0.1f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -104,7 +126,7 @@ void Car::draw(VSMathLib* vsml){
 
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX(), getY(), getZ() -0.3f);
-	vsml->translate(-1.5f, 0.0f, -0.4f);
+	vsml->translate(-1.2f, 1.0f, -0.1f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -114,6 +136,33 @@ void Car::draw(VSMathLib* vsml){
 	currentObjId++;
 
 	vsml->popMatrix(VSMathLib::MODEL);
+
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(getX(), getY(), getZ() - 0.3f);
+	vsml->translate(-1.2f, -1.0f, -0.1f);
+
+	initShadersVars(vsml, currentObjId);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(0);
+	currentObjId++;
+
+	vsml->popMatrix(VSMathLib::MODEL);
+
+	vsml->pushMatrix(VSMathLib::MODEL);
+	vsml->translate(getX(), getY(), getZ() - 0.3f);
+	vsml->translate(1.2f, -1.0f, -0.1f);
+
+	initShadersVars(vsml, currentObjId);
+	glBindVertexArray(mesh[currentObjId].vao);
+	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(0);
+	currentObjId++;
+
+	vsml->popMatrix(VSMathLib::MODEL);
+
 	
 }
 
