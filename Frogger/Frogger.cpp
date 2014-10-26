@@ -27,7 +27,9 @@ int locPos;
 
 Frog* frog;
 
-DynamicObject* cars[5];
+DynamicObject* cars[3];
+
+DynamicObject* bus[2];
 
 GameObject* terrain[7];
 
@@ -286,18 +288,30 @@ void renderScene() {
 		tortoise[i]->draw(vsml);
 	}
 
+	for (int i = 0; i < 2; i++){
+		bus[i]->draw(vsml);
+	}
+
 	// calculates game elapsed time
 	double delta_t = calcElapsedTime();
 	// Update objects
 	frog->update(delta_t);
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 3; i++){
 		cars[i]->update(delta_t);
+	}
+
+	for (int i = 0; i < 2; i++){
+		bus[i]->update(delta_t);
+	}
+
+	for (int i = 0; i < 5; i++){
 		logs[i]->update(delta_t);
 	}
 
 	for (int i = 0; i < 3; i++){
 		tortoise[i]->update(delta_t);
 	}
+
 	
 	//swap buffers
 	glutSwapBuffers();
@@ -430,11 +444,13 @@ void init()
 		
 	}
 
-	for (int i = 0; i < 2; i++){
-		cars[i + 3] = new Car(12.0f - i * 10.0f - 5.0f, -10.0f, 2.0f, objId, 0.008f, idVector);
-		
-	}
+	
 	cars[0]->create(vsml, mySurfRev);
+
+	for (int i = 0; i < 2; i++){
+		bus[i] = new Bus(8.0f - i * 15, -10.0f, 2.0f, objId, 0.008f, idVector);
+	}
+	bus[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
 		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, 0.01f, idVector);

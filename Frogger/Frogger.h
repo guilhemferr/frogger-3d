@@ -14,6 +14,7 @@
 #include "TimberLog.h"
 #include "Tortoise.h"
 #include "Tunnel.h"
+#include "Bus.h"
 
 #include "LightSource.h"
 
