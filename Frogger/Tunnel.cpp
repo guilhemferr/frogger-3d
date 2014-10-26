@@ -1,15 +1,14 @@
-#include "Road.h" 
+#include "Tunnel.h"
 
-void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
-
+void Tunnel::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float diff[] = { 0.55f, 0.55f, 0.55f, 1.0f };
-	float spec[] = { 0.7f, 0.7f, 0.7f, 1.0f };
+	float diff[] = { 0.01f, 0.01f, 0.01f, 1.0f };
+	float spec[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float* shininess = new float(128.0f * 0.088f);
+	float* shininess = new float(128.0f * 0.25f);
 	int texcount = 0;
-	
-	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+
+	mySurfRev.createCylinder(34.0f, 2.0f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
@@ -19,19 +18,18 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	objId++;
 }
 
-void Road::draw(VSMathLib *vsml){
-
+void Tunnel::draw(VSMathLib *vsml){
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX(), getY(), getZ());
-	vsml->scale(1.0f, 7.0f, 1.0f);
-	vsml->rotate(90.0f, 0.0f, 0.0f, 1.0f);
+	vsml->scale(2.0f, 1.0f, 2.0f);
+	//vsml->rotate(90.0f, 0.0f, 0.0f, 1.0f);
 	vsml->rotate(45.0f, 0.0f, 1.0f, 0.0f);
 
-	initShadersVars(vsml, Road::roadObjId);
+	initShadersVars(vsml, Tunnel::tunnelObjId);
 
-	// render VAO
-	glBindVertexArray(mesh[Road::roadObjId].vao);
-	glDrawElements(mesh[Road::roadObjId].type, mesh[Road::roadObjId].numIndexes, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(mesh[Tunnel::tunnelObjId].vao);
+	glDrawElements(mesh[Tunnel::tunnelObjId].type, mesh[Tunnel::tunnelObjId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
+
 }

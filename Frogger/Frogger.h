@@ -13,6 +13,7 @@
 #include "Road.h"
 #include "TimberLog.h"
 #include "Tortoise.h"
+#include "Tunnel.h"
 
 #include "LightSource.h"
 

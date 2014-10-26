@@ -29,7 +29,7 @@ Frog* frog;
 
 DynamicObject* cars[5];
 
-GameObject* terrain[5];
+GameObject* terrain[7];
 
 DynamicObject* logs[5];
 
@@ -41,7 +41,7 @@ int objId = 0;
 
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
-struct MyMesh mesh[20];
+struct MyMesh mesh[25];
 
 int selectedCamera = TOPCAMERA;
 
@@ -271,7 +271,7 @@ void renderScene() {
 	glUniform4fv(locPos, 1, res);
 	//renderTerrain();
 
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 7; i++){
 		terrain[i]->draw(vsml);
 	}
 	
@@ -444,6 +444,14 @@ void init()
 	terrain[4] = new Border(0.0f, -16.0f, 0.0f, objId, idVector);
 	
 	terrain[4]->create(vsml, mySurfRev);
+
+	terrain[5] = new Tunnel(-18.0f, 0.0f, 2.0f, objId, idVector);
+
+	terrain[5]->create(vsml, mySurfRev);
+
+	terrain[6] = new Tunnel(18.0f, 0.0f, 2.0f, objId, idVector);
+
+	terrain[6]->create(vsml, mySurfRev);
 
 	frog = new Frog(objId, 0.08f, idVector);
 

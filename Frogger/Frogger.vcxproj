@@ -90,6 +90,7 @@
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="TimberLog.cpp" />
     <ClCompile Include="Tortoise.cpp" />
+    <ClCompile Include="Tunnel.cpp" />
     <ClCompile Include="vsLogLib.cpp" />
     <ClCompile Include="vsMathLib.cpp" />
     <ClCompile Include="vsResourceLib.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="TimberLog.h" />
     <ClInclude Include="Tortoise.h" />
+    <ClInclude Include="Tunnel.h" />
     <ClInclude Include="vsLogLib.h" />
     <ClInclude Include="vsMathLib.h" />
     <ClInclude Include="vsResourceLib.h" />
