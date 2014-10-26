@@ -1,11 +1,6 @@
 #version 330
 
-uniform vec4 diffuse;
-uniform vec4 ambient;
-uniform vec4 specular;
-uniform vec4 emissive;
-uniform float shininess;
-uniform int texCount;
+
 
 
 uniform mat3 m_normal;
@@ -15,7 +10,7 @@ uniform mat4 projection;
 
 
 
-in vec3 l_dir;	   // camera space
+uniform vec4 l_dir;	   // camera space
 
 
 in vec4 position;	// local space
@@ -23,34 +18,20 @@ in vec3 normal;		// local space
 
 // the data to be sent to the fragment shader
 
-out vec4 color;
-
+out Data {
+	vec3 normal;
+	vec3 eye;
+	vec3 lightDir;
+} DataOut;
 
 void main () {
-	
-	// set the specular term to black
-	vec4 spec = vec4(0.0); 
 
-	vec3 n = normalize(m_normal * normal);
+	vec4 pos = view * model * position;
 
-	float intensity = max(dot(n, l_dir), 0.0);
+	DataOut.normal = normalize(m_normal * normal.xyz);
+	DataOut.lightDir = vec3(l_dir);
+	DataOut.eye = vec3(-position);
 
-	// if the vertex is lit compute the specular color
-	if (intensity > 0.0) {
-		// compute position in camera space
-		vec3 pos = vec3(view * model * position);
-		// compute eye vector and normalize it 
-		vec3 eye = normalize(-pos);
-		// compute the half vector
-		vec3 h = normalize(l_dir + eye);
+	gl_Position =  projection * view * model * position;	
 
-		// compute the specular term into spec
-		float intSpec = max(dot(h,n), 0.0);
-		spec = specular * pow(intSpec, shininess);
-	}
-	// add the specular color when the vertex is lit
-	
-	color = max(intensity *  diffuse + spec, ambient);
-
-	gl_Position = projection * view * model * position;	
 }

@@ -41,6 +41,8 @@ DynamicObject* tortoise[3];
 
 LightSource* lSource;
 
+LightSource* pointLights[6];
+
 int objId = 0;
 
 
@@ -54,13 +56,15 @@ GLuint setupShaders() {
 	// Shader for models
 	shader.init();
 	//TODO Change shader name
-	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/pointLight.vert");
-	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/pointLight.frag");
+	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLight.vert");
+	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLight.frag");
 
 
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
+	shader.setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
+
 
 	shader.prepareProgram();
 
@@ -270,9 +274,9 @@ void renderScene() {
 	glUseProgram(shader.getProgramIndex());
 	
 	float res[4];
-	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getPosition(), res);//lightPos definido em World Coord so is converted to eye space
-	//glUniform4fv(locLDir, 1, res);
-	glUniform4fv(locPos, 1, res);
+	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
+	glUniform4fv(locLDir, 1, res);
+	//glUniform4fv(locPos, 1, res);
 	//renderTerrain();
 
 	for(int i = 0; i < 7; i++){
@@ -404,8 +408,8 @@ void init()
 	idVector[SPECULARID] = glGetUniformLocation(shader.getProgramIndex(), "specular");
 	idVector[SHININESSID] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
 
-	//locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
-	locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
+	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
+	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
@@ -473,15 +477,25 @@ void init()
 	tortoise[0]->create(vsml, mySurfRev);
 
 	float yAux = -16.0f;
+	float posAux[3] = { 0.0f, 0.0f, 8.0f };
+
 
 	for (int i = 0; i < 3; i++){
 		lamps[i] = new Lamp(10.0f, yAux, 4.0f, objId, idVector);
+		pointLights[i] = new LightSource();
+		posAux[1] = yAux;
+		pointLights[i]->setPosition(posAux);
+
 		yAux = yAux + 16.0f;
 	}
 
 	yAux = -16.0f;
 	for (int i = 0; i < 3; i++){
 		lamps[i+3] = new Lamp(-10.0f, yAux, 4.0f, objId, idVector);
+		pointLights[i+3] = new LightSource();
+		posAux[1] = yAux;
+		pointLights[i+3]->setPosition(posAux);
+
 		yAux = yAux + 16.0f;
 	}
 
@@ -492,7 +506,7 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 1.0f, 1.0f, 10000000.0f };
+	float dirLight[3] = { 0.0f, 0.0f, 1.0f };
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
