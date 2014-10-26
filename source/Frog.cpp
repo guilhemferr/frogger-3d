@@ -107,23 +107,46 @@ void Frog::draw(VSMathLib* vsml, MyMesh* mMyMesh){
 /**
  * Methods for move */
 
+void Frog::printBuff(){
+	for(int i = 0; i < BUFF; i++) {
+		std::cout << "buff[" << i << "] : " << commandBuffer[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
 void Frog::queueCommand(frog_states state) {
-	commandBuffer = state;
+	for(int i = 0;i < BUFF; i++) {
+		if(commandBuffer[i] == IDLE) {
+			commandBuffer[i] = state;
+			return;
+		}
+	}
+}
+// function to swap two elements of an array
+void Frog::swapArrayElements (frog_states states[], int index1, int index2) {
+    frog_states temp = IDLE;
+    temp = states[index1];
+    states[index1] = states[index2];
+    states[index2] = temp;
 }
 
 void Frog::processNextCmd() {
-	commandBuffer =  IDLE;
+	//commandBuffer =  IDLE;
+	commandBuffer[0] = IDLE;
+	for(int i = 0; i < BUFF -1; i++) {
+		swapArrayElements(commandBuffer, i, i+1);
+	}
 }
 
 void Frog::update(double delta_t) {
-	moveFrog(delta_t);
-}
 
-float const Frog::getFrogSquare() {
-	// frog_radius + y
-	// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
-	// y ~ 0.35
-	return getRadius() + 0.35f;
+	if(currentState() != IDLE && getSteps() > 0) {
+		moveFrog(delta_t);
+		setSteps(getSteps() - 1);
+	}else {
+		setSteps(12);
+		processNextCmd();
+	}
 }
 
 void Frog::moveFrog(double dt){
@@ -135,43 +158,39 @@ void Frog::moveFrog(double dt){
 
 	switch (currentState()){
 	case UP:
-		if((getY() + front) < YY_MAX){
+		if((getY() + front) < YY_MAX - FRONT){
 			setY(getY() + delta);
 		} else{
-			setY(YY_MAX - getFrogSquare());
+			setSteps(0);
 		}
 		setDir(UP);
-		processNextCmd();
 		break;
 
 	case DOWN:
-		if((getY() - front) > YY_MIN){
+		if((getY() - front) > YY_MIN + FRONT){
 			setY(getY() - delta);
 		} else {
-			setY(YY_MIN + getFrogSquare());
+			setSteps(0);
 		}
 		setDir(DOWN);
-		processNextCmd();
 		break;
 
 	case LEFT:
-		if((getX() - front) > XX_MIN){
+		if((getX() - front) > XX_MIN + FRONT){
 			setX(getX() - delta);
 		} else {
-			setX(XX_MIN + getFrogSquare());
+			setSteps(0);
 		}
 		setDir(LEFT);
-		processNextCmd();
 		break;
 
 	case RIGHT:
-		if((getX() + front) < XX_MAX){
+		if((getX() + front) < XX_MAX - FRONT){
 			setX(getX() + delta);
 		} else {
-			setX(XX_MAX - getFrogSquare());
+			setSteps(0);
 		}
 		setDir(RIGHT);
-		processNextCmd();
 		break;
 
 	default: //IDLE

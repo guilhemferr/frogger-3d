@@ -6,6 +6,9 @@
 #include "DynamicObject.h" 
 #endif
 
+#define BUFF 2
+#define FRONT 0.3f
+
 enum frog_states {
 	UP = 0,
 	LEFT = 90,
@@ -30,7 +33,8 @@ private:
 	const float legsLen;
 
 	int direction;
-	frog_states commandBuffer;
+	int steps;
+	frog_states commandBuffer[BUFF];
 
 	float color[4];
 
@@ -41,7 +45,10 @@ public:
 				xcoord(xcoord), ycoord(ycoord), zcoord(zcoord), modelID(modelID),
 				viewID(viewID), projID(projID), colorInID(colorInID), normalID(normalID),
 				frogObjId(frogObjId), velocity(velocity), radius(0.65f), legsLen(2.3f),
-				direction(UP),commandBuffer(IDLE) {
+				direction(UP), steps(10) {
+
+		for(int i = 0; i < BUFF; i++)
+			commandBuffer[i] = IDLE;
 
 		color[0] = 0.3f;
 		color[1] = 0.7f;
@@ -79,7 +86,13 @@ public:
 		return legsLen;
 	}
 
+	int getSteps() { return steps; }
+
 	//setters
+
+	void setSteps(int step) {
+		steps = step;
+	}
 
 	void setDir(int dir){
 		Frog::direction = dir;
@@ -100,7 +113,7 @@ public:
 	//frog utilities
 
 	frog_states currentState() {
-		return commandBuffer;
+		return commandBuffer[0];
 	}
 
 	void queueCommand(frog_states state);
@@ -111,11 +124,13 @@ public:
 
 	void update(double delta_t);
 
-	float const getFrogSquare();
-
 private:
 
 	void processNextCmd();
 
 	void moveFrog(double dt);
+
+	void swapArrayElements (frog_states states[], int index1, int index2);
+
+	void printBuff();
 };

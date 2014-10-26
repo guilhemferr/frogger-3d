@@ -222,7 +222,6 @@ void arrowPressed(int key, int x, int y){
 		break;
 	case GLUT_KEY_DOWN:
 		frog->queueCommand(DOWN);
-		std::cout << frog->getY() << "\n";
 		break;
 	default:
 		break;
@@ -383,7 +382,7 @@ void init()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	frog = new Frog(0.0f, -16.0f, 2.0f,modelID, viewID, projID, colorInID,
-			normalID, objId, 0.08f);
+			normalID, objId, 0.01f);
 
 	frog->create(vsml, mySurfRev);
 	
