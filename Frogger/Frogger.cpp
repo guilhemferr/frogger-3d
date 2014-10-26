@@ -24,6 +24,7 @@ int modelID, projID, viewID, colorInID, normalID;
 int idVector[8];
 int locLDir;
 int locPos;
+int pointLocs[6];
 
 Frog* frog;
 
@@ -276,8 +277,12 @@ void renderScene() {
 	float res[4];
 	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
-	//glUniform4fv(locPos, 1, res);
-	//renderTerrain();
+
+	/*for (int i = 0; i < 6; i++){
+		vsml->multMatrixPoint(VSMathLib::VIEW, pointLights[i]->getPosition(), res);
+		glUniform4fv(pointLocs[i], 1, res);
+	}*/
+	
 
 	for(int i = 0; i < 7; i++){
 		terrain[i]->draw(vsml);
@@ -411,6 +416,13 @@ void init()
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
 
+	pointLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position1");
+	pointLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position2");
+	pointLocs[2] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position3");
+	pointLocs[3] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position4");
+	pointLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position5");
+	pointLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position6");
+
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -477,7 +489,7 @@ void init()
 	tortoise[0]->create(vsml, mySurfRev);
 
 	float yAux = -16.0f;
-	float posAux[3] = { 0.0f, 0.0f, 8.0f };
+	float posAux[3] = { 10.0f, 0.0f, 8.0f };
 
 
 	for (int i = 0; i < 3; i++){
@@ -489,6 +501,7 @@ void init()
 		yAux = yAux + 16.0f;
 	}
 
+	posAux[0] = -10.0f;
 	yAux = -16.0f;
 	for (int i = 0; i < 3; i++){
 		lamps[i+3] = new Lamp(-10.0f, yAux, 4.0f, objId, idVector);
@@ -506,7 +519,7 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	float dirLight[3] = { 0.0f, 0.0f, 1.0f };
+	float dirLight[3] = { 1.0f, 1.0f, 1.0f };
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
