@@ -43,7 +43,7 @@ int objId = 0;
 
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
-struct MyMesh mesh[25];
+struct MyMesh mesh[30];
 
 int selectedCamera = TOPCAMERA;
 
