@@ -303,38 +303,6 @@ void renderScene() {
 	glutSwapBuffers();
 }
 
-/*void renderTerrain(){
-
-	float color[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	renderCube(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
-	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 16.0f, 0.0f);
-	color[0] = 0.0f;
-	color[1] = 0.0f;
-	color[2] = 1.0f;
-	renderCube(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
-	vsml->popMatrix(VSMathLib::MODEL);
-
-	color[0] = 0.6f;
-	color[1] = 0.20f;
-	color[2] = 0.8f;
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
-
-	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 16.0f, 0.0f);
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
-	vsml->popMatrix(VSMathLib::MODEL);
-
-	color[0] = 0.65f;
-	color[1] = 0.16f;
-	color[2] = 0.16f;
-	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(0.0f, 32.0f, 0.0f);
-	renderSide(vsml, idVector[MODELID], idVector[VIEWID], idVector[PROJID], colorInID, color);
-	vsml->popMatrix(VSMathLib::MODEL);
-
-}
-*/
 
 void changeSize(int w, int h) {
 	width = w;
@@ -359,16 +327,16 @@ void changeSize(int w, int h) {
 			left = 16.0f * ratio;
 			bottom = -18.0f;
 			top = 18.0f;
-			nearp = -4.0f;
-			farp = 4.0f;
+			nearp = -6.0f;
+			farp = 6.0f;
 		}
 		else{
 			right = -16.0f;
 			left = 16.0f;
 			bottom = -18.0f * ratio;
 			top = 18.0f * ratio;
-			nearp = -4.0f;
-			farp = 4.0f;
+			nearp = -6.0f;
+			farp = 6.0f;
 		}
 		vsml->ortho(right, left, bottom, top, nearp, farp);
 		break;
