@@ -10,21 +10,12 @@ class LightSource{
 	float position[4];
 	float direction[4];
 	double cutOff, exponent;
-	bool state;
 public:
 	/*Constructor*/
 	LightSource(){
 	}
 	~LightSource(){}
 
-	/*Gets & Sets*/
-	bool getState(){
-		return state;
-	}
-	
-	void setState(bool state){
-		LightSource::state = state;
-	}
 	void setPosition(float* position){
 		LightSource::position[0] = position[0];
 		LightSource::position[1] = position[1];

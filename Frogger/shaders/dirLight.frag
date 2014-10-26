@@ -6,7 +6,8 @@ uniform vec4 specular;
 uniform vec4 emissive;
 uniform float shininess;
 uniform int texCount;
-
+uniform int OnDirLight;
+uniform int OnPointLight;
 
 
 in Data {
@@ -65,6 +66,14 @@ void main() {
 		d = length(l);
 		att = a + b * d + c * pow(d, 2); 
 		pointContribution += (intensity * diffuse + spec) / att;
+	}
+
+	if(OnDirLight == 0){
+		dirContribution = vec4(0.0);
+	}
+
+	if(OnPointLight == 0){
+		pointContribution = vec4(0.0);
 	}
 
 	outputF = max(dirContribution + pointContribution/3, ambient);

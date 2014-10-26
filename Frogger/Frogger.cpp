@@ -25,6 +25,9 @@ int idVector[8];
 int locLDir;
 int locPos;
 int pointLocs[6];
+int DirLightStateLoc, PointLightStateLoc;
+int DirLightState = 1;
+int PointLightState = 1;
 
 Frog* frog;
 
@@ -216,6 +219,13 @@ void processKeys(unsigned char key, int xx, int yy)
 	case 'p':
 		frog->queueCommand(RIGHT);
 		break;
+	case 'n':
+		DirLightState = (DirLightState + 1) % 2;
+		break;
+	case 'c':
+		PointLightState = (PointLightState + 1) % 2;
+		break;
+
 	default:
 		break;
 
@@ -282,7 +292,9 @@ void renderScene() {
 		vsml->multMatrixPoint(VSMathLib::VIEW, pointLights[i]->getPosition(), res);
 		glUniform4fv(pointLocs[i], 1, res);
 	}
-	
+
+	glUniform1i(DirLightStateLoc, DirLightState);
+	glUniform1i(PointLightStateLoc, PointLightState);
 
 	for(int i = 0; i < 7; i++){
 		terrain[i]->draw(vsml);
@@ -422,6 +434,9 @@ void init()
 	pointLocs[3] = glGetUniformLocation(shader.getProgramIndex(), "positions[3]");
 	pointLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "positions[4]");
 	pointLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "positions[5]");
+
+	DirLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnDirLight");
+	PointLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnPointLight");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
