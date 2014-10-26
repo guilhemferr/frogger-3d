@@ -416,12 +416,12 @@ void init()
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
 
-	pointLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position1");
-	pointLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position2");
-	pointLocs[2] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position3");
-	pointLocs[3] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position4");
-	pointLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position5");
-	pointLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "lamps.position6");
+	pointLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "positions[0]");
+	pointLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "positions[1]");
+	pointLocs[2] = glGetUniformLocation(shader.getProgramIndex(), "positions[2]");
+	pointLocs[3] = glGetUniformLocation(shader.getProgramIndex(), "positions[3]");
+	pointLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "positions[4]");
+	pointLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "positions[5]");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
