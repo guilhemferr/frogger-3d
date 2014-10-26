@@ -52,7 +52,7 @@ struct MyMesh{
 	struct Material mat;
 };
 
-extern struct MyMesh mesh[25];
+extern struct MyMesh mesh[40];
 extern int objId;
 
 

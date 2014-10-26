@@ -15,6 +15,7 @@
 #include "Tortoise.h"
 #include "Tunnel.h"
 #include "Bus.h"
+#include "Lamp.h"
 
 #include "LightSource.h"
 

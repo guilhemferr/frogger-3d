@@ -86,6 +86,7 @@
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Frogger.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Frogger.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Lamp.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />

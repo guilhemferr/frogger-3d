@@ -33,6 +33,8 @@ DynamicObject* bus[2];
 
 GameObject* terrain[7];
 
+StaticObject* lamps[6];
+
 DynamicObject* logs[5];
 
 DynamicObject* tortoise[3];
@@ -43,7 +45,7 @@ int objId = 0;
 
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
-struct MyMesh mesh[30];
+struct MyMesh mesh[40];
 
 int selectedCamera = TOPCAMERA;
 
@@ -292,6 +294,11 @@ void renderScene() {
 		bus[i]->draw(vsml);
 	}
 
+	for (int i = 0; i < 6; i++){
+		lamps[i]->draw(vsml);
+	}
+
+
 	// calculates game elapsed time
 	double delta_t = calcElapsedTime();
 	// Update objects
@@ -341,16 +348,16 @@ void changeSize(int w, int h) {
 			left = 16.0f * ratio;
 			bottom = -18.0f;
 			top = 18.0f;
-			nearp = -6.0f;
-			farp = 6.0f;
+			nearp = -10.0f;
+			farp = 10.0f;
 		}
 		else{
 			right = -16.0f;
 			left = 16.0f;
 			bottom = -18.0f * ratio;
 			top = 18.0f * ratio;
-			nearp = -6.0f;
-			farp = 6.0f;
+			nearp = -10.0f;
+			farp = 10.0f;
 		}
 		vsml->ortho(right, left, bottom, top, nearp, farp);
 		break;
@@ -464,6 +471,21 @@ void init()
 		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, 0.008f, idVector);
 	}
 	tortoise[0]->create(vsml, mySurfRev);
+
+	float yAux = -16.0f;
+
+	for (int i = 0; i < 3; i++){
+		lamps[i] = new Lamp(10.0f, yAux, 4.0f, objId, idVector);
+		yAux = yAux + 16.0f;
+	}
+
+	yAux = -16.0f;
+	for (int i = 0; i < 3; i++){
+		lamps[i+3] = new Lamp(-10.0f, yAux, 4.0f, objId, idVector);
+		yAux = yAux + 16.0f;
+	}
+
+	lamps[0]->create(vsml, mySurfRev);
 
 	camX = frog->getX();
 	camY = - 15.0f;
