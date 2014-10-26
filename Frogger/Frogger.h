@@ -42,12 +42,32 @@
 #define LINE 31
 #define OBJ 5
 
-void renderTerrain();
+
+GLuint setupShaders();
+
+void processMouseButtons(int button, int state, int xx, int yy);
+
+void processMouseMotion(int xx, int yy);
+
+void mouseWheel(int wheel, int direction, int x, int y);
+
+void processKeys(unsigned char key, int xx, int yy);
+
+void arrowPressed(int key, int x, int y);
+
+double calcElapsedTime();
+
+void checkFrogDir();
+
+void renderScene();
+
 
 void changeSize(int w, int h);
+
+void fpsTimer(int value);
+
+void tick(int value);
 
 void init();
 
 void initVSL();
-
-void renderScene();

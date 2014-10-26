@@ -6,6 +6,8 @@ uniform mat4 model;
 uniform mat4 projection;
 
 uniform vec4 positions[6];
+uniform vec4 spotPosition;
+uniform vec4 spotDirection;
 
 uniform vec4 l_dir;	   // camera space
 
@@ -19,6 +21,8 @@ out Data {
 	vec3 ldir;
 	vec3 eye;
 	vec3 pos6[6];
+	vec3 spotPos;
+	vec3 spotDir;
 } DataOut;
 
 void main () {
@@ -33,7 +37,12 @@ void main () {
 		DataOut.pos6[i] = vec3(positions[i] - pos);
 	}
 
+	DataOut.spotPos = vec3(spotPosition - pos);
+	//Pode ser necessario inverter o spotDir
+	DataOut.spotDir = vec3(-spotDirection);
+
 	DataOut.eye = vec3(-pos);
+	
 
 	gl_Position =  projection * view * model * position;	
 

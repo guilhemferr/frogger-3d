@@ -8,6 +8,7 @@ uniform float shininess;
 uniform int texCount;
 uniform int OnDirLight;
 uniform int OnPointLight;
+uniform float spotCutOff;
 
 
 in Data {
@@ -15,6 +16,8 @@ in Data {
 	vec3 ldir;
 	vec3 eye;
 	vec3 pos6[6];
+	vec3 spotPos;
+	vec3 spotDir;
 } DataIn;
 
 out vec4 outputF;
@@ -31,6 +34,7 @@ void main() {
 	float att;
 	vec4 dirContribution = vec4(0.0);
 	vec4 pointContribution = vec4(0.0);
+	vec4 spotContribution = vec4(0.0);
 
 	float intensity = max(dot(n,l), 0.0);
 	vec3 h;
@@ -70,12 +74,33 @@ void main() {
 
 	if(OnDirLight == 0){
 		dirContribution = vec4(0.0);
+		vec3 sp = normalize(DataIn.spotPos);
+		vec3 sd = normalize(DataIn.spotDir);
+
+		if(dot(sd, sp) > spotCutOff){
+			intensity = max(dot(n, sp), 0.0);
+
+			if(intensity > 0.0){
+				h = normalize(sp + e);
+				intSpec = max(dot(h, n), 0.0);
+				spec = specular * pow(intSpec, shininess);
+
+				d = length(sp);
+				a  = 5.0;
+				b = 3.0;
+				c = 1.0;
+				att = a + b * d + c * pow(d, 2); 
+				spotContribution = (intensity * diffuse + spec);
+			}
+		}
 	}
 
 	if(OnPointLight == 0){
 		pointContribution = vec4(0.0);
 	}
 
-	outputF = max(dirContribution + pointContribution/3, ambient);
+
+
+	outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
 	
 }

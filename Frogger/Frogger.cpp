@@ -26,8 +26,10 @@ int locLDir;
 int locPos;
 int pointLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
+int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int DirLightState = 1;
 int PointLightState = 1;
+float frogDirAux[4];
 
 Frog* frog;
 
@@ -46,6 +48,8 @@ DynamicObject* tortoise[3];
 LightSource* lSource;
 
 LightSource* pointLights[6];
+
+LightSource* spotLight;
 
 int objId = 0;
 
@@ -266,6 +270,33 @@ double calcElapsedTime() {
 	return double(elapsedTime);
 }
 
+void checkFrogDir(){
+	float d[3] = { 0.0f, 0.0f, 0.0f };
+	switch (frog->getDir()){
+	case 0:
+		d[1] = 1.0f;
+		memcpy(frogDirAux, d, 3 * sizeof(float));
+		break;
+	case 90:
+		d[0] = -1.0f;
+		memcpy(frogDirAux, d, 3 * sizeof(float));
+		break;
+	case 180:
+		d[1] = -1.0f;
+		memcpy(frogDirAux, d, 3 * sizeof(float));
+		break;
+	case 270:
+		d[0] = 1.0f;
+		memcpy(frogDirAux, d, 3 * sizeof(float));
+		break;
+	case -1:
+		d[1] = 1.0f;
+		memcpy(frogDirAux, d, 3 * sizeof(float));
+		break;
+	}
+
+}
+
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -295,6 +326,17 @@ void renderScene() {
 
 	glUniform1i(DirLightStateLoc, DirLightState);
 	glUniform1i(PointLightStateLoc, PointLightState);
+
+	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ(), 1.0f };
+	spotLight->setPosition(frogPosAux);
+	checkFrogDir();
+	spotLight->setDirection(frogDirAux);
+
+	vsml->multMatrixPoint(VSMathLib::VIEW, spotLight->getDirection(), res);
+	glUniform4fv(spotDirectionLoc, 1, res);
+	vsml->multMatrixPoint(VSMathLib::VIEW, spotLight->getPosition(), res);
+	glUniform4fv(spotPositionLoc, 1, res);
+	glUniform1f(spotCutOffLoc, spotLight->getCutOff());
 
 	for(int i = 0; i < 7; i++){
 		terrain[i]->draw(vsml);
@@ -438,6 +480,10 @@ void init()
 	DirLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnDirLight");
 	PointLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnPointLight");
 
+	spotCutOffLoc = glGetUniformLocation(shader.getProgramIndex(), "spotCutOff");
+	spotPositionLoc = glGetUniformLocation(shader.getProgramIndex(), "spotPosition");
+	spotDirectionLoc = glGetUniformLocation(shader.getProgramIndex(), "spotDirection");
+
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -529,6 +575,13 @@ void init()
 
 	lamps[0]->create(vsml, mySurfRev);
 
+	spotLight = new LightSource();
+	spotLight->setCutOff(0.9f);
+	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ() + 5.0f, 1.0f };
+	spotLight->setPosition(frogPosAux);
+	checkFrogDir();
+	spotLight->setDirection(frogDirAux);
+
 	camX = frog->getX();
 	camY = - 15.0f;
 	camZ = 5.0f;
@@ -539,6 +592,8 @@ void init()
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
+	
+	
 }
 
 void initVSL() {

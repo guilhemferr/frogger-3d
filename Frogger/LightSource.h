@@ -9,7 +9,7 @@ class LightSource{
 	float specular[4];
 	float position[4];
 	float direction[4];
-	double cutOff, exponent;
+	float cutOff, exponent;
 public:
 	/*Constructor*/
 	LightSource(){
@@ -28,10 +28,10 @@ public:
 		LightSource::direction[2] = direction[2];
 		LightSource::direction[3] = 0.0f;
 	}
-	void setCutOff(double cutOff){
+	void setCutOff(float cutOff){
 		LightSource::cutOff = cutOff;
 	}
-	void setExponent(double exponent){
+	void setExponent(float exponent){
 		LightSource::exponent = exponent;
 	}
 	void setAmbient(float* ambient){
@@ -59,5 +59,9 @@ public:
 
 	float* getPosition(){
 		return position;
+	}
+
+	float getCutOff(){
+		return cutOff;
 	}
 };
