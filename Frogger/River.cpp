@@ -7,7 +7,6 @@ void River::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float spec[] = { 0.50196078f, 0.50196078f, 0.50196078f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float* shininess = new float(128.0f * 0.088f);
-	int texcount = 0;
 	
 	mySurfRev.createCylinder(30.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
@@ -15,6 +14,7 @@ void River::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mesh[objId].mat.texCount = 1;
 
 	objId++;
 }
@@ -27,6 +27,7 @@ void River::draw(VSMathLib *vsml){
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
 	initShadersVars(vsml, River::riverObjId);
+	glUniform1i(getIdVector()[TEXID], 2);
 
 	glBindVertexArray(mesh[River::riverObjId].vao);
 	glDrawElements(mesh[River::riverObjId].type, mesh[River::riverObjId].numIndexes, GL_UNSIGNED_INT, 0);

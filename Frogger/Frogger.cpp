@@ -21,15 +21,18 @@ float alpha = 39.0f, beta = 51.0f;
 float r = 15.0f;
 
 int modelID, projID, viewID, colorInID, normalID;
-int idVector[8];
+int idVector[9];
 int locLDir;
 int locPos;
 int pointLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
+int texRoadLoc, texRiverLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 float frogDirAux[4];
+
+GLuint TextureArray[2];
 
 Frog* frog;
 
@@ -64,14 +67,15 @@ GLuint setupShaders() {
 	// Shader for models
 	shader.init();
 	//TODO Change shader name
-	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLight.vert");
-	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLight.frag");
+	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLightTex.vert");
+	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLightTex.frag");
 
 
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
 	shader.setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
+	shader.setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
 
 
 	shader.prepareProgram();
@@ -314,7 +318,8 @@ void renderScene() {
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
-	
+
+
 	float res[4];
 	vsml->multMatrixPoint(VSMathLib::VIEW, lSource->getDirection(), res);//lightPos definido em World Coord so is converted to eye space
 	glUniform4fv(locLDir, 1, res);
@@ -337,6 +342,14 @@ void renderScene() {
 	vsml->multMatrixPoint(VSMathLib::VIEW, spotLight->getPosition(), res);
 	glUniform4fv(spotPositionLoc, 1, res);
 	glUniform1f(spotCutOffLoc, spotLight->getCutOff());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
+
+	glUniform1i(texRoadLoc, 0);
+	glUniform1i(texRiverLoc, 1);
 
 	for(int i = 0; i < 9; i++){
 		terrain[i]->draw(vsml);
@@ -454,7 +467,7 @@ void tick(int value){
 
 void init()
 {	
-	
+
 	idVector[MODELID] = glGetUniformLocation(shader.getProgramIndex(), "model");
 	idVector[VIEWID] = glGetUniformLocation(shader.getProgramIndex(), "view");
 	idVector[PROJID] = glGetUniformLocation(shader.getProgramIndex(), "projection");
@@ -466,6 +479,7 @@ void init()
 	idVector[DIFFUSEID] = glGetUniformLocation(shader.getProgramIndex(), "diffuse");
 	idVector[SPECULARID] = glGetUniformLocation(shader.getProgramIndex(), "specular");
 	idVector[SHININESSID] = glGetUniformLocation(shader.getProgramIndex(), "shininess");
+	idVector[TEXID] = glGetUniformLocation(shader.getProgramIndex(), "texMode");
 
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
@@ -484,12 +498,21 @@ void init()
 	spotPositionLoc = glGetUniformLocation(shader.getProgramIndex(), "spotPosition");
 	spotDirectionLoc = glGetUniformLocation(shader.getProgramIndex(), "spotDirection");
 
+	texRoadLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRoad");
+	texRiverLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRiver");
+	
+
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	glGenTextures(2, TextureArray);
+	TGA_Texture(TextureArray, "road.tga", 0);
+	TGA_Texture(TextureArray, "river.tga", 1);
+
 
 	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 

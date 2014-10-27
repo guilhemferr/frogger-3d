@@ -16,9 +16,9 @@
 #include "Tunnel.h"
 #include "Bus.h"
 #include "Lamp.h"
-
 #include "LightSource.h"
 
+#include "TGA.h"
 #include "vsMathLib.h"
 #include "vsShaderLib.h"
 
@@ -38,6 +38,7 @@
 #define DIFFUSEID 5
 #define SPECULARID 6
 #define SHININESSID 7
+#define TEXID 8
 
 #define LINE 31
 #define OBJ 5

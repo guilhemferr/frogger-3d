@@ -11,9 +11,10 @@
 #define DIFFUSEID 5
 #define SPECULARID 6
 #define SHININESSID 7
+#define TEXID 8
 
 class GameObject : public Entity {
-	int idVector[8];
+	int idVector[9];
 
 public:
 	GameObject(int* idVector){
@@ -25,6 +26,7 @@ public:
 		GameObject::idVector[DIFFUSEID] = idVector[DIFFUSEID];
 		GameObject::idVector[SPECULARID] = idVector[SPECULARID];
 		GameObject::idVector[SHININESSID] = idVector[SHININESSID];
+		GameObject::idVector[TEXID] = idVector[TEXID];
 	}
 
 	virtual ~GameObject(){}

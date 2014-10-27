@@ -90,6 +90,7 @@
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="TGA.cpp" />
     <ClCompile Include="TimberLog.cpp" />
     <ClCompile Include="Tortoise.cpp" />
     <ClCompile Include="Tunnel.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="TGA.h" />
     <ClInclude Include="TimberLog.h" />
     <ClInclude Include="Tortoise.h" />
     <ClInclude Include="Tunnel.h" />
@@ -125,6 +127,8 @@
   <ItemGroup>
     <None Include="shaders\dirLight.frag" />
     <None Include="shaders\dirLight.vert" />
+    <None Include="shaders\dirLightTex.frag" />
+    <None Include="shaders\dirLightTex.vert" />
     <None Include="shaders\helloWorld.frag" />
     <None Include="shaders\helloWorld.vert" />
     <None Include="shaders\pointLight.frag" />

@@ -1,5 +1,7 @@
 #include "Road.h" 
 
+
+
 void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	float amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -7,7 +9,6 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float spec[] = { 0.7f, 0.7f, 0.7f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float* shininess = new float(128.0f * 0.088f);
-	int texcount = 0;
 	
 	mySurfRev.createCylinder(30.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
@@ -15,6 +16,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mesh[objId].mat.texCount = 1;
 
 	objId++;
 }
@@ -28,7 +30,7 @@ void Road::draw(VSMathLib *vsml){
 	vsml->rotate(45.0f, 0.0f, 1.0f, 0.0f);
 
 	initShadersVars(vsml, Road::roadObjId);
-
+	glUniform1i(getIdVector()[TEXID], 1);
 	// render VAO
 	glBindVertexArray(mesh[Road::roadObjId].vao);
 	glDrawElements(mesh[Road::roadObjId].type, mesh[Road::roadObjId].numIndexes, GL_UNSIGNED_INT, 0);

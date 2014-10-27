@@ -22,5 +22,4 @@ public:
 	void draw(VSMathLib *vsml);
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-
 };

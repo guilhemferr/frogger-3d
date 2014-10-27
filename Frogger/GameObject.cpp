@@ -15,4 +15,5 @@ void GameObject::initShadersVars(VSMathLib* vsml, int currentObjId){
 	glUniform4fv(ids[DIFFUSEID], 1, mesh[currentObjId].mat.diffuse);
 	glUniform4fv(ids[SPECULARID], 1, mesh[currentObjId].mat.specular);
 	glUniform1f(ids[SHININESSID], mesh[currentObjId].mat.shininess);
+	glUniform1i(ids[TEXID], 0);
 }
