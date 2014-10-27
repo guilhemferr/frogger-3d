@@ -37,7 +37,7 @@ DynamicObject* cars[3];
 
 DynamicObject* bus[2];
 
-GameObject* terrain[7];
+GameObject* terrain[9];
 
 StaticObject* lamps[6];
 
@@ -338,7 +338,7 @@ void renderScene() {
 	glUniform4fv(spotPositionLoc, 1, res);
 	glUniform1f(spotCutOffLoc, spotLight->getCutOff());
 
-	for(int i = 0; i < 7; i++){
+	for(int i = 0; i < 9; i++){
 		terrain[i]->draw(vsml);
 	}
 	
@@ -511,6 +511,9 @@ void init()
 	
 	terrain[4]->create(vsml, mySurfRev);
 
+	
+	//For Cylinder
+	/*
 	terrain[5] = new Tunnel(-18.0f, 0.0f, 2.0f, objId, idVector);
 
 	terrain[5]->create(vsml, mySurfRev);
@@ -518,6 +521,23 @@ void init()
 	terrain[6] = new Tunnel(18.0f, 0.0f, 2.0f, objId, idVector);
 
 	terrain[6]->create(vsml, mySurfRev);
+	*/
+	//For Torus
+	terrain[5] = new Tunnel(-19.0f, 8.0f, 2.0f, objId, idVector);
+
+	terrain[5]->create(vsml, mySurfRev);
+
+	terrain[6] = new Tunnel(19.0f, 8.0f, 2.0f, objId, idVector);
+
+	terrain[6]->create(vsml, mySurfRev);
+
+	terrain[7] = new Tunnel(-19.0f, -9.0f, 2.0f, objId, idVector);
+
+	terrain[7]->create(vsml, mySurfRev);
+
+	terrain[8] = new Tunnel(19.0f, -9.0f, 2.0f, objId, idVector);
+
+	terrain[8]->create(vsml, mySurfRev);
 
 	frog = new Frog(objId, 0.08f, idVector);
 
