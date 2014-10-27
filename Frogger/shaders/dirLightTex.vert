@@ -6,6 +6,7 @@ uniform mat4 model;
 uniform mat4 projection;
 
 uniform vec4 positions[6];
+uniform vec4 directions[6];
 uniform vec4 spotPosition;
 uniform vec4 spotDirection;
 
@@ -22,6 +23,7 @@ out Data {
 	vec3 ldir;
 	vec3 eye;
 	vec3 pos6[6];
+	vec3 dir6[6];
 	vec3 spotPos;
 	vec3 spotDir;
 	vec2 outTex;
@@ -37,6 +39,7 @@ void main () {
 
 	for(int i = 0; i < 6; i++){
 		DataOut.pos6[i] = vec3(positions[i] - pos);
+		DataOut.dir6[i] = vec3(-directions[i]);
 	}
 
 	DataOut.spotPos = vec3(spotPosition - pos);

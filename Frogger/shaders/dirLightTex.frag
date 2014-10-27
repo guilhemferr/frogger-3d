@@ -8,6 +8,7 @@ uniform float shininess;
 uniform int texCount;
 uniform int OnDirLight;
 uniform int OnPointLight;
+uniform int OnSpecialLights;
 uniform float spotCutOff;
 uniform int texMode;
 
@@ -20,6 +21,7 @@ in Data {
 	vec3 ldir;
 	vec3 eye;
 	vec3 pos6[6];
+	vec3 dir6[6];
 	vec3 spotPos;
 	vec3 spotDir;
 	vec2 outTex;
@@ -42,6 +44,9 @@ void main() {
 	vec4 dirContribution = vec4(0.0);
 	vec4 pointContribution = vec4(0.0);
 	vec4 spotContribution = vec4(0.0);
+	
+	vec3 sp = vec3(0.0);
+	vec3 sd = vec3(0.0);
 
 	float intensity = max(dot(n,l), 0.0);
 	vec3 h;
@@ -70,10 +75,10 @@ void main() {
 	att = a + b * d + c * pow(d, 2); 
 
 	if(texMode > 0){
-		dirContribution = (intensity * texel + spec) / att;
+		dirContribution = (intensity * texel + spec) ;
 	}
 	else{
-		dirContribution = (intensity * diffuse + spec) / att;
+		dirContribution = (intensity * diffuse + spec) ;
 	}
 	/////////////////////////////////////////////////////////////
 
@@ -107,8 +112,8 @@ void main() {
 
 	if(OnDirLight == 0){
 		dirContribution = vec4(0.0);
-		vec3 sp = normalize(DataIn.spotPos);
-		vec3 sd = normalize(DataIn.spotDir);
+		sp = normalize(DataIn.spotPos);
+		sd = normalize(DataIn.spotDir);
 
 		if(dot(sd, sp) > spotCutOff){
 			intensity = max(dot(n, sp), 0.0);
@@ -140,6 +145,40 @@ void main() {
 		pointContribution = vec4(0.0);
 	}
 	/////////////////////////////////////////////////////////////////////
+
+
+	if(OnSpecialLights == 1){
+		pointContribution = vec4(0.0);
+		for(int i = 0; i < 6; i ++){
+			sp = normalize(DataIn.pos6[i]);
+			sd = normalize(DataIn.dir6[i]);
+		
+			if(dot(sd, sp) > 0.5){
+				intensity = max(dot(n, sp), 0.0);
+
+				if(intensity > 0.0){
+					h = normalize(sp + e);
+					intSpec = max(dot(h, n), 0.0);
+					spec = specular * pow(intSpec, shininess);
+
+					//legacy
+					d = length(sp);
+					a  = 5.0;
+					b = 3.0;
+					c = 1.0;
+					att = a + b * d + c * pow(d, 2); 
+					////////////////////////////////
+				
+					if(texMode > 0){
+						pointContribution += (intensity * texel + spec);
+					}
+					else{
+						pointContribution += (intensity * diffuse + spec);
+					}
+				}
+			}
+		}
+	}
 
 	if(texMode > 0){
 		outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);

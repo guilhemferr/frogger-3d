@@ -25,11 +25,14 @@ int idVector[9];
 int locLDir;
 int locPos;
 int pointLocs[6];
+int dirLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
+int SpecialLightStateLoc;
 int texRoadLoc, texRiverLoc, texWoodLoc;
 int DirLightState = 1;
 int PointLightState = 1;
+int SpecialLightState = 0;
 float frogDirAux[4];
 
 GLuint TextureArray[3];
@@ -233,6 +236,9 @@ void processKeys(unsigned char key, int xx, int yy)
 	case 'c':
 		PointLightState = (PointLightState + 1) % 2;
 		break;
+	case 'z':
+		SpecialLightState = (SpecialLightState + 1) % 2;
+		break;
 
 	default:
 		break;
@@ -327,10 +333,13 @@ void renderScene() {
 	for (int i = 0; i < 6; i++){
 		vsml->multMatrixPoint(VSMathLib::VIEW, pointLights[i]->getPosition(), res);
 		glUniform4fv(pointLocs[i], 1, res);
+		vsml->multMatrixPoint(VSMathLib::VIEW, pointLights[i]->getDirection(), res);
+		glUniform4fv(dirLocs[i], 1, res);
 	}
 
 	glUniform1i(DirLightStateLoc, DirLightState);
 	glUniform1i(PointLightStateLoc, PointLightState);
+	glUniform1i(SpecialLightStateLoc, SpecialLightState);
 
 	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ(), 1.0f };
 	spotLight->setPosition(frogPosAux);
@@ -493,8 +502,16 @@ void init()
 	pointLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "positions[4]");
 	pointLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "positions[5]");
 
+	dirLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "directions[0]");
+	dirLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "directions[1]");
+	dirLocs[2] = glGetUniformLocation(shader.getProgramIndex(), "directions[2]");
+	dirLocs[3] = glGetUniformLocation(shader.getProgramIndex(), "directions[3]");
+	dirLocs[4] = glGetUniformLocation(shader.getProgramIndex(), "directions[4]");
+	dirLocs[5] = glGetUniformLocation(shader.getProgramIndex(), "directions[5]");
+
 	DirLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnDirLight");
 	PointLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnPointLight");
+	SpecialLightStateLoc = glGetUniformLocation(shader.getProgramIndex(), "OnSpecialLights");
 
 	spotCutOffLoc = glGetUniformLocation(shader.getProgramIndex(), "spotCutOff");
 	spotPositionLoc = glGetUniformLocation(shader.getProgramIndex(), "spotPosition");
@@ -596,14 +613,16 @@ void init()
 	tortoise[0]->create(vsml, mySurfRev);
 
 	float yAux = -16.0f;
-	float posAux[3] = { 10.0f, 0.0f, 8.0f };
+	float posAux[4] = { 10.0f, 0.0f, 8.0f, 1.0f};
 
+	float dirAux[3] = { 0.0f, 0.0f, -1.0f};
 
 	for (int i = 0; i < 3; i++){
 		lamps[i] = new Lamp(10.0f, yAux, 4.0f, objId, idVector);
 		pointLights[i] = new LightSource();
 		posAux[1] = yAux;
 		pointLights[i]->setPosition(posAux);
+		pointLights[i]->setDirection(dirAux);
 
 		yAux = yAux + 16.0f;
 	}
@@ -615,6 +634,7 @@ void init()
 		pointLights[i+3] = new LightSource();
 		posAux[1] = yAux;
 		pointLights[i+3]->setPosition(posAux);
+		pointLights[i + 3]->setDirection(dirAux);
 
 		yAux = yAux + 16.0f;
 	}
