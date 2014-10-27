@@ -28,7 +28,7 @@ void Border::draw(VSMathLib *vsml){
 	vsml->rotate(45.0f, 0, 1, 0);
 
 	initShadersVars(vsml, Border::borderObjId);
-
+	glUniform1i(getIdVector()[TEXID], 4);
 	// render VAO
 	glBindVertexArray(mesh[Border::borderObjId].vao);
 	glDrawElements(mesh[Border::borderObjId].type, mesh[Border::borderObjId].numIndexes, GL_UNSIGNED_INT, 0);

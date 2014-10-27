@@ -31,13 +31,13 @@ int dirLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int SpecialLightStateLoc;
-int texRoadLoc, texRiverLoc, texWoodLoc;
+int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
 float frogDirAux[4];
 
-GLuint TextureArray[3];
+GLuint TextureArray[4];
 
 Frog* frog;
 
@@ -360,9 +360,12 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
 	glUniform1i(texRoadLoc, 0);
 	glUniform1i(texRiverLoc, 1);
 	glUniform1i(texWoodLoc, 2);
+	glUniform1i(texDirtLoc, 3);
 
 	for(int i = 0; i < 9; i++){
 		terrain[i]->draw(vsml);
@@ -533,7 +536,7 @@ void init()
 	texRoadLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRoad");
 	texRiverLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRiver");
 	texWoodLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapWood");
-	
+	texDirtLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapDirt");
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
@@ -542,10 +545,11 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glGenTextures(3, TextureArray);
+	glGenTextures(4, TextureArray);
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
+	TGA_Texture(TextureArray, "grass.tga", 3);
 
 	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 
