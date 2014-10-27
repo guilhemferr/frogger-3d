@@ -7,6 +7,9 @@
 #include "DynamicObject.h" 
 #endif
 
+#define BUFF 2
+#define FRONT 0.3f
+
 enum frog_states {
 	UP = 0,
 	LEFT = 90,
@@ -16,27 +19,34 @@ enum frog_states {
 };
 
 class Frog : public DynamicObject {
+
 private:
+
 	const float radius;
 	const float legsLen;
 
-	float color[4];
-	int direction;
 	int frogObjId;
-
 	float velocity;
 
-	frog_states commandBuffer;
+	int direction;
+	int steps;
+	frog_states commandBuffer[BUFF];
+
+	float color[4];
 
 public:
 
 	Frog(int frogObjId, float velocity, int* idVector) : DynamicObject(idVector),
-		radius(0.65f), legsLen(2.3f), direction(UP), velocity(velocity), commandBuffer(IDLE){
-		Frog::frogObjId = frogObjId;
+		radius(0.65f), legsLen(2.3f), frogObjId(frogObjId), velocity(velocity), direction(UP),
+		steps(17) {
 
 		setX(0.0f);
 		setY(-16.0f);
 		setZ(1.8f);
+
+		for(int i = 0; i < BUFF; i++) {
+			commandBuffer[i] = IDLE;
+		}
 
 		color[0] = 0.3f;
 		color[1] = 0.7f;
@@ -46,13 +56,8 @@ public:
 
 	virtual ~Frog() {}
 
-	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
+	//getters
 
-	void draw(VSMathLib* vsml);
-
-	void moveFrog(int direction);
-
-	
 	int getDir(){
 		return direction;
 	}
@@ -69,23 +74,43 @@ public:
 		return legsLen;
 	}
 
+	int getSteps() {
+		return steps;
+	}
+
+	//setters
+
 	void setDir(int dir){
 		Frog::direction = dir;
 	}
 	
+	void setSteps(int step) {
+		steps = step;
+	}
+
+	//frog utilities
+
 	frog_states currentState() {
-		return commandBuffer;
+		return commandBuffer[0];
 	}
 
 	void queueCommand(frog_states state);
 
-	void update(double delta_t);
+	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
-	float const getFrogSquare();
+	void draw(VSMathLib* vsml);
+
+	void update(double delta_t);
 
 private:
 
 	void processNextCmd();
 
 	void moveFrog(double dt);
+
+	void swapArrayElements (frog_states states[], int index1, int index2);
+
+	void printBuff();
+
+	bool oppositeDir(frog_states state);
 };

@@ -10,35 +10,35 @@ void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	int texcount = 0;
 	
 	mySurfRev.createSphere(radius, 20);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 
 	objId++;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 	
 	objId++;
 	mySurfRev.createCylinder(2.3f, 0.2f, 10);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 	
 	objId++;
 	mySurfRev.createCone(0.5f, 0.5f, 10);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 	
 	objId++;
 }
@@ -107,25 +107,58 @@ void Frog::draw(VSMathLib* vsml){
 
 
 /**
-* Methods for move */
+ * Methods for move */
+
+void Frog::printBuff(){
+	for(int i = 0; i < BUFF; i++) {
+		std::cout << "buff[" << i << "] : " << commandBuffer[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+bool Frog::oppositeDir(frog_states state) {
+	return abs(currentState() - state) == 90;
+}
 
 void Frog::queueCommand(frog_states state) {
-	commandBuffer = state;
+
+	if(oppositeDir(state)) {
+		commandBuffer[0] = state;
+		return;
+	}
+
+	for(int i = 0;i < BUFF; i++) {
+		if(commandBuffer[i] == IDLE) {
+			commandBuffer[i] = state;
+			return;
+		}
+	}
+}
+// function to swap two elements of an array
+void Frog::swapArrayElements (frog_states states[], int index1, int index2) {
+    frog_states temp = IDLE;
+    temp = states[index1];
+    states[index1] = states[index2];
+    states[index2] = temp;
 }
 
 void Frog::processNextCmd() {
-	commandBuffer = IDLE;
+	//commandBuffer =  IDLE;
+	commandBuffer[0] = IDLE;
+	for(int i = 0; i < BUFF -1; i++) {
+		swapArrayElements(commandBuffer, i, i+1);
+	}
 }
 
 void Frog::update(double delta_t) {
-	moveFrog(delta_t);
-}
 
-float const Frog::getFrogSquare() {
-	// frog_radius + y
-	// y = (legsLen / 2) * sin 45 - legsRadius * cos 135
-	// y ~ 0.35
-	return getRadius() + 0.35f;
+	if(currentState() != IDLE && getSteps() > 0) {
+		moveFrog(delta_t);
+		setSteps(getSteps() - 1);
+	}else {
+		setSteps(17);
+		processNextCmd();
+	}
 }
 
 void Frog::moveFrog(double dt){
@@ -137,47 +170,39 @@ void Frog::moveFrog(double dt){
 
 	switch (currentState()){
 	case UP:
-		if ((getY() + front) < YY_MAX){
+		if((getY() + front) < YY_MAX - FRONT){
 			setY(getY() + delta);
-		}
-		else{
-			setY(YY_MAX - getFrogSquare());
+		} else{
+			setSteps(0);
 		}
 		setDir(UP);
-		processNextCmd();
 		break;
 
 	case DOWN:
-		if ((getY() - front) > YY_MIN){
+		if((getY() - front) > YY_MIN + FRONT){
 			setY(getY() - delta);
-		}
-		else {
-			setY(YY_MIN + getFrogSquare());
+		} else {
+			setSteps(0);
 		}
 		setDir(DOWN);
-		processNextCmd();
 		break;
 
 	case LEFT:
-		if ((getX() - front) > XX_MIN){
+		if((getX() - front) > XX_MIN + FRONT){
 			setX(getX() - delta);
-		}
-		else {
-			setX(XX_MIN + getFrogSquare());
+		} else {
+			setSteps(0);
 		}
 		setDir(LEFT);
-		processNextCmd();
 		break;
 
 	case RIGHT:
-		if ((getX() + front) < XX_MAX){
+		if((getX() + front) < XX_MAX - FRONT){
 			setX(getX() + delta);
-		}
-		else {
-			setX(XX_MAX - getFrogSquare());
+		} else {
+			setSteps(0);
 		}
 		setDir(RIGHT);
-		processNextCmd();
 		break;
 
 	default: //IDLE
