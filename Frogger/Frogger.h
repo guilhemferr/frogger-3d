@@ -4,6 +4,9 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+#include <iostream>
+#include <sstream>
+
 #include "cube.h"
 #include "side.h"
 #include "Frog.h"

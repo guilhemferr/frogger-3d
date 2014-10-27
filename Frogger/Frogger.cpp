@@ -20,6 +20,8 @@ int startX, startY, tracking = 0;
 float alpha = 39.0f, beta = 51.0f;
 float r = 15.0f;
 
+int WindowHandle = 0;
+int fpsCounter = 0;
 int modelID, projID, viewID, colorInID, normalID;
 int idVector[9];
 int locLDir;
@@ -463,7 +465,18 @@ void changeSize(int w, int h) {
 void fpsTimer(int value){
 
 	glutPostRedisplay();
+	fpsCounter++;
 	glutTimerFunc(TIMEOUT, fpsTimer, 0);
+}
+
+void fpsShow(int value){
+	std::ostringstream oss;
+	oss << "Frogger Demo" << ": " << fpsCounter << " FPS ";
+	std::string s = oss.str();
+	glutSetWindow(WindowHandle);
+	glutSetWindowTitle(s.c_str());
+	fpsCounter = 0;
+	glutTimerFunc(1000, fpsShow, 0);
 }
 
 //speedup obstacles
@@ -554,17 +567,6 @@ void init()
 	
 	terrain[4]->create(vsml, mySurfRev);
 
-	
-	//For Cylinder
-	/*
-	terrain[5] = new Tunnel(-18.0f, 0.0f, 2.0f, objId, idVector);
-
-	terrain[5]->create(vsml, mySurfRev);
-
-	terrain[6] = new Tunnel(18.0f, 0.0f, 2.0f, objId, idVector);
-
-	terrain[6]->create(vsml, mySurfRev);
-	*/
 	//For Torus
 	terrain[5] = new Tunnel(-19.0f, 8.0f, 2.0f, objId, idVector);
 
@@ -683,7 +685,7 @@ int main(int argc, char **argv) {
 
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(512, 512);
-	glutCreateWindow("Frogger Demo");
+	WindowHandle = glutCreateWindow("Frogger Demo");
 
 
 	//  Callback Registration
@@ -692,6 +694,7 @@ int main(int argc, char **argv) {
 	glutIdleFunc(renderScene);
 	glutTimerFunc(0, fpsTimer, 0);
 	glutTimerFunc(0, tick, 0);
+	glutTimerFunc(0, fpsShow, 0);
 	//	Mouse and Keyboard Callbacks
 	
 	glutKeyboardFunc(processKeys);

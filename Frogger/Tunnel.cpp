@@ -9,7 +9,7 @@ void Tunnel::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	int texcount = 0;
 
 	mySurfRev.createTorus(8.0f, 9.0f, 15, 15);
-	//mySurfRev.createCylinder(34.0f, 2.0f, 4);
+
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
@@ -22,10 +22,6 @@ void Tunnel::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 void Tunnel::draw(VSMathLib *vsml){
 	vsml->pushMatrix(VSMathLib::MODEL);
 	
-	//For Cylinder
-	//vsml->translate(getX(), getY(), getZ());
-	//vsml->scale(2.0f, 1.0f, 2.0f);
-	//vsml->rotate(45.0f, 0.0f, 1.0f, 0.0f);
 	//For Torus
 	vsml->translate(getX(), getY(), getZ());
 	vsml->scale(8.0f, 1.0f, 0.5f);
