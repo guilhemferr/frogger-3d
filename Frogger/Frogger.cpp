@@ -27,12 +27,12 @@ int locPos;
 int pointLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
-int texRoadLoc, texRiverLoc;
+int texRoadLoc, texRiverLoc, texWoodLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 float frogDirAux[4];
 
-GLuint TextureArray[2];
+GLuint TextureArray[3];
 
 Frog* frog;
 
@@ -347,9 +347,11 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
-
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 	glUniform1i(texRoadLoc, 0);
 	glUniform1i(texRiverLoc, 1);
+	glUniform1i(texWoodLoc, 2);
 
 	for(int i = 0; i < 9; i++){
 		terrain[i]->draw(vsml);
@@ -500,6 +502,7 @@ void init()
 
 	texRoadLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRoad");
 	texRiverLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRiver");
+	texWoodLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapWood");
 	
 
 	// some GL settings
@@ -509,10 +512,10 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glGenTextures(2, TextureArray);
+	glGenTextures(3, TextureArray);
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
-
+	TGA_Texture(TextureArray, "wood.tga", 2);
 
 	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 

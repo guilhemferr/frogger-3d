@@ -28,6 +28,7 @@ void TimberLog::draw(VSMathLib* vsml){
 	vsml->rotate(45.0f, 0, 1, 0);
 
 	initShadersVars(vsml, TimberLog::logId);
+	glUniform1i(getIdVector()[TEXID], 3);
 	glBindVertexArray(mesh[TimberLog::logId].vao);
 	glDrawElements(mesh[TimberLog::logId].type, mesh[TimberLog::logId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
