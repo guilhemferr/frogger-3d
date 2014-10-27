@@ -3,9 +3,9 @@
 
 void Bus::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
-	float ambBody[] = { 0.25f, 0.25f, 0.25f, 1.0f };
-	float diffBody[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-	float specBody[] = { 0.774597f, 0.774597f, 0.774597f, 1.0f };
+	float ambBody[] = { 0.1745f, 0.01175f, 0.01175f, 1.0f };
+	float diffBody[] = { 0.61424f, 0.04136f, 0.04136f, 1.0f };
+	float specBody[] = { 0.727811f, 0.626959f, 0.626959f, 1.0f };
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float* shininessBody = new float(128.0f * 0.6f);
 
