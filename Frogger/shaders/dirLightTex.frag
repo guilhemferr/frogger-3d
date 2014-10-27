@@ -163,8 +163,8 @@ void main() {
 
 					//legacy
 					d = length(sp);
-					a  = 5.0;
-					b = 3.0;
+					a  = 0.0;
+					b = 1.0;
 					c = 1.0;
 					att = a + b * d + c * pow(d, 2); 
 					////////////////////////////////
@@ -173,7 +173,7 @@ void main() {
 						pointContribution += (intensity * texel + spec);
 					}
 					else{
-						pointContribution += (intensity * diffuse + spec);
+						pointContribution += (intensity * diffuse + spec) / att;
 					}
 				}
 			}
