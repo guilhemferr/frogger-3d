@@ -19,8 +19,6 @@ public:
 	DynamicObject(int* idVector) : GameObject(idVector){}
 	~DynamicObject(){}
 
-
-
 	/**
 	* Methods
 	*/
@@ -29,9 +27,5 @@ public:
 	void setSpeed(double x, double y, double z);
 	double* getSpeed();
 	void speedUp(float inc);
-	/*
-	int* getIdVector(){
-		return idVector;
-	}
-	*/
+
 };

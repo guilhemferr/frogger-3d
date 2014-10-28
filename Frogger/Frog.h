@@ -7,7 +7,6 @@
 #include "DynamicObject.h" 
 #endif
 
-#define BUFF 2
 #define FRONT 0.3f
 
 enum frog_states {
@@ -29,24 +28,21 @@ private:
 	float velocity;
 
 	int direction;
-	int steps;
-	frog_states commandBuffer[BUFF];
+	frog_states commandBuffer;
+	bool _isUpdated;
 
 	float color[4];
+
 
 public:
 
 	Frog(int frogObjId, float velocity, int* idVector) : DynamicObject(idVector),
 		radius(0.65f), legsLen(2.3f), frogObjId(frogObjId), velocity(velocity), direction(UP),
-		steps(17) {
+		commandBuffer(IDLE), _isUpdated(false) {
 
 		setX(0.0f);
 		setY(-16.0f);
 		setZ(1.8f);
-
-		for(int i = 0; i < BUFF; i++) {
-			commandBuffer[i] = IDLE;
-		}
 
 		color[0] = 0.3f;
 		color[1] = 0.7f;
@@ -57,6 +53,10 @@ public:
 	virtual ~Frog() {}
 
 	//getters
+
+	bool isUpdated() {
+		return _isUpdated;
+	}
 
 	int getDir(){
 		return direction;
@@ -74,24 +74,20 @@ public:
 		return legsLen;
 	}
 
-	int getSteps() {
-		return steps;
-	}
-
 	//setters
 
 	void setDir(int dir){
 		Frog::direction = dir;
 	}
 	
-	void setSteps(int step) {
-		steps = step;
+	void isUpdated(bool isUpdated) {
+		_isUpdated = isUpdated;
 	}
 
 	//frog utilities
 
 	frog_states currentState() {
-		return commandBuffer[0];
+		return commandBuffer;
 	}
 
 	void queueCommand(frog_states state);
@@ -104,13 +100,6 @@ public:
 
 private:
 
-	void processNextCmd();
-
 	void moveFrog(double dt);
 
-	void swapArrayElements (frog_states states[], int index1, int index2);
-
-	void printBuff();
-
-	bool oppositeDir(frog_states state);
 };

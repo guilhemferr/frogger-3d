@@ -1,6 +1,11 @@
 #include "Frogger.h"
 #include "vsResSurfRevLib.h"
 
+
+#include <iostream>
+#include <vector>
+
+
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
 VSResSurfRevLib mySurfRev;
@@ -45,13 +50,13 @@ DynamicObject* cars[3];
 
 DynamicObject* bus[2];
 
-GameObject* terrain[9];
-
-StaticObject* lamps[6];
-
 DynamicObject* logs[5];
 
 DynamicObject* tortoise[3];
+
+GameObject* terrain[9];
+
+StaticObject* lamps[6];
 
 LightSource* lSource;
 
@@ -59,8 +64,17 @@ LightSource* pointLights[6];
 
 LightSource* spotLight;
 
+/**
+ * Game Manager
+ */
+GameManager *GM;
+
 int objId = 0;
 
+bool upPressed = false;
+bool downPressed = false;
+bool leftPressed = false;
+bool rightPressed = false;
 
 //QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
 struct MyMesh mesh[40];
@@ -71,7 +85,6 @@ GLuint setupShaders() {
 
 	// Shader for models
 	shader.init();
-	//TODO Change shader name
 	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLightTex.vert");
 	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLightTex.frag");
 
@@ -251,26 +264,49 @@ void processKeys(unsigned char key, int xx, int yy)
 	glutPostRedisplay();
 }
 
+void specialKeysReleased(int key, int x, int y) {
+
+	 switch (key) {
+
+	 case GLUT_KEY_UP:
+		upPressed = false;
+		break;
+	 case GLUT_KEY_DOWN:
+		 downPressed = false;
+		 break;
+	 case GLUT_KEY_LEFT:
+		 leftPressed = false;
+	 		 break;
+	 case GLUT_KEY_RIGHT:
+		 rightPressed = false;
+		 break;
+	 }
+}
+
 // Callback function. Process arrows commands.
 void arrowPressed(int key, int x, int y){
 
 	switch (key)
 	{
 	case GLUT_KEY_LEFT:
+		leftPressed = true;
 		frog->queueCommand(LEFT);
 		break;
 	case GLUT_KEY_RIGHT:
+		rightPressed = true;
 		frog->queueCommand(RIGHT);
 		break;
 	case GLUT_KEY_UP:
+		upPressed = true;
 		frog->queueCommand(UP);
 		break;
 	case GLUT_KEY_DOWN:
+		downPressed = true;
 		frog->queueCommand(DOWN);
 		break;
 	default:
 		break;
-	}
+	  }
 }
 
 //calculates the elapsed time delta x
@@ -312,6 +348,7 @@ void checkFrogDir(){
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
@@ -370,50 +407,14 @@ void renderScene() {
 	for(int i = 0; i < 9; i++){
 		terrain[i]->draw(vsml);
 	}
-	
-	frog->draw(vsml);
 
-	for (int i = 0; i < 3; i++){
-		cars[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 5; i++) {
-		logs[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 3; i++){
-		tortoise[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 2; i++){
-		bus[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 6; i++){
-		lamps[i]->draw(vsml);
-	}
-
+	frog->isUpdated(upPressed || downPressed || leftPressed || rightPressed);
+	GM->drawScene(vsml);
 
 	// calculates game elapsed time
 	double delta_t = calcElapsedTime();
-	// Update objects
-	frog->update(delta_t);
-	for (int i = 0; i < 3; i++){
-		cars[i]->update(delta_t);
-	}
 
-	for (int i = 0; i < 2; i++){
-		bus[i]->update(delta_t);
-	}
-
-	for (int i = 0; i < 5; i++){
-		logs[i]->update(delta_t);
-	}
-
-	for (int i = 0; i < 3; i++){
-		tortoise[i]->update(delta_t);
-	}
-
+	GM->updateGame(delta_t);
 	
 	//swap buffers
 	glutSwapBuffers();
@@ -463,9 +464,6 @@ void changeSize(int w, int h) {
 		vsml->perspective(30, ratio, 1.0f, 1000.0f);
 		break;
 	}
-
-	
-
 }
 
 void fpsTimer(int value){
@@ -497,6 +495,7 @@ void tick(int value){
 
 void init()
 {	
+	GM = new GameManager();
 
 	idVector[MODELID] = glGetUniformLocation(shader.getProgramIndex(), "model");
 	idVector[VIEWID] = glGetUniformLocation(shader.getProgramIndex(), "view");
@@ -591,13 +590,15 @@ void init()
 
 	terrain[8]->create(vsml, mySurfRev);
 
-	frog = new Frog(objId, 0.08f, idVector);
+	frog = new Frog(objId, 0.02f, idVector);
+
+	GM->addDynamicObj(frog);
 
 	frog->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
 		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, 0.01f, idVector);
-		
+		GM->addDynamicObj(cars[i]);
 	}
 
 	
@@ -605,19 +606,23 @@ void init()
 
 	for (int i = 0; i < 2; i++){
 		bus[i] = new Bus(8.0f - i * 15, -10.0f, 2.0f, objId, 0.008f, idVector);
+		GM->addDynamicObj(bus[i]);
 	}
 	bus[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
 		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, 0.01f, idVector);
+		GM->addDynamicObj(logs[i]);
 	}
 	for (int i = 0; i < 2; i++){
 		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 12.0f, 1.0f, objId, 0.01f, idVector);
+		GM->addDynamicObj(logs[i+3]);
 	}
 	logs[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
 		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, 0.008f, idVector);
+		GM->addDynamicObj(tortoise[i]);
 	}
 	tortoise[0]->create(vsml, mySurfRev);
 
@@ -698,16 +703,19 @@ int main(int argc, char **argv) {
 	//  Callback Registration
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
-	glutTimerFunc(0, fpsTimer, 0);
+	//glutIdleFunc(renderScene);
+	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 	glutTimerFunc(0, tick, 0);
 	glutTimerFunc(0, fpsShow, 0);
+
+
 	//	Mouse and Keyboard Callbacks
 	
 	glutKeyboardFunc(processKeys);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
 	glutSpecialFunc(arrowPressed);
+	glutSpecialUpFunc(specialKeysReleased);
 
 	//glutMouseWheelFunc(mouseWheel);
 	

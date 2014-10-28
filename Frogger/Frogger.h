@@ -20,6 +20,7 @@
 #include "Bus.h"
 #include "Lamp.h"
 #include "LightSource.h"
+#include "GameManager.h"
 
 #include "TGA.h"
 #include "vsMathLib.h"

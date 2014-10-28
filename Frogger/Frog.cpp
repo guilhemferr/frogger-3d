@@ -109,55 +109,13 @@ void Frog::draw(VSMathLib* vsml){
 /**
  * Methods for move */
 
-void Frog::printBuff(){
-	for(int i = 0; i < BUFF; i++) {
-		std::cout << "buff[" << i << "] : " << commandBuffer[i] << " ";
-	}
-	std::cout << std::endl;
-}
-
-bool Frog::oppositeDir(frog_states state) {
-	return abs(currentState() - state) == 90;
-}
-
 void Frog::queueCommand(frog_states state) {
-
-	if(oppositeDir(state)) {
-		commandBuffer[0] = state;
-		return;
-	}
-
-	for(int i = 0;i < BUFF; i++) {
-		if(commandBuffer[i] == IDLE) {
-			commandBuffer[i] = state;
-			return;
-		}
-	}
-}
-// function to swap two elements of an array
-void Frog::swapArrayElements (frog_states states[], int index1, int index2) {
-    frog_states temp = IDLE;
-    temp = states[index1];
-    states[index1] = states[index2];
-    states[index2] = temp;
-}
-
-void Frog::processNextCmd() {
-	//commandBuffer =  IDLE;
-	commandBuffer[0] = IDLE;
-	for(int i = 0; i < BUFF -1; i++) {
-		swapArrayElements(commandBuffer, i, i+1);
-	}
+	commandBuffer = state;
 }
 
 void Frog::update(double delta_t) {
-
-	if(currentState() != IDLE && getSteps() > 0) {
+	if(isUpdated()) {
 		moveFrog(delta_t);
-		setSteps(getSteps() - 1);
-	}else {
-		setSteps(17);
-		processNextCmd();
 	}
 }
 
@@ -172,8 +130,6 @@ void Frog::moveFrog(double dt){
 	case UP:
 		if((getY() + front) < YY_MAX - FRONT){
 			setY(getY() + delta);
-		} else{
-			setSteps(0);
 		}
 		setDir(UP);
 		break;
@@ -181,8 +137,6 @@ void Frog::moveFrog(double dt){
 	case DOWN:
 		if((getY() - front) > YY_MIN + FRONT){
 			setY(getY() - delta);
-		} else {
-			setSteps(0);
 		}
 		setDir(DOWN);
 		break;
@@ -190,8 +144,6 @@ void Frog::moveFrog(double dt){
 	case LEFT:
 		if((getX() - front) > XX_MIN + FRONT){
 			setX(getX() - delta);
-		} else {
-			setSteps(0);
 		}
 		setDir(LEFT);
 		break;
@@ -199,8 +151,6 @@ void Frog::moveFrog(double dt){
 	case RIGHT:
 		if((getX() + front) < XX_MAX - FRONT){
 			setX(getX() + delta);
-		} else {
-			setSteps(0);
 		}
 		setDir(RIGHT);
 		break;
