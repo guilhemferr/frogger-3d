@@ -37,8 +37,10 @@ int PointLightState = 1;
 int SpecialLightState = 0;
 float frogDirAux[4];
 
-int flagMove = 1000;
-float moveCounter = 0.0f;
+int lives = 5;
+
+//int flagMove = 1000;
+//float moveCounter = 0.0f;
 
 GLuint TextureArray[4];
 
@@ -74,7 +76,7 @@ GLuint setupShaders() {
 
 	// Shader for models
 	shader.init();
-	//TODO Change shader name
+
 	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLightTex.vert");
 	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLightTex.frag");
 
@@ -224,16 +226,24 @@ void processKeys(unsigned char key, int xx, int yy)
 		selectedCamera = FROGCAM;
 		break;
 	case 'q':
-		frog->moveFrog(UP);
+		if (lives > 0){
+			frog->moveFrog(UP);
+		}
 		break;
 	case 'a':
-		frog->moveFrog(DOWN);
+		if (lives > 0){
+			frog->moveFrog(DOWN);
+		}
 		break;
 	case 'o':
-		frog->moveFrog(LEFT);
+		if (lives > 0){
+			frog->moveFrog(LEFT);
+		}
 		break;
 	case 'p':
-		frog->moveFrog(RIGHT);
+		if (lives > 0){
+			frog->moveFrog(RIGHT);
+		}
 		break;
 	case 'n':
 		DirLightState = (DirLightState + 1) % 2;
@@ -243,6 +253,25 @@ void processKeys(unsigned char key, int xx, int yy)
 		break;
 	case 'z':
 		SpecialLightState = (SpecialLightState + 1) % 2;
+		break;
+
+	case 'r':
+		lives = 5;
+		for (int i = 0; i < 3; i++){
+			cars[i]->setVelocity(0.008f); 
+		}
+		for (int i = 0; i < 2; i++){
+			bus[i]->setVelocity(0.006f);
+		}
+
+		for (int i = 0; i < 12; i++){
+			logs[i]->setVelocity(0.001f);
+		}
+
+		for (int i = 0; i < 6; i++){
+			tortoise[i]->setVelocity(0.005f);
+		}
+
 		break;
 
 	default:
@@ -258,7 +287,10 @@ void processKeys(unsigned char key, int xx, int yy)
 void arrowPressed(int key, int x, int y){
 
 
-	if (moveCounter == 0.0f){
+	//if (moveCounter == 0.0f){
+	if (lives == 0){
+		return;
+	}
 		switch (key)
 		{
 		case GLUT_KEY_LEFT:
@@ -280,7 +312,8 @@ void arrowPressed(int key, int x, int y){
 		default:
 			break;
 		}
-	}
+	
+	//}
 }
 
 //calculates the elapsed time delta x
@@ -321,6 +354,10 @@ void checkFrogDir(){
 
 bool isColliding(){
 	bool colliding = false;
+	if (frog->getY() == 16.0f){
+		lives = 0;
+		return true;
+	}
 	if (frog->getY() > 0.0f && frog->getY() < 16.0f){
 		//Timberlog
 		for (int i = 0; i < 12; i++){
@@ -342,7 +379,7 @@ bool isColliding(){
 				return false;
 			}
 		}
-
+		lives--;
 		return true;
 
 
@@ -355,6 +392,7 @@ bool isColliding(){
 				|| frog->getBigY() < bus[i]->getSmallY()
 				|| bus[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
+				lives--;
 				return colliding;
 			}
 		}
@@ -365,6 +403,7 @@ bool isColliding(){
 				|| frog->getBigY() < cars[i]->getSmallY()
 				|| cars[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
+				lives--;
 				return colliding;
 			}
 		}
@@ -420,16 +459,22 @@ void renderScene() {
 	}
 	*/
 
-	if (isColliding()){
+	if (isColliding() || lives == 0){
 		frog->setX(0.0f);
 		frog->setY(-16.0f);
+		frog->setDir(UP);
 	}
 
 	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ(), 1.0f };
 	spotLight->setPosition(frogPosAux);
 	checkFrogDir();
-	spotLight->setDirection(frogDirAux);
-
+	if (lives == 0){
+		float dirDead[4] = { 0.0f, 0.0f, 1.0f, 0.0 };
+		spotLight->setDirection(dirDead);
+	}
+	else{
+		spotLight->setDirection(frogDirAux);
+	}
 	vsml->multMatrixPoint(VSMathLib::VIEW, spotLight->getDirection(), res);
 	glUniform4fv(spotDirectionLoc, 1, res);
 	vsml->multMatrixPoint(VSMathLib::VIEW, spotLight->getPosition(), res);
@@ -453,8 +498,9 @@ void renderScene() {
 		terrain[i]->draw(vsml);
 	}
 	
-	frog->draw(vsml);
-
+	if(lives > 0){
+		frog->draw(vsml);
+	}
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml);
 		
@@ -496,7 +542,6 @@ void renderScene() {
 	for (int i = 0; i < 6; i++){
 		tortoise[i]->update(delta_t);
 	}
-
 	
 	//swap buffers
 	glutSwapBuffers();
@@ -560,7 +605,12 @@ void fpsTimer(int value){
 
 void fpsShow(int value){
 	std::ostringstream oss;
-	oss << "Frogger Demo" << ": " << fpsCounter << " FPS ";
+	if (lives == 0){
+		oss << "Frogger" << ": " << "GAME OVER!! Press R to retry.";
+	}
+	else{
+		oss << "Frogger" << ": " << fpsCounter << " FPS Lives: " << lives;
+	}
 	std::string s = oss.str();
 	glutSetWindow(WindowHandle);
 	glutSetWindowTitle(s.c_str());
@@ -571,10 +621,19 @@ void fpsShow(int value){
 //speedup obstacles
 void tick(int value){
 
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 3; i++){
 		cars[i]->speedUp(0.001f);
 	}
-	glutTimerFunc(3000, tick, 0);
+	for (int i = 0; i < 2; i++){
+		bus[i]->speedUp(0.001f);
+	}
+	for (int i = 0; i < 12; i++){
+		logs[i]->speedUp(0.001f);
+	}
+	for (int i = 0; i < 6; i++){
+		tortoise[i]->speedUp(0.001f);
+	}
+	glutTimerFunc(10000, tick, 0);
 }
 
 
@@ -701,10 +760,10 @@ void init()
 		logs[i + 6] = new TimberLog(12.0f - i * 10.0f - 5.0f, 8.0f, 1.0f, objId, 0.001f, idVector);
 	}
 	for (int i = 0; i < 2; i++){
-		logs[i + 8] = new TimberLog(12.0f - i * 2.0f, 12.0f, 1.0f, objId, 0.0008f, idVector);
+		logs[i + 8] = new TimberLog(12.0f - i * 2.0f, 12.0f, 1.0f, objId, 0.001f, idVector);
 	}
 	for (int i = 0; i < 2; i++){
-		logs[i + 10] = new TimberLog(12.0f - i * 2.0f, 14.0f, 1.0f, objId, 0.0008f, idVector);
+		logs[i + 10] = new TimberLog(12.0f - i * 2.0f, 14.0f, 1.0f, objId, 0.001f, idVector);
 	}
 	
 	logs[0]->create(vsml, mySurfRev);
@@ -789,7 +848,7 @@ int main(int argc, char **argv) {
 
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(512, 512);
-	WindowHandle = glutCreateWindow("Frogger Demo");
+	WindowHandle = glutCreateWindow("Frogger");
 
 
 	//  Callback Registration

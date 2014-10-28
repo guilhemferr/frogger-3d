@@ -26,7 +26,6 @@ private:
 	const float legsLen;
 
 	int frogObjId;
-	float velocity;
 
 	int direction;
 	int steps;
@@ -37,12 +36,14 @@ private:
 public:
 
 	Frog(int frogObjId, float velocity, int* idVector) : DynamicObject(idVector),
-		radius(0.65f), legsLen(2.3f), frogObjId(frogObjId), velocity(velocity), direction(UP),
+		radius(0.65f), legsLen(2.3f), frogObjId(frogObjId),  direction(UP),
 		steps(17) {
 
 		setX(0.0f);
 		setY(-16.0f);
 		setZ(1.8f);
+
+		setVelocity(velocity);
 
 		for(int i = 0; i < BUFF; i++) {
 			commandBuffer[i] = IDLE;
@@ -63,9 +64,6 @@ public:
 		return direction;
 	}
 
-	float getVelocity() {
-		return velocity;
-	}
 
 	float getRadius() {
 		return radius;

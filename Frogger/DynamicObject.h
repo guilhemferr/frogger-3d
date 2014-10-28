@@ -11,7 +11,7 @@ class DynamicObject : public GameObject{
 	 */
 	double _speed[3];
 
-	float bounds[4];
+	float velocity;
 
 	//int idVector[8];
 public:
@@ -30,7 +30,20 @@ public:
 	void setSpeed(double *speed);
 	void setSpeed(double x, double y, double z);
 	double* getSpeed();
-	void speedUp(float inc);
+
+	void speedUp(float inc){
+		if (getVelocity() < 0.3f){
+			setVelocity(inc + getVelocity());
+		}
+	}
+
+	float getVelocity() {
+		return velocity;
+	}
+
+	void setVelocity(float v) {
+		velocity = v;
+	}
 	/*
 	int* getIdVector(){
 		return idVector;

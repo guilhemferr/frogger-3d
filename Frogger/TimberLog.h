@@ -13,17 +13,18 @@
 class TimberLog : public DynamicObject {
 private:
 	int logId;
-	float velocity;
 	bool revert;
 
 public:
 
 	TimberLog(float xcoord, float ycoord, float zcoord, int logId, float velocity, int* idVector) : 
-		DynamicObject(idVector), velocity(velocity), revert(false){
+		DynamicObject(idVector), revert(false){
 		//Position of TimberLog
 		setX(xcoord);
 		setY(ycoord);
 		setZ(zcoord);
+
+		setVelocity(velocity);
 
 		//The id of the TimberLog in question
 		TimberLog::logId = logId;
@@ -39,13 +40,6 @@ public:
 
 	void update(double delta_t);
 
-	float getVelocity() {
-		return velocity;
-	}
-
-	void setVelocity(float v) {
-		velocity = v;
-	}
 
 	bool isRevert() {
 		return revert;

@@ -16,17 +16,18 @@ private:
 	float colorBody[4];
 	float colorWheels[4];
 	int carObjId;
-	float velocity;
 	bool revert;
 
 public:
 
 	Car(float xcoord, float ycoord, float zcoord, int carObjId, float velocity, int* idVector) : 
-		DynamicObject(idVector), velocity(velocity), revert(false){
+		DynamicObject(idVector), revert(false){
 	
 		setX(xcoord);
 		setY(ycoord);
 		setZ(zcoord);
+
+		setVelocity(velocity);
 
 		Car::carObjId = carObjId;
 
@@ -50,14 +51,6 @@ public:
 	float moveCar();
 
 	void update(double delta_t);
-
-	float getVelocity() {
-		return velocity;
-	}
-
-	void setVelocity(float v) {
-		velocity = v;
-	}
 
 	bool isRevert() {
 		return revert;

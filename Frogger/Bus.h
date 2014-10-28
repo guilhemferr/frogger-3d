@@ -16,17 +16,18 @@ private:
 	float colorBody[4];
 	float colorWheels[4];
 	int busObjId;
-	float velocity;
 	bool revert;
 
 public:
 
 	Bus(float xcoord, float ycoord, float zcoord, int busObjId, float velocity, int* idVector) :
-		DynamicObject(idVector), velocity(velocity), revert(false){
+		DynamicObject(idVector), revert(false){
 
 		setX(xcoord);
 		setY(ycoord);
 		setZ(zcoord);
+
+		setVelocity(velocity);
 
 		Bus::busObjId = busObjId;
 
@@ -51,13 +52,6 @@ public:
 
 	void update(double delta_t);
 
-	float getVelocity() {
-		return velocity;
-	}
-
-	void setVelocity(float v) {
-		velocity = v;
-	}
 
 	bool isRevert() {
 		return revert;
