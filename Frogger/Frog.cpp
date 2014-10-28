@@ -151,7 +151,7 @@ void Frog::moveFrog(int direction){
 }
 
 void Frog::update(double delta_t){
-
+	setX(getX() - delta_t);
 }
 
 void Frog::specialMoveFrog(int direction, float distance){

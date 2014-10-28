@@ -38,7 +38,6 @@ void TimberLog::draw(VSMathLib* vsml){
 void TimberLog::update(double delta_t) {
 	double delta = delta_t * getVelocity();
 	float front = getX() - delta + OFF_SET;
-
 	if (front > XX_MIN) {
 		setX(getX() - delta);
 	}

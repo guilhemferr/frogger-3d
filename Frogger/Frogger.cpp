@@ -36,6 +36,7 @@ int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
 float frogDirAux[4];
+bool onRiver = false;
 
 int lives = 5;
 
@@ -366,6 +367,7 @@ bool isColliding(){
 				|| frog->getBigY() < logs[i]->getSmallY()
 				|| logs[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
+				onRiver = true;
 				return false;
 			}
 		}
@@ -376,6 +378,7 @@ bool isColliding(){
 				|| frog->getBigY() < tortoise[i]->getSmallY()
 				|| tortoise[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
+				onRiver = true;
 				return false;
 			}
 		}
@@ -408,7 +411,7 @@ bool isColliding(){
 			}
 		}
 	}
-	
+	onRiver = false;
 	return colliding;
 }
 
@@ -464,6 +467,8 @@ void renderScene() {
 		frog->setY(-16.0f);
 		frog->setDir(UP);
 	}
+
+	
 
 	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ(), 1.0f };
 	spotLight->setPosition(frogPosAux);
@@ -526,7 +531,9 @@ void renderScene() {
 	// calculates game elapsed time
 	double delta_t = calcElapsedTime();
 	// Update objects
-	frog->update(delta_t);
+	
+	
+
 	for (int i = 0; i < 3; i++){
 		cars[i]->update(delta_t);
 	}
@@ -537,6 +544,12 @@ void renderScene() {
 
 	for (int i = 0; i < 12; i++){
 		logs[i]->update(delta_t);
+	}
+
+	if (onRiver){
+		//std::cout << "Frog delta " << delta_t*logs[0]->getVelocity() << std::endl;
+		//frog->setX(frog->getX() - delta_t * logs[0]->getVelocity());
+		frog->update(delta_t * logs[0]->getVelocity());
 	}
 
 	for (int i = 0; i < 6; i++){
