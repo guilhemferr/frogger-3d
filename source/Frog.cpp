@@ -115,11 +115,16 @@ void Frog::printBuff(){
 }
 
 void Frog::queueCommand(frog_states state) {
-	for(int i = 0;i < BUFF; i++) {
-		if(commandBuffer[i] == IDLE) {
-			commandBuffer[i] = state;
-			return;
-		}
+//	for(int i = 0;i < BUFF; i++) {
+//		if(commandBuffer[i] == IDLE) {
+//			commandBuffer[i] = state;
+//			return;
+//		}
+//	}
+	if(currentState() == IDLE) {
+		commandBuffer[0] = state;
+	} else {
+		commandBuffer[1] = state;
 	}
 }
 // function to swap two elements of an array
@@ -138,15 +143,26 @@ void Frog::processNextCmd() {
 	}
 }
 
+float Frog::updateFrogPos()
+{
+	int t = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTime = t - getTime();
+	float v = getVelocity();
+	float delta = elapsedTime * v;
+	setTime(t);
+
+	return delta;
+}
+
 void Frog::update(double delta_t) {
 
-	if(currentState() != IDLE && getSteps() > 0) {
+	//if(currentState() != IDLE && getSteps() > 0) {
 		moveFrog(delta_t);
-		setSteps(getSteps() - 1);
-	}else {
-		setSteps(12);
-		processNextCmd();
-	}
+	//	setSteps(getSteps() - 1);
+	//}else {
+		//setSteps(12);
+		//processNextCmd();
+	//}
 }
 
 void Frog::moveFrog(double dt){

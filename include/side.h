@@ -10,10 +10,8 @@
 #define	YY_MIN -17.0f
 #define	ZZ_MAX 1.3f
 #define	ZZ_MIN 1.0
-#define LINE 32
-#define OBJ 5
 
-//int table[LINE][OBJ];
+
 
 void loadVAOSide();
 

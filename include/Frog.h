@@ -35,8 +35,10 @@ private:
 	int direction;
 	int steps;
 	frog_states commandBuffer[BUFF];
+	int time;
 
 	float color[4];
+
 
 public:
 
@@ -45,7 +47,7 @@ public:
 				xcoord(xcoord), ycoord(ycoord), zcoord(zcoord), modelID(modelID),
 				viewID(viewID), projID(projID), colorInID(colorInID), normalID(normalID),
 				frogObjId(frogObjId), velocity(velocity), radius(0.65f), legsLen(2.3f),
-				direction(UP), steps(10) {
+				direction(UP), steps(10), time(0) {
 
 		for(int i = 0; i < BUFF; i++)
 			commandBuffer[i] = IDLE;
@@ -63,6 +65,11 @@ public:
 	float getX(){
 		return xcoord;
 	}
+
+	int getTime() { return time; }
+
+	void setTime(int t) { time = t;}
+
 	float getY(){
 		return ycoord;
 	}
@@ -133,4 +140,8 @@ private:
 	void swapArrayElements (frog_states states[], int index1, int index2);
 
 	void printBuff();
+
+	float updateFrogPos();
+
+	void changeState(){ commandBuffer[0] = commandBuffer[1]; commandBuffer[1] = IDLE; }
 };

@@ -1,4 +1,4 @@
-#version 140
+#version 150
 
 uniform mat3 m_normal;
 uniform mat4 view;

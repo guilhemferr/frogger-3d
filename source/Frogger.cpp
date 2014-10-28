@@ -8,9 +8,6 @@ VSResSurfRevLib mySurfRev;
 
 //elapsed time
 int old_t = 0;
-
-float table[LINE][OBJ];
-
 // Camera Position
 float camX, camY, camZ;
 
@@ -34,6 +31,9 @@ int objId = 0;
 struct MyMesh mesh[8];
 
 int selectedCamera = TOPCAMERA;
+
+bool upPressed = false;
+bool downPressed = false;
 
 GLuint setupShaders() {
 
@@ -206,6 +206,18 @@ void processKeys(unsigned char key, int xx, int yy)
 		glutPostRedisplay();
 }
 
+void specialKeysReleased(int key, int x, int y) {
+
+	 switch (key) {
+	 case GLUT_KEY_UP:
+	  upPressed = false;
+	  break;
+	 case GLUT_KEY_DOWN:
+	  downPressed = false;
+	  break;
+	 }
+}
+
 // Callback function. Process arrows commands.
 void arrowPressed(int key, int x, int y){
 
@@ -218,10 +230,18 @@ void arrowPressed(int key, int x, int y){
 		frog->queueCommand(RIGHT);
 		break;
 	case GLUT_KEY_UP:
-		frog->queueCommand(UP);
+		upPressed = true;
+		if(!downPressed){
+			std::cout << "UP1\n";
+			frog->queueCommand(UP);
+		}
 		break;
 	case GLUT_KEY_DOWN:
-		frog->queueCommand(DOWN);
+		if(!upPressed) {
+			std::cout << "DOWN1\n";
+			downPressed = true;
+			frog->queueCommand(DOWN);
+		}
 		break;
 	default:
 		break;
@@ -237,8 +257,21 @@ double calcElapsedTime() {
 	return double(elapsedTime);
 }
 
+void updateScene() {
+	// calculates game elapsed time
+		double delta_t = calcElapsedTime();
+		// Update objects
+		if(downPressed || upPressed)
+			frog->update(delta_t);
+		for (int i = 0; i < 5; i++){
+			cars[i]->update(delta_t);
+		}
+}
+
 void renderScene() {
 
+	updateScene();
+	glClearColor(.0f , .0f, .05f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	vsml->loadIdentity(VSMathLib::VIEW);
@@ -262,13 +295,6 @@ void renderScene() {
 	frog->draw(vsml, mesh);
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml, mesh);
-	}
-	// calculates game elapsed time
-	double delta_t = calcElapsedTime();
-	// Update objects
-	frog->update(delta_t);
-	for (int i = 0; i < 5; i++){
-		cars[i]->update(delta_t);
 	}
 
 	//swap buffers
@@ -401,9 +427,6 @@ void init()
 	camY = - 15.0f;
 	camZ = 5.0f;
 
-	//initiating table here...
-	table[0][0] = 0.0f;
-	table[0][0] = 12.0f;
 }
 
 void initVSL() {
@@ -432,8 +455,8 @@ int main(int argc, char **argv) {
 	//  Callback Registration
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
-	glutTimerFunc(0, fpsTimer, 0);
+	//glutIdleFunc(updateScene);
+	glutTimerFunc(TIMEOUT, fpsTimer, 0);
 	glutTimerFunc(0, tick,0);
 
 	//	Mouse and Keyboard Callbacks
@@ -442,6 +465,7 @@ int main(int argc, char **argv) {
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
 	glutSpecialFunc(arrowPressed);
+	glutSpecialUpFunc(specialKeysReleased);
 
 	//glutMouseWheelFunc(mouseWheel);
 	
