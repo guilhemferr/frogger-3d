@@ -63,8 +63,9 @@ double calcElapsedTime();
 
 void checkFrogDir();
 
-void renderScene();
+bool isColliding();
 
+void renderScene();
 
 void changeSize(int w, int h);
 

@@ -16,7 +16,7 @@ void Bus::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	int texcount = 0;
 
-	mySurfRev.createCylinder(6.0f, 2.0f, 4);
+	mySurfRev.createCylinder(6.0f, 3.0f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambBody);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffBody);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specBody);
@@ -73,7 +73,7 @@ void Bus::draw(VSMathLib* vsml){
 		isRevert(false);
 	}
 	vsml->translate(getX(), getY(), getZ() + 1.2f);
-
+	vsml->scale(1.0f, 1.0f, 0.7f);
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
 	//mySurfRev.createCylinder(4.0f, 1.2f, 4);
@@ -88,8 +88,8 @@ void Bus::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY(), getZ() - 0.3f);
-	vsml->translate(1.7f, 1.5f, 0.2f);
+	vsml->translate(getX(), getY(), getZ() - 1.0f);
+	vsml->translate(1.7f, 2.0f, 0.2f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -101,8 +101,8 @@ void Bus::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY(), getZ() - 0.3f);
-	vsml->translate(-1.7f, 1.5f, 0.2f);
+	vsml->translate(getX(), getY(), getZ() - 1.0f);
+	vsml->translate(-1.7f, 2.0f, 0.2f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -114,8 +114,8 @@ void Bus::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY(), getZ() - 0.3f);
-	vsml->translate(1.7f, -1.5f, 0.2f);
+	vsml->translate(getX(), getY(), getZ() - 1.0f);
+	vsml->translate(1.7f, -2.0f, 0.2f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -127,8 +127,8 @@ void Bus::draw(VSMathLib* vsml){
 	vsml->popMatrix(VSMathLib::MODEL);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY(), getZ() - 0.3f);
-	vsml->translate(-1.7f, -1.5f, 0.2f);
+	vsml->translate(getX(), getY(), getZ() - 1.0f);
+	vsml->translate(-1.7f, -2.0f, 0.2f);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);

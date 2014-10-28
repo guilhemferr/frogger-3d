@@ -37,6 +37,9 @@ int PointLightState = 1;
 int SpecialLightState = 0;
 float frogDirAux[4];
 
+int flagMove = 1000;
+float moveCounter = 0.0f;
+
 GLuint TextureArray[4];
 
 Frog* frog;
@@ -49,9 +52,9 @@ GameObject* terrain[9];
 
 StaticObject* lamps[6];
 
-DynamicObject* logs[5];
+DynamicObject* logs[12];
 
-DynamicObject* tortoise[3];
+DynamicObject* tortoise[6];
 
 LightSource* lSource;
 
@@ -62,7 +65,7 @@ LightSource* spotLight;
 int objId = 0;
 
 
-//QUANDO SE MUDAR AQUI TAMBEM E PRECISO MUDAR NO VSRESSURFREVLIB.H
+//Change in VSRESSURFREVLIB.H as well
 struct MyMesh mesh[40];
 
 int selectedCamera = TOPCAMERA;
@@ -105,17 +108,17 @@ void processMouseButtons(int button, int state, int xx, int yy)
 
 				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
 					if (yy >(frog->getY())){
-						frog->queueCommand(UP);
+						frog->moveFrog(UP);
 					}
 					else {
-						frog->queueCommand(DOWN);
+						frog->moveFrog(DOWN);
 					}
 				}
 				else if (xx > frog->getX()){
-					frog->queueCommand(RIGHT);
+					frog->moveFrog(RIGHT);
 				}
 				else{
-					frog->queueCommand(LEFT);
+					frog->moveFrog(LEFT);
 				}
 
 				glutPostRedisplay();
@@ -221,16 +224,16 @@ void processKeys(unsigned char key, int xx, int yy)
 		selectedCamera = FROGCAM;
 		break;
 	case 'q':
-		frog->queueCommand(UP);
+		frog->moveFrog(UP);
 		break;
 	case 'a':
-		frog->queueCommand(DOWN);
+		frog->moveFrog(DOWN);
 		break;
 	case 'o':
-		frog->queueCommand(LEFT);
+		frog->moveFrog(LEFT);
 		break;
 	case 'p':
-		frog->queueCommand(RIGHT);
+		frog->moveFrog(RIGHT);
 		break;
 	case 'n':
 		DirLightState = (DirLightState + 1) % 2;
@@ -254,22 +257,29 @@ void processKeys(unsigned char key, int xx, int yy)
 // Callback function. Process arrows commands.
 void arrowPressed(int key, int x, int y){
 
-	switch (key)
-	{
-	case GLUT_KEY_LEFT:
-		frog->queueCommand(LEFT);
-		break;
-	case GLUT_KEY_RIGHT:
-		frog->queueCommand(RIGHT);
-		break;
-	case GLUT_KEY_UP:
-		frog->queueCommand(UP);
-		break;
-	case GLUT_KEY_DOWN:
-		frog->queueCommand(DOWN);
-		break;
-	default:
-		break;
+
+	if (moveCounter == 0.0f){
+		switch (key)
+		{
+		case GLUT_KEY_LEFT:
+			//flagMove = LEFT;
+			frog->moveFrog(LEFT);
+			break;
+		case GLUT_KEY_RIGHT:
+			//flagMove = RIGHT;
+			frog->moveFrog(RIGHT);
+			break;
+		case GLUT_KEY_UP:
+			//flagMove = UP;
+			frog->moveFrog(UP);
+			break;
+		case GLUT_KEY_DOWN:
+			//flagMove = DOWN;
+			frog->moveFrog(DOWN);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -309,6 +319,60 @@ void checkFrogDir(){
 
 }
 
+bool isColliding(){
+	bool colliding = false;
+	if (frog->getY() > 0.0f && frog->getY() < 16.0f){
+		//Timberlog
+		for (int i = 0; i < 12; i++){
+			colliding = !(frog->getBigX() < logs[i]->getSmallX()
+				|| logs[i]->getBigX() < frog->getSmallX()
+				|| frog->getBigY() < logs[i]->getSmallY()
+				|| logs[i]->getBigY() < frog->getSmallY());
+			if (colliding == true){
+				return false;
+			}
+		}
+		//Tortoise
+		for (int i = 0; i < 6; i++){
+			colliding = !(frog->getBigX() < tortoise[i]->getSmallX()
+				|| tortoise[i]->getBigX() < frog->getSmallX()
+				|| frog->getBigY() < tortoise[i]->getSmallY()
+				|| tortoise[i]->getBigY() < frog->getSmallY());
+			if (colliding == true){
+				return false;
+			}
+		}
+
+		return true;
+
+
+	}
+	else{
+		//Bus
+		for (int i = 0; i < 2; i++){
+			colliding = !(frog->getBigX() < bus[i]->getSmallX()
+				|| bus[i]->getBigX() < frog->getSmallX()
+				|| frog->getBigY() < bus[i]->getSmallY()
+				|| bus[i]->getBigY() < frog->getSmallY());
+			if (colliding == true){
+				return colliding;
+			}
+		}
+		//Car
+		for (int i = 0; i < 3; i++){
+			colliding = !(frog->getBigX() < cars[i]->getSmallX()
+				|| cars[i]->getBigX() < frog->getSmallX()
+				|| frog->getBigY() < cars[i]->getSmallY()
+				|| cars[i]->getBigY() < frog->getSmallY());
+			if (colliding == true){
+				return colliding;
+			}
+		}
+	}
+	
+	return colliding;
+}
+
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -342,6 +406,24 @@ void renderScene() {
 	glUniform1i(DirLightStateLoc, DirLightState);
 	glUniform1i(PointLightStateLoc, PointLightState);
 	glUniform1i(SpecialLightStateLoc, SpecialLightState);
+	/*
+	if (flagMove != 1000){
+		frog->specialMoveFrog(flagMove, 0.5f);
+		if (moveCounter == 2.0f){
+			flagMove = 1000;
+			moveCounter = 0.0f;
+		}
+		else
+		{
+			moveCounter = moveCounter + 0.5f;
+		}
+	}
+	*/
+
+	if (isColliding()){
+		frog->setX(0.0f);
+		frog->setY(-16.0f);
+	}
 
 	float frogPosAux[4] = { frog->getX(), frog->getY(), frog->getZ(), 1.0f };
 	spotLight->setPosition(frogPosAux);
@@ -375,10 +457,14 @@ void renderScene() {
 
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml);
+		
+	}
+
+	for (int i = 0; i < 12; i++){
 		logs[i]->draw(vsml);
 	}
 
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 6; i++){
 		tortoise[i]->draw(vsml);
 	}
 
@@ -403,11 +489,11 @@ void renderScene() {
 		bus[i]->update(delta_t);
 	}
 
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 12; i++){
 		logs[i]->update(delta_t);
 	}
 
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 6; i++){
 		tortoise[i]->update(delta_t);
 	}
 
@@ -593,7 +679,7 @@ void init()
 	frog->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, 0.01f, idVector);
+		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, 0.008f, idVector);
 		
 	}
 
@@ -601,20 +687,34 @@ void init()
 	cars[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 2; i++){
-		bus[i] = new Bus(8.0f - i * 15, -10.0f, 2.0f, objId, 0.008f, idVector);
+		bus[i] = new Bus(8.0f - i * 15, -11.0f, 3.0f, objId, 0.006f, idVector);
 	}
 	bus[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		logs[i] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, 0.01f, idVector);
+		logs[i] = new TimberLog(12.0f - i * 10.0f, 2.0f, 1.0f, objId, 0.001f, idVector);
+	}
+	for (int i = 0; i < 3; i++){
+		logs[i + 3] = new TimberLog(12.0f - i * 10.0f, 4.0f, 1.0f, objId, 0.001f, idVector);
 	}
 	for (int i = 0; i < 2; i++){
-		logs[i + 3] = new TimberLog(12.0f - i * 10.0f - 5.0f, 12.0f, 1.0f, objId, 0.01f, idVector);
+		logs[i + 6] = new TimberLog(12.0f - i * 10.0f - 5.0f, 8.0f, 1.0f, objId, 0.001f, idVector);
 	}
+	for (int i = 0; i < 2; i++){
+		logs[i + 8] = new TimberLog(12.0f - i * 2.0f, 12.0f, 1.0f, objId, 0.0008f, idVector);
+	}
+	for (int i = 0; i < 2; i++){
+		logs[i + 10] = new TimberLog(12.0f - i * 2.0f, 14.0f, 1.0f, objId, 0.0008f, idVector);
+	}
+	
 	logs[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
-		tortoise[i] = new Tortoise(12.0f - i * 8.0f, 8.0f, 0.6f, objId, 0.008f, idVector);
+		tortoise[i] = new Tortoise(12.0f - i * 4.0f, 6.0f, 0.6f, objId, 0.005f, idVector);
+	}
+
+	for (int i = 0; i < 3; i++){
+		tortoise[i+3] = new Tortoise(26.0f - i * 4.0f, 10.0f, 0.6f, objId, 0.005f, idVector);
 	}
 	tortoise[0]->create(vsml, mySurfRev);
 
@@ -695,7 +795,7 @@ int main(int argc, char **argv) {
 	//  Callback Registration
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
+	//glutIdleFunc(renderScene);
 	glutTimerFunc(0, fpsTimer, 0);
 	glutTimerFunc(0, tick, 0);
 	glutTimerFunc(0, fpsShow, 0);

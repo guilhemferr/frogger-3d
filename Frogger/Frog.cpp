@@ -109,104 +109,86 @@ void Frog::draw(VSMathLib* vsml){
 /**
  * Methods for move */
 
-void Frog::printBuff(){
-	for(int i = 0; i < BUFF; i++) {
-		std::cout << "buff[" << i << "] : " << commandBuffer[i] << " ";
-	}
-	std::cout << std::endl;
-}
+void Frog::moveFrog(int direction){
 
-bool Frog::oppositeDir(frog_states state) {
-	return abs(currentState() - state) == 90;
-}
+	setDir(direction);
 
-void Frog::queueCommand(frog_states state) {
+	float delta = 0.0f;
 
-	if(oppositeDir(state)) {
-		commandBuffer[0] = state;
-		return;
-	}
-
-	for(int i = 0;i < BUFF; i++) {
-		if(commandBuffer[i] == IDLE) {
-			commandBuffer[i] = state;
-			return;
-		}
-	}
-}
-// function to swap two elements of an array
-void Frog::swapArrayElements (frog_states states[], int index1, int index2) {
-    frog_states temp = IDLE;
-    temp = states[index1];
-    states[index1] = states[index2];
-    states[index2] = temp;
-}
-
-void Frog::processNextCmd() {
-	//commandBuffer =  IDLE;
-	commandBuffer[0] = IDLE;
-	for(int i = 0; i < BUFF -1; i++) {
-		swapArrayElements(commandBuffer, i, i+1);
-	}
-}
-
-void Frog::update(double delta_t) {
-
-	if(currentState() != IDLE && getSteps() > 0) {
-		moveFrog(delta_t);
-		setSteps(getSteps() - 1);
-	}else {
-		setSteps(17);
-		processNextCmd();
-	}
-}
-
-void Frog::moveFrog(double dt){
-
-	//this is calculated every loop
-	float delta = dt * getVelocity();
-	//position starting from the center
-	float front = delta + getRadius();
-
-	switch (currentState()){
+	switch (getDir()){
 	case UP:
-		if((getY() + front) < YY_MAX - FRONT){
-			setY(getY() + delta);
-		} else{
-			setSteps(0);
+		if (getY() < 16.0f){
+			delta = 2.0f;
 		}
-		setDir(UP);
+		setY(getY() + delta);
 		break;
 
 	case DOWN:
-		if((getY() - front) > YY_MIN + FRONT){
-			setY(getY() - delta);
-		} else {
-			setSteps(0);
+		if (getY() > -16.0f){
+			delta = 2.0f;
 		}
-		setDir(DOWN);
+		setY(getY() - delta);
 		break;
 
 	case LEFT:
-		if((getX() - front) > XX_MIN + FRONT){
-			setX(getX() - delta);
-		} else {
-			setSteps(0);
+		if (getX() > -14.0f){
+			delta = 2.0f;
 		}
-		setDir(LEFT);
+		setX(getX() - delta);
 		break;
 
 	case RIGHT:
-		if((getX() + front) < XX_MAX - FRONT){
-			setX(getX() + delta);
-		} else {
-			setSteps(0);
+		if (getX() < 14.0f){
+			delta = 2.0f;
 		}
-		setDir(RIGHT);
+		setX(getX() + delta);
 		break;
 
-	default: //IDLE
+	default:
 		break;
 	}
 
+}
+
+void Frog::update(double delta_t){
+
+}
+
+void Frog::specialMoveFrog(int direction, float distance){
+	setDir(direction);
+
+	float delta = 0.0f;
+
+	switch (getDir()){
+	case UP:
+		if (getY() < 16.0f){
+			delta = distance;
+		}
+		setY(getY() + delta);
+		break;
+
+	case DOWN:
+		if (getY() > -16.0f){
+			delta = distance;
+		}
+		setY(getY() - delta);
+		break;
+
+	case LEFT:
+		if (getX() > -14.0f){
+			delta = distance;
+		}
+		setX(getX() - delta);
+		break;
+
+	case RIGHT:
+		if (getX() < 14.0f){
+			delta = distance;
+		}
+		setX(getX() + delta);
+		break;
+
+	default:
+		break;
+	}
 }

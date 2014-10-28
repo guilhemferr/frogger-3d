@@ -71,4 +71,20 @@ public:
 		setVelocity(inc + getVelocity());
 	}
 
+	float getSmallX(){
+		return getX() - 2.0f;
+	}
+
+	float getSmallY(){
+		return getY() - 0.6f;
+	}
+
+	float getBigX(){
+		return getX() + 2.0f;
+	}
+
+	float getBigY(){
+		return getY() + 0.6f;
+	}
+
 };

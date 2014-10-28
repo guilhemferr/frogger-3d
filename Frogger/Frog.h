@@ -52,6 +52,7 @@ public:
 		color[1] = 0.7f;
 		color[2] = 0.3f;
 		color[3] = 1.0f;
+
 	}
 
 	virtual ~Frog() {}
@@ -94,23 +95,30 @@ public:
 		return commandBuffer[0];
 	}
 
-	void queueCommand(frog_states state);
-
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 
 	void draw(VSMathLib* vsml);
 
+	void moveFrog(int direction);
+
 	void update(double delta_t);
 
-private:
+	void specialMoveFrog(int direction, float distance);
 
-	void processNextCmd();
+	float getSmallX(){
+		return getX() - 1.0f;
+	}
 
-	void moveFrog(double dt);
+	float getSmallY(){
+		return getY() - 1.0f;
+	}
 
-	void swapArrayElements (frog_states states[], int index1, int index2);
+	float getBigX(){
+		return getX() + 1.0f;
+	}
 
-	void printBuff();
+	float getBigY(){
+		return getY() + 1.0f;
+	}
 
-	bool oppositeDir(frog_states state);
 };

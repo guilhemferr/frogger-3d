@@ -11,6 +11,8 @@ class DynamicObject : public GameObject{
 	 */
 	double _speed[3];
 
+	float bounds[4];
+
 	//int idVector[8];
 public:
 	/**
@@ -34,4 +36,16 @@ public:
 		return idVector;
 	}
 	*/
+
+	//AABB
+	//Small = Canto superior esquerdo
+	//Big = Canto inferior direito
+
+	virtual float getSmallX() = 0;
+
+	virtual float getSmallY() = 0;
+
+	virtual float getBigX() = 0;
+
+	virtual float getBigY() = 0;
 };
