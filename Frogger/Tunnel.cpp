@@ -10,11 +10,11 @@ void Tunnel::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	mySurfRev.createTorus(8.0f, 9.0f, 15, 15);
 
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 
 	objId++;
 }

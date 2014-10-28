@@ -17,56 +17,56 @@ void Car::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	
 	
 	mySurfRev.createCylinder(4.0f, 1.2f, 4);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambBody);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffBody);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specBody);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessBody);
 
 	objId++;
 	
 	mySurfRev.createCylinder(2.0f, 0.6f, 4);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambBody);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffBody);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specBody);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessBody);
 
 	objId++;
 
 	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessWheels);
 
 	objId++;
 
 	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessWheels);
 
 	objId++;
 
 	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessWheels);
 
 	objId++;
 
 	mySurfRev.createTorus(0.1f, 0.5f, 15, 15);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWheels);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessWheels);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambWheels);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffWheels);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specWheels);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessWheels);
 
 	objId++;
 

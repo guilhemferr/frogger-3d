@@ -9,11 +9,11 @@ void River::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float* shininess = new float(128.0f * 0.088f);
 	
 	mySurfRev.createCylinder(30.0f, 1.5f, 4);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 	mesh[objId].mat.texCount = 1;
 
 	objId++;

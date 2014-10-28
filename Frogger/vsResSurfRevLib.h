@@ -32,8 +32,9 @@
 #ifndef __VSResSurfRevLib__
 #define __VSResSurfRevLib__
 
-#include <string>
+#include <string.h>
 #include <assert.h>
+#include <math.h>
 
 #include <GL/glew.h>
 
@@ -62,7 +63,7 @@ class VSResSurfRevLib : public VSResourceLib{
 public:
 
 	VSResSurfRevLib();
-	~VSResSurfRevLib();
+	virtual ~VSResSurfRevLib();
 
 	void create (float *p, int numP, int sides, int closed, float smoothCos);
 	void createSphere(float radius, int divisions);

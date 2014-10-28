@@ -373,8 +373,11 @@ void renderScene() {
 	
 	frog->draw(vsml);
 
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 3; i++){
 		cars[i]->draw(vsml);
+	}
+
+	for (int i = 0; i < 5; i++) {
 		logs[i]->draw(vsml);
 	}
 
@@ -546,10 +549,10 @@ void init()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	glGenTextures(4, TextureArray);
-	TGA_Texture(TextureArray, "road.tga", 0);
-	TGA_Texture(TextureArray, "river.tga", 1);
-	TGA_Texture(TextureArray, "wood.tga", 2);
-	TGA_Texture(TextureArray, "grass.tga", 3);
+	TGA_Texture(TextureArray, "resource/road.tga", 0);
+	TGA_Texture(TextureArray, "resource/river.tga", 1);
+	TGA_Texture(TextureArray, "resource/wood.tga", 2);
+	TGA_Texture(TextureArray, "resource/grass.tga", 3);
 
 	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 

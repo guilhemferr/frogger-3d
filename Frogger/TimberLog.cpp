@@ -10,11 +10,11 @@ void TimberLog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	int texcount = 0;
 
 	mySurfRev.createCylinder(4.0f, 1.2f, 20);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, amb);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diff);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, spec);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininess);
 	objId++;
 }
 

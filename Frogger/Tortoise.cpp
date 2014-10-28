@@ -14,19 +14,19 @@ void Tortoise::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float* shininessHead = new float(128.0f * 0.1f);
 
 	mySurfRev.createSphere(0.65f, 20);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specBody);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessBody);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambBody);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffBody);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specBody);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessBody);
 
 	objId++;
 	mySurfRev.createSphere(0.3f, 20);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambHead);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffHead);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specHead);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
-	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininessHead);
+	mySurfRev.setColor(VSResourceLib::AMBIENT, ambHead);
+	mySurfRev.setColor(VSResourceLib::DIFFUSE, diffHead);
+	mySurfRev.setColor(VSResourceLib::SPECULAR, specHead);
+	mySurfRev.setColor(VSResourceLib::EMISSIVE, emissive);
+	mySurfRev.setColor(VSResourceLib::SHININESS, shininessHead);
 	objId++;
 }
 
