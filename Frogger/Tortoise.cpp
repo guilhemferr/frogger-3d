@@ -37,7 +37,6 @@ void Tortoise::draw(VSMathLib* vsml){
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX() + auxX, getY(), getZ());
 	vsml->scale(2.5f, 2.0f, 1.5f);
-	setX(getX() - 0.01f);
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
 	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);

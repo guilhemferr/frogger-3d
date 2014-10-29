@@ -36,7 +36,8 @@ int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
 float frogDirAux[4];
-bool onRiver = false;
+bool onLog = false;
+bool onTurtle = false;
 
 int lives = 5;
 
@@ -367,7 +368,8 @@ bool isColliding(){
 				|| frog->getBigY() < logs[i]->getSmallY()
 				|| logs[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
-				onRiver = true;
+				onLog = true;
+				onTurtle = false;
 				return false;
 			}
 		}
@@ -378,7 +380,8 @@ bool isColliding(){
 				|| frog->getBigY() < tortoise[i]->getSmallY()
 				|| tortoise[i]->getBigY() < frog->getSmallY());
 			if (colliding == true){
-				onRiver = true;
+				onTurtle = true;
+				onLog = false;
 				return false;
 			}
 		}
@@ -411,7 +414,8 @@ bool isColliding(){
 			}
 		}
 	}
-	onRiver = false;
+	onLog = false;
+	onTurtle = false;
 	return colliding;
 }
 
@@ -546,10 +550,11 @@ void renderScene() {
 		logs[i]->update(delta_t);
 	}
 
-	if (onRiver){
-		//std::cout << "Frog delta " << delta_t*logs[0]->getVelocity() << std::endl;
-		//frog->setX(frog->getX() - delta_t * logs[0]->getVelocity());
+	if (onLog){
 		frog->update(delta_t * logs[0]->getVelocity());
+	}
+	if (onTurtle){
+		frog->update(delta_t * tortoise[0]->getVelocity());
 	}
 
 	for (int i = 0; i < 6; i++){
