@@ -1,78 +1,8 @@
+#ifndef _FROGGER_H_
+#define _FROGGER_H_
 #include "Frogger.h"
+#endif
 #include "vsResSurfRevLib.h"
-
-VSMathLib *vsml;
-VSShaderLib shader, shaderF;
-VSResSurfRevLib mySurfRev;
-
-//elapsed time
-int old_t = 0;
-
-// Camera Position
-float camX, camY, camZ;
-
-int width, height;
-
-// Mouse Tracking Variables
-int startX, startY, tracking = 0;
-
-// Camera Spherical Coordinates
-float alpha = 39.0f, beta = 51.0f;
-float r = 15.0f;
-
-int WindowHandle = 0;
-int fpsCounter = 0;
-int modelID, projID, viewID, colorInID, normalID;
-int idVector[9];
-int locLDir;
-int locPos;
-int pointLocs[6];
-int dirLocs[6];
-int DirLightStateLoc, PointLightStateLoc;
-int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
-int SpecialLightStateLoc;
-int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc;
-int DirLightState = 1;
-int PointLightState = 1;
-int SpecialLightState = 0;
-float frogDirAux[4];
-bool onLog = false;
-bool onTurtle = false;
-
-int lives = 5;
-
-//int flagMove = 1000;
-//float moveCounter = 0.0f;
-
-GLuint TextureArray[4];
-
-Frog* frog;
-
-DynamicObject* cars[3];
-
-DynamicObject* bus[2];
-
-GameObject* terrain[9];
-
-StaticObject* lamps[6];
-
-DynamicObject* logs[12];
-
-DynamicObject* tortoise[6];
-
-LightSource* lSource;
-
-LightSource* pointLights[6];
-
-LightSource* spotLight;
-
-int objId = 0;
-
-
-//Change in VSRESSURFREVLIB.H as well
-struct MyMesh mesh[40];
-
-int selectedCamera = TOPCAMERA;
 
 GLuint setupShaders() {
 
@@ -82,13 +12,11 @@ GLuint setupShaders() {
 	shader.loadShader(VSShaderLib::VERTEX_SHADER, "shaders/dirLightTex.vert");
 	shader.loadShader(VSShaderLib::FRAGMENT_SHADER, "shaders/dirLightTex.frag");
 
-
 	// set semantics for the shader variables
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
 	shader.setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
 	shader.setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
-
 
 	shader.prepareProgram();
 
@@ -148,7 +76,6 @@ void processMouseButtons(int button, int state, int xx, int yy)
 }
 
 // Track mouse motion while buttons are pressed
-
 void processMouseMotion(int xx, int yy)
 {
 
@@ -419,6 +346,68 @@ bool isColliding(){
 	return colliding;
 }
 
+void drawObjects(){
+	for (int i = 0; i < 9; i++){
+		terrain[i]->draw(vsml);
+	}
+
+	if (lives > 0){
+		frog->draw(vsml);
+	}
+	for (int i = 0; i < 5; i++){
+		cars[i]->draw(vsml);
+
+	}
+
+	for (int i = 0; i < 12; i++){
+		logs[i]->draw(vsml);
+	}
+
+	for (int i = 0; i < 6; i++){
+		tortoise[i]->draw(vsml);
+	}
+
+	for (int i = 0; i < 2; i++){
+		bus[i]->draw(vsml);
+	}
+
+	for (int i = 0; i < 6; i++){
+		lamps[i]->draw(vsml);
+	}
+}
+
+void updateVelocity(){
+	// calculates game elapsed time
+	double delta_t = calcElapsedTime();
+	// Update objects
+
+
+
+	for (int i = 0; i < 3; i++){
+		cars[i]->update(delta_t);
+	}
+
+	for (int i = 0; i < 2; i++){
+		bus[i]->update(delta_t);
+	}
+
+	for (int i = 0; i < 12; i++){
+		logs[i]->update(delta_t);
+	}
+
+	if (onLog){
+		frog->update(delta_t * logs[0]->getVelocity());
+	}
+	if (onTurtle){
+		frog->update(delta_t * tortoise[0]->getVelocity());
+	}
+
+	for (int i = 0; i < 6; i++){
+		tortoise[i]->update(delta_t);
+	}
+
+}
+
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -503,68 +492,13 @@ void renderScene() {
 	glUniform1i(texWoodLoc, 2);
 	glUniform1i(texDirtLoc, 3);
 
-	for(int i = 0; i < 9; i++){
-		terrain[i]->draw(vsml);
-	}
-	
-	if(lives > 0){
-		frog->draw(vsml);
-	}
-	for (int i = 0; i < 5; i++){
-		cars[i]->draw(vsml);
-		
-	}
+	drawObjects();
 
-	for (int i = 0; i < 12; i++){
-		logs[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 6; i++){
-		tortoise[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 2; i++){
-		bus[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 6; i++){
-		lamps[i]->draw(vsml);
-	}
-
-
-	// calculates game elapsed time
-	double delta_t = calcElapsedTime();
-	// Update objects
-	
-	
-
-	for (int i = 0; i < 3; i++){
-		cars[i]->update(delta_t);
-	}
-
-	for (int i = 0; i < 2; i++){
-		bus[i]->update(delta_t);
-	}
-
-	for (int i = 0; i < 12; i++){
-		logs[i]->update(delta_t);
-	}
-
-	if (onLog){
-		frog->update(delta_t * logs[0]->getVelocity());
-	}
-	if (onTurtle){
-		frog->update(delta_t * tortoise[0]->getVelocity());
-	}
-
-	for (int i = 0; i < 6; i++){
-		tortoise[i]->update(delta_t);
-	}
+	updateVelocity();
 	
 	//swap buffers
 	glutSwapBuffers();
 }
-
 
 void changeSize(int w, int h) {
 	width = w;
@@ -654,16 +588,13 @@ void tick(int value){
 	glutTimerFunc(10000, tick, 0);
 }
 
-
-void init()
-{	
-
+void initLocations(){
 	idVector[MODELID] = glGetUniformLocation(shader.getProgramIndex(), "model");
 	idVector[VIEWID] = glGetUniformLocation(shader.getProgramIndex(), "view");
 	idVector[PROJID] = glGetUniformLocation(shader.getProgramIndex(), "projection");
-	
+
 	colorInID = glGetUniformLocation(shader.getProgramIndex(), "colorIn");
-	
+
 	idVector[NORMALID] = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
 	idVector[AMBIENTID] = glGetUniformLocation(shader.getProgramIndex(), "ambient");
 	idVector[DIFFUSEID] = glGetUniformLocation(shader.getProgramIndex(), "diffuse");
@@ -700,20 +631,9 @@ void init()
 	texRiverLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRiver");
 	texWoodLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapWood");
 	texDirtLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapDirt");
+}
 
-	// some GL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_MULTISAMPLE);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-	glGenTextures(4, TextureArray);
-	TGA_Texture(TextureArray, "road.tga", 0);
-	TGA_Texture(TextureArray, "river.tga", 1);
-	TGA_Texture(TextureArray, "wood.tga", 2);
-	TGA_Texture(TextureArray, "grass.tga", 3);
-
+void initTerrain(){
 	terrain[0] = new Road(0.0f, -7.5f, 0.0f, objId, idVector);
 
 	terrain[0]->create(vsml, mySurfRev);
@@ -731,7 +651,7 @@ void init()
 	terrain[3]->create(vsml, mySurfRev);
 
 	terrain[4] = new Border(0.0f, -16.0f, 0.0f, objId, idVector);
-	
+
 	terrain[4]->create(vsml, mySurfRev);
 
 	//For Torus
@@ -750,6 +670,9 @@ void init()
 	terrain[8] = new Tunnel(19.0f, -9.0f, 2.0f, objId, idVector);
 
 	terrain[8]->create(vsml, mySurfRev);
+}
+
+void initDynamicObjects(){
 
 	frog = new Frog(objId, 0.08f, idVector);
 
@@ -757,10 +680,10 @@ void init()
 
 	for (int i = 0; i < 3; i++){
 		cars[i] = new Car(12.0f - i * 10.0f, -4.0f, 2.0f, objId, 0.008f, idVector);
-		
+
 	}
 
-	
+
 	cars[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 2; i++){
@@ -783,7 +706,7 @@ void init()
 	for (int i = 0; i < 2; i++){
 		logs[i + 10] = new TimberLog(12.0f - i * 2.0f, 14.0f, 1.0f, objId, 0.001f, idVector);
 	}
-	
+
 	logs[0]->create(vsml, mySurfRev);
 
 	for (int i = 0; i < 3; i++){
@@ -791,9 +714,32 @@ void init()
 	}
 
 	for (int i = 0; i < 3; i++){
-		tortoise[i+3] = new Tortoise(26.0f - i * 4.0f, 10.0f, 0.6f, objId, 0.005f, idVector);
+		tortoise[i + 3] = new Tortoise(26.0f - i * 4.0f, 10.0f, 0.6f, objId, 0.005f, idVector);
 	}
 	tortoise[0]->create(vsml, mySurfRev);
+}
+
+void init()
+{	
+
+	initLocations();
+
+	// some GL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_MULTISAMPLE);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	glGenTextures(4, TextureArray);
+	TGA_Texture(TextureArray, "road.tga", 0);
+	TGA_Texture(TextureArray, "river.tga", 1);
+	TGA_Texture(TextureArray, "wood.tga", 2);
+	TGA_Texture(TextureArray, "grass.tga", 3);
+
+	initTerrain();
+	
+	initDynamicObjects();
 
 	float yAux = -16.0f;
 	float posAux[4] = { 10.0f, 0.0f, 8.0f, 1.0f};

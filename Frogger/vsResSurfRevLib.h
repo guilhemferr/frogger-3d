@@ -39,7 +39,7 @@
 
 #include "vsResourceLib.h"
 #define MAX_TEXTURES 4
-
+#define MAXMESH 40
 
 struct MyMesh{
 	GLuint vao;
@@ -52,7 +52,7 @@ struct MyMesh{
 	struct Material mat;
 };
 
-extern struct MyMesh mesh[40];
+extern struct MyMesh mesh[MAXMESH];
 extern int objId;
 
 
