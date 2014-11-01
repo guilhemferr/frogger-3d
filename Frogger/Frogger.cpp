@@ -347,9 +347,6 @@ bool isColliding(){
 }
 
 void drawObjects(){
-	for (int i = 0; i < 9; i++){
-		terrain[i]->draw(vsml);
-	}
 
 	if (lives > 0){
 		frog->draw(vsml);
@@ -374,6 +371,16 @@ void drawObjects(){
 	for (int i = 0; i < 6; i++){
 		lamps[i]->draw(vsml);
 	}
+
+	for (int i = 0; i < 9; i++){
+		if (i != 1){
+			terrain[i]->draw(vsml);
+		}
+	}
+	
+	//draw River
+	terrain[1]->draw(vsml);
+	
 }
 
 void updateVelocity(){
@@ -728,6 +735,11 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
+	// Enable blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_STENCIL_TEST);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
