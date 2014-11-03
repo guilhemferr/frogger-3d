@@ -347,7 +347,10 @@ bool isColliding(){
 }
 
 void drawObjects(){
-
+	glClearStencil(0x0);
+	glClear(GL_STENCIL_BUFFER_BIT);
+	glStencilOp(GL_ALWAYS, 0x1, 0x1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	if (lives > 0){
 		frog->draw(vsml);
 	}
@@ -364,10 +367,6 @@ void drawObjects(){
 		tortoise[i]->draw(vsml);
 	}
 
-	for (int i = 0; i < 2; i++){
-		bus[i]->draw(vsml);
-	}
-
 	for (int i = 0; i < 6; i++){
 		lamps[i]->draw(vsml);
 	}
@@ -380,6 +379,10 @@ void drawObjects(){
 	
 	//draw River
 	terrain[1]->draw(vsml);
+
+	for (int i = 0; i < 2; i++){
+		bus[i]->draw(vsml);
+	}
 	
 }
 
@@ -418,6 +421,8 @@ void updateVelocity(){
 void renderScene() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearStencil(0x0);
+	glClear(GL_STENCIL_BUFFER_BIT);
 
 	vsml->loadIdentity(VSMathLib::VIEW);
 	vsml->loadIdentity(VSMathLib::MODEL);
@@ -739,7 +744,10 @@ void init()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
 	glEnable(GL_STENCIL_TEST);
+	glClearStencil(0x0);
+	glClear(GL_STENCIL_BUFFER_BIT);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -816,7 +824,7 @@ int main(int argc, char **argv) {
 
 	//  GLUT initialization
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE | GLUT_STENCIL);
 
 	glutInitContextVersion(3, 3);
 	glutInitContextProfile(GLUT_CORE_PROFILE);

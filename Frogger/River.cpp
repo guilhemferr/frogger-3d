@@ -2,10 +2,10 @@
 
 void River::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	
-	float amb[] = { 0.0f, 0.1f, 0.06f, 0.25f };
-	float diff[] = { 0.0f, 0.50980392f, 0.50980392f, 0.25f};
-	float spec[] = { 0.50196078f, 0.50196078f, 0.50196078f, 0.25f };
-	float emissive[] = { 0.0f, 0.0f, 0.0f, 0.25f };
+	float amb[] = { 0.0f, 0.1f, 0.06f, 1.0f };
+	float diff[] = { 0.0f, 0.50980392f, 0.50980392f, 1.0f };
+	float spec[] = { 0.50196078f, 0.50196078f, 0.50196078f, 1.0f };
+	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float* shininess = new float(128.0f * 0.088f);
 	
 	mySurfRev.createCylinder(30.0f, 1.5f, 4);

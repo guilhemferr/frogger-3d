@@ -7,12 +7,12 @@ void Lamp::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float* shininess = new float(128.0f * 0.6f);
 
-	float ambBall[] = { 0.24725f, 0.1995f, 0.0745f, 1.0f };
-	float diffBall[] = { 0.75164f, 0.60648f, 0.22648f, 1.0f };
-	float specBall[] = { 0.628281f, 0.555802f, 0.366065f, 1.0f };
+	float ambBall[] = { 0.24725f, 0.1995f, 0.0745f, 0.50f };
+	float diffBall[] = { 0.75164f, 0.60648f, 0.22648f, 0.50f };
+	float specBall[] = { 0.628281f, 0.555802f, 0.366065f, 0.50f };
 	float* shininessBall = new float(128.0f * 0.4f);
 
-	mySurfRev.createCylinder(8.0f, 0.3f, 20);
+	mySurfRev.createCylinder(6.8f, 0.3f, 20);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
