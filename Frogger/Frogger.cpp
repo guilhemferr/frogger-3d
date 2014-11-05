@@ -347,13 +347,17 @@ bool isColliding(){
 }
 
 void drawObjects(){
-	glClearStencil(0x0);
-	glClear(GL_STENCIL_BUFFER_BIT);
-	glStencilOp(GL_ALWAYS, 0x1, 0x1);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
 	if (lives > 0){
 		frog->draw(vsml);
 	}
+
+	for (int i = 0; i < 9; i++){
+		if (i != 1){
+			terrain[i]->draw(vsml);
+		}
+	}
+
 	for (int i = 0; i < 5; i++){
 		cars[i]->draw(vsml);
 
@@ -369,12 +373,6 @@ void drawObjects(){
 
 	for (int i = 0; i < 6; i++){
 		lamps[i]->draw(vsml);
-	}
-
-	for (int i = 0; i < 9; i++){
-		if (i != 1){
-			terrain[i]->draw(vsml);
-		}
 	}
 
 	for (int i = 0; i < 2; i++){
