@@ -749,11 +749,12 @@ void init()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
 
-
-
 	glEnable(GL_STENCIL_TEST);
 	glClearStencil(0x0);
 	glClear(GL_STENCIL_BUFFER_BIT);
+
+
+
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 

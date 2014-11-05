@@ -14,16 +14,16 @@ void Bus::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float specWheels[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 	float* shininessWheels = new float(128.0f * 0.078125f);
 
-	float ambWindow[] = { 0.0f, 0.05f, 0.05f, 0.0f };
-	float diffWindow[] = { 0.4f, 0.5f, 0.5f, 0.0f };
-	float specWindow[] = { 0.04f, 0.7f, 0.7f, 0.0f };
+	float ambWindow[] = { 0.0f, 0.05f, 0.05f, 1.0f };
+	float diffWindow[] = { 0.4f, 0.5f, 0.5f, 1.0f };
+	float specWindow[] = { 0.04f, 0.7f, 0.7f, 1.0f };
 	float* shininessWindow = new float(128.0f * 0.078125f);
 
 	int texcount = 0;
 	
 	//mask
 	/*
-	mySurfRev.createCylinder(0.001f, 1.0f, 4);
+	mySurfRev.createCylinder(4.0f, 1.0f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambWindow);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffWindow);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specWindow);
@@ -83,13 +83,13 @@ void Bus::draw(VSMathLib* vsml){
 
 	int currentObjId = Bus::busObjId;
 
-	//glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+	//glStencilFunc(GL_NEVER, 0x1, 0x1);
 	//glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
 	//mask
 	/*
 	vsml->pushMatrix(VSMathLib::MODEL);
-	vsml->translate(getX(), getY() - 2.0f, getZ() + 0.0f);
+	vsml->translate(getX(), getY(), getZ() + 3.0f);
 	vsml->rotate(45.0f, 0, 1, 0);
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);
@@ -122,7 +122,7 @@ void Bus::draw(VSMathLib* vsml){
 	
 	//glClearStencil(0x0);
 	//glClear(GL_STENCIL_BUFFER_BIT);
-
+	//glDisable(GL_STENCIL_TEST);
 	vsml->pushMatrix(VSMathLib::MODEL);
 		vsml->translate(getX(), getY(), getZ() - 1.0f);
 		vsml->translate(1.7f, 2.0f, 0.2f);
