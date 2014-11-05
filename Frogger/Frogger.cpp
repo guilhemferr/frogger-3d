@@ -376,13 +376,21 @@ void drawObjects(){
 			terrain[i]->draw(vsml);
 		}
 	}
-	
-	//draw River
-	terrain[1]->draw(vsml);
 
 	for (int i = 0; i < 2; i++){
 		bus[i]->draw(vsml);
 	}
+	
+	// Enable blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthMask(GL_FALSE);
+	//draw River
+	terrain[1]->draw(vsml);
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
+
+	
 	
 }
 
@@ -740,9 +748,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
-	// Enable blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 
 	glEnable(GL_STENCIL_TEST);

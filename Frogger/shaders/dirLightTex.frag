@@ -183,9 +183,9 @@ void main() {
 			}
 		}
 	}
-
 	if(texMode > 0){
 		outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
+		outputF.w = diffuse.w;
 	}
 	else {
 		outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
