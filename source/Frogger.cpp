@@ -32,8 +32,6 @@ struct MyMesh mesh[8];
 
 int selectedCamera = TOPCAMERA;
 
-bool upPressed = false;
-bool downPressed = false;
 
 GLuint setupShaders() {
 
@@ -206,21 +204,8 @@ void processKeys(unsigned char key, int xx, int yy)
 		glutPostRedisplay();
 }
 
-void specialKeysReleased(int key, int x, int y) {
-
-	 switch (key) {
-	 case GLUT_KEY_UP:
-	  upPressed = false;
-	  break;
-	 case GLUT_KEY_DOWN:
-	  downPressed = false;
-	  break;
-	 }
-}
-
 // Callback function. Process arrows commands.
 void arrowPressed(int key, int x, int y){
-
 	switch (key)
 	{
 	case GLUT_KEY_LEFT:
@@ -230,18 +215,10 @@ void arrowPressed(int key, int x, int y){
 		frog->queueCommand(RIGHT);
 		break;
 	case GLUT_KEY_UP:
-		upPressed = true;
-		if(!downPressed){
-			std::cout << "UP1\n";
-			frog->queueCommand(UP);
-		}
+		frog->queueCommand(UP);
 		break;
 	case GLUT_KEY_DOWN:
-		if(!upPressed) {
-			std::cout << "DOWN1\n";
-			downPressed = true;
-			frog->queueCommand(DOWN);
-		}
+		frog->queueCommand(DOWN);
 		break;
 	default:
 		break;
@@ -261,8 +238,7 @@ void updateScene() {
 	// calculates game elapsed time
 		double delta_t = calcElapsedTime();
 		// Update objects
-		if(downPressed || upPressed)
-			frog->update(delta_t);
+		frog->update(delta_t);
 		for (int i = 0; i < 5; i++){
 			cars[i]->update(delta_t);
 		}
@@ -270,7 +246,7 @@ void updateScene() {
 
 void renderScene() {
 
-	updateScene();
+
 	glClearColor(.0f , .0f, .05f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -289,8 +265,9 @@ void renderScene() {
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 	
-	renderTerrain();
+	updateScene();
 
+	renderTerrain();
 	// Draw objects
 	frog->draw(vsml, mesh);
 	for (int i = 0; i < 5; i++){
@@ -465,7 +442,6 @@ int main(int argc, char **argv) {
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
 	glutSpecialFunc(arrowPressed);
-	glutSpecialUpFunc(specialKeysReleased);
 
 	//glutMouseWheelFunc(mouseWheel);
 	

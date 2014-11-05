@@ -1,7 +1,9 @@
 #include "Frog.h"
 #include "side.h"
+#include <stdio.h>      /* printf */
+#include <math.h>       /* sin */
 
-
+#define PI 3.14159265
 
 void Frog::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mySurfRev.createSphere(radius, 20);
@@ -115,14 +117,9 @@ void Frog::printBuff(){
 }
 
 void Frog::queueCommand(frog_states state) {
-//	for(int i = 0;i < BUFF; i++) {
-//		if(commandBuffer[i] == IDLE) {
-//			commandBuffer[i] = state;
-//			return;
-//		}
-//	}
 	if(currentState() == IDLE) {
 		commandBuffer[0] = state;
+		setSteps(0);
 	} else {
 		commandBuffer[1] = state;
 	}
@@ -143,32 +140,30 @@ void Frog::processNextCmd() {
 	}
 }
 
-float Frog::updateFrogPos()
-{
-	int t = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTime = t - getTime();
-	float v = getVelocity();
-	float delta = elapsedTime * v;
-	setTime(t);
-
-	return delta;
-}
-
 void Frog::update(double delta_t) {
 
-	//if(currentState() != IDLE && getSteps() > 0) {
-		moveFrog(delta_t);
-	//	setSteps(getSteps() - 1);
-	//}else {
-		//setSteps(12);
-		//processNextCmd();
-	//}
+	if(currentState() != IDLE) {
+		if(getSteps() < 20) {
+			moveFrog(0.1f);
+			setSteps(getSteps() + 1);
+		} else {
+			changeState();
+		}
+	}
+
+}
+
+double zfunc(int step, float dt) {
+	//double param = step * 3.0f;
+	//double result = sin (param*PI/180);
+	if(step < 10) return dt;
+	return -dt;
 }
 
 void Frog::moveFrog(double dt){
 	
 	//this is calculated every loop
-	float delta = dt * getVelocity();
+	float delta = dt; //* getVelocity();
 	//position starting from the center
 	float front = delta + getRadius();
 
@@ -176,8 +171,7 @@ void Frog::moveFrog(double dt){
 	case UP:
 		if((getY() + front) < YY_MAX - FRONT){
 			setY(getY() + delta);
-		} else{
-			setSteps(0);
+			setZ(getZ() + zfunc(getSteps(), delta));
 		}
 		setDir(UP);
 		break;
@@ -185,8 +179,7 @@ void Frog::moveFrog(double dt){
 	case DOWN:
 		if((getY() - front) > YY_MIN + FRONT){
 			setY(getY() - delta);
-		} else {
-			setSteps(0);
+			setZ(getZ() + zfunc(getSteps(), delta));
 		}
 		setDir(DOWN);
 		break;
@@ -194,8 +187,7 @@ void Frog::moveFrog(double dt){
 	case LEFT:
 		if((getX() - front) > XX_MIN + FRONT){
 			setX(getX() - delta);
-		} else {
-			setSteps(0);
+			setZ(getZ() + zfunc(getSteps(), delta));
 		}
 		setDir(LEFT);
 		break;
@@ -203,8 +195,7 @@ void Frog::moveFrog(double dt){
 	case RIGHT:
 		if((getX() + front) < XX_MAX - FRONT){
 			setX(getX() + delta);
-		} else {
-			setSteps(0);
+			setZ(getZ() + zfunc(getSteps(), delta));
 		}
 		setDir(RIGHT);
 		break;
