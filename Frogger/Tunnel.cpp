@@ -29,7 +29,6 @@ void Tunnel::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 void Tunnel::draw(VSMathLib *vsml){
 	int currentObjId = Tunnel::tunnelObjId;
-
 	/*
 	glStencilFunc(GL_NEVER, 0x1, 0x1);
 	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
@@ -50,7 +49,6 @@ void Tunnel::draw(VSMathLib *vsml){
 	currentObjId++;
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
-
 	*/
 	vsml->pushMatrix(VSMathLib::MODEL);
 		//For Torus
