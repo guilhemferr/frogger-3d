@@ -673,11 +673,11 @@ void initTerrain(){
 	terrain[4]->create(vsml, mySurfRev);
 
 	//For Torus
-	terrain[5] = new Tunnel(-19.0f, 8.0f, 2.0f, objId, idVector);
+	terrain[5] = new Tunnel(-19.0f, 9.0f, 2.0f, objId, idVector);
 
 	terrain[5]->create(vsml, mySurfRev);
 
-	terrain[6] = new Tunnel(19.0f, 8.0f, 2.0f, objId, idVector);
+	terrain[6] = new Tunnel(19.0f, 9.0f, 2.0f, objId, idVector);
 
 	terrain[6]->create(vsml, mySurfRev);
 
@@ -746,13 +746,10 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
-
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_STENCIL_TEST);
 	glClearStencil(0x0);
 	glClear(GL_STENCIL_BUFFER_BIT);
-
-
-
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 

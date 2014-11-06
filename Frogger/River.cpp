@@ -8,7 +8,7 @@ void River::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float emissive[] = { 0.0f, 0.0f, 0.0f, 0.50f };
 	float* shininess = new float(128.0f * 0.088f);
 	
-	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+	mySurfRev.createCylinder(35.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);

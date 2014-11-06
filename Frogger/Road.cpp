@@ -16,7 +16,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float* shininessStripe = new float(128.0f * 0.4f);
 	
 	//mask
-	mySurfRev.createCylinder(30.0f, 1.0f, 4);
+	mySurfRev.createCylinder(35.0f, 1.0f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, ambStripe);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diffStripe);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, specStripe);
@@ -25,7 +25,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	objId++;
 
-	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+	mySurfRev.createCylinder(35.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
@@ -35,7 +35,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	objId++;
 
-	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+	mySurfRev.createCylinder(35.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
@@ -44,7 +44,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	mesh[objId].mat.texCount = 1;
 	objId++;
 
-	mySurfRev.createCylinder(30.0f, 1.5f, 4);
+	mySurfRev.createCylinder(35.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
@@ -56,7 +56,7 @@ void Road::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 void Road::draw(VSMathLib *vsml){
 	int currentObjId = Road::roadObjId;
-	glStencilFunc(GL_NEVER, 0x1, 0x1);
+	glStencilFunc(GL_ALWAYS, 0x1, 0x1);
 	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
 	vsml->pushMatrix(VSMathLib::MODEL);
