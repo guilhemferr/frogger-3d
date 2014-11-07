@@ -30,6 +30,15 @@ in Data {
 
 out vec4 outputF;
 
+
+//Functions
+vec4 applyFog(in vec4 rgba, in float distance){
+	float fogAmount = exp(-distance*0.04);
+	vec4 fogColor = vec4(0.5, 0.6, 0.7, 1.0);
+	return mix(rgba, fogColor, fogAmount);
+}
+
+
 void main() {
 	vec3 n = normalize(DataIn.normal);
 	vec3 l = normalize(DataIn.ldir);
@@ -165,7 +174,7 @@ void main() {
 					intSpec = max(dot(h, n), 0.0);
 					spec = specular * pow(intSpec, shininess);
 
-					//legacy
+					//attenuation
 					d = length(sp);
 					a  = 0.0;
 					b = 1.0;
@@ -184,11 +193,11 @@ void main() {
 		}
 	}
 	if(texMode > 0){
-		outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
+		outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, 0.1*texel);
 		outputF.w = diffuse.w;
 	}
 	else {
-		outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
+		outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, ambient);
 	}
 	
 	

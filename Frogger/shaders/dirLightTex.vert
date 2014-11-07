@@ -43,7 +43,7 @@ void main () {
 	}
 
 	DataOut.spotPos = vec3(spotPosition - pos);
-	//Pode ser necessario inverter o spotDir
+
 	DataOut.spotDir = vec3(-spotDirection);
 
 	DataOut.eye = vec3(-pos);
