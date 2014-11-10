@@ -379,6 +379,8 @@ void drawObjects(){
 		bus[i]->draw(vsml);
 	}
 	
+	
+
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -387,6 +389,8 @@ void drawObjects(){
 	terrain[1]->draw(vsml);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+
+	tree->draw(vsml);
 
 	
 	
@@ -509,6 +513,7 @@ void renderScene() {
 	glUniform1i(texRiverLoc, 1);
 	glUniform1i(texWoodLoc, 2);
 	glUniform1i(texDirtLoc, 3);
+	glUniform1i(texTreeLoc, 4);
 
 	drawObjects();
 
@@ -649,6 +654,7 @@ void initLocations(){
 	texRiverLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapRiver");
 	texWoodLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapWood");
 	texDirtLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapDirt");
+	texTreeLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapTree");
 }
 
 void initTerrain(){
@@ -758,6 +764,7 @@ void init()
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
+	TGA_Texture(TextureArray, "tree.tga", 4);
 
 	initTerrain();
 	
@@ -809,6 +816,9 @@ void init()
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
+
+	tree = new Tree(0.0f, 0.0f, 8.0f, objId, idVector);
+	tree->create(vsml, mySurfRev);
 	
 	
 }

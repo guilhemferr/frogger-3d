@@ -16,6 +16,7 @@ uniform sampler2D texmapRoad;
 uniform sampler2D texmapRiver;
 uniform sampler2D texmapWood;
 uniform sampler2D texmapDirt;
+uniform sampler2D texmapTree;
 
 in Data {
 	vec3 normal;
@@ -76,6 +77,9 @@ void main() {
 	}
 	if(texMode == 4){
 		texel = texture(texmapDirt, DataIn.outTex);
+	}
+	if(texMode == 5){
+		texel = texture(texmapTree, DataIn.outTex);
 	}
 	
 	//Calculation for DirLight
@@ -193,11 +197,14 @@ void main() {
 		}
 	}
 	if(texMode > 0){
-		outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, 0.1*texel);
+		
+		//fog
+		//outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, 0.1*texel);
+		outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
 		outputF.w = diffuse.w;
 	}
 	else {
-		outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, ambient);
+		outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
 	}
 	
 	
