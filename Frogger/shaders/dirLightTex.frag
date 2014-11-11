@@ -199,12 +199,12 @@ void main() {
 	if(texMode > 0){
 		
 		//fog
-		//outputF = max(applyFog(dirContribution, abs(e.z)) + pointContribution/3 + spotContribution, 0.1*texel);
-		outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
+		outputF = max(applyFog(dirContribution + pointContribution/3 + spotContribution, abs(e.y)), 0.1*texel);
+		//outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
 		outputF.w = diffuse.w;
 	}
 	else {
-		outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
+		outputF = max(applyFog(dirContribution + pointContribution/3 + spotContribution, abs(e.y)), ambient);
 	}
 	
 	
