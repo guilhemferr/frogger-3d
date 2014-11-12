@@ -12,6 +12,8 @@ uniform vec4 spotDirection;
 
 uniform vec4 l_dir;	   // camera space
 
+uniform int billboard; //billboard
+
 in vec4 position;	// local space
 in vec3 normal;		// local space
 in vec2 texCoord;
@@ -30,8 +32,19 @@ out Data {
 } DataOut;
 
 void main () {
+	mat4 viewModel = view * model;
 
-	vec4 pos = view * model * position;
+	if(billboard == 1){
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				if (i == j)
+					viewModel[i][j] = 1.0;
+				else
+					viewModel[i][j] = 0.0;
+			}
+		}
+	}
+	vec4 pos = viewModel * position;
 
 	DataOut.normal = normalize(m_normal * normal.xyz);
 
@@ -50,6 +63,6 @@ void main () {
 	
 	DataOut.outTex = texCoord.st;
 
-	gl_Position =  projection * view * model * position;	
+	gl_Position =  projection * viewModel * position;	
 
 }

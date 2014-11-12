@@ -386,17 +386,7 @@ class VSMathLib {
 		*/
 		void setIdentityMatrix( float *mat, int size=4);
 
-		/// Computes the 3x4 normal matrix based on the modelview matrix
-		void computeNormalMatrix();
 
-		/// Computes the 3x4 normal matrix considering only the view matrix
-		void computeNormalViewMatrix3x3();
-		/// Computes the 3x3 normal matrix for the view matrix for use with glUniform
-		void computeNormalViewMatrix();
-		/// Computes the 3x4 normal matrix considering only the model matrix
-		void computeNormalModelMatrix3x3();
-		/// Computes the 3x3 normal matrix for the model matrix for use with glUniform
-		void computeNormalModelMatrix();
 
 		/// Computes Derived Matrices (4x4)
 		void computeDerivedMatrix(ComputedMatrixTypes aType);
@@ -408,6 +398,18 @@ public:
 	float mNormal3x3[9];
 	/// Computes the 3x3 normal matrix for use with glUniform
 	void computeNormalMatrix3x3();
+
+	/// Computes the 3x4 normal matrix based on the modelview matrix
+	void computeNormalMatrix();
+
+	/// Computes the 3x4 normal matrix considering only the view matrix
+	void computeNormalViewMatrix3x3();
+	/// Computes the 3x3 normal matrix for the view matrix for use with glUniform
+	void computeNormalViewMatrix();
+	/// Computes the 3x4 normal matrix considering only the model matrix
+	void computeNormalModelMatrix3x3();
+	/// Computes the 3x3 normal matrix for the model matrix for use with glUniform
+	void computeNormalModelMatrix();
 };
 
 #endif

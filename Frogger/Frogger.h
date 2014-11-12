@@ -71,6 +71,7 @@ int fpsCounter = 0;
 int modelID, projID, viewID, colorInID, normalID;
 int idVector[9];
 int locLDir;
+int locBillboard;
 int locPos;
 int pointLocs[6];
 int dirLocs[6];

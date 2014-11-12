@@ -228,6 +228,76 @@ VSResSurfRevLib::create (float *p, int numP, int sides, int closed, float smooth
 	computeVAO(numP, p, points, sides, smoothCos);
 }
 
+void
+VSResSurfRevLib::createRectangle(float length, float height){
+	float p[] = {
+	-length/2, 0.0f, 0.0f, 1.0f,
+	length/2, 0.0f, 0.0f, 1.0f,
+	length/2, height, 0.0f, 1.0f,
+	-length/2, height, 0.0f, 1.0f
+	};
+
+	GLuint faceIndex[] = { 0, 1, 2, 0, 2, 3 };
+
+	float normals[] = {
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f
+	};
+
+	computeVAOSquare(p, faceIndex, normals);
+}
+
+void
+VSResSurfRevLib::computeVAOSquare(float*p, GLuint* faceindex, float* normals){
+	float texCoords[] = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+	};
+
+	glGenVertexArrays(1, &mesh[objId].vao);
+	glBindVertexArray(mesh[objId].vao);
+
+	mesh[objId].numIndexes = sizeof(GLuint) * 6;
+	GLuint buffers[4];
+	glGenBuffers(4, buffers);
+	//vertex coordinates buffer
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, p, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
+
+	//texture coordinates buffer
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::TEXTURE_COORD_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::TEXTURE_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
+
+
+	//normals buffer
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, normals, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::NORMAL_ATTRIB, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	//index buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh[objId].numIndexes, faceindex, GL_STATIC_DRAW);
+
+	//Unbind the VAO
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableVertexAttribArray(VSShaderLib::VERTEX_COORD_ATTRIB);
+	glDisableVertexAttribArray(VSShaderLib::NORMAL_ATTRIB);
+	glDisableVertexAttribArray(VSShaderLib::TEXTURE_COORD_ATTRIB);
+
+	mesh[objId].type = GL_TRIANGLES;
+}
+
 void 
 VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float smoothCos) {
 	// Compute and store vertices

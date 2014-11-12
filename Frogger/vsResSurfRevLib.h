@@ -64,12 +64,16 @@ public:
 	VSResSurfRevLib();
 	~VSResSurfRevLib();
 
+
+	void createRectangle(float length, float height);
 	void create (float *p, int numP, int sides, int closed, float smoothCos);
 	void createSphere(float radius, int divisions);
 	void createTorus(float innerRadius, float outerRadius, int rings, int sides);
 	void createCylinder(float height, float radius, int sides);
 	void createCone(float height, float baseRadius, int sides);
 	void createPawn();
+
+	void computeVAOSquare(float*p, GLuint* faceindex, float* normals);
 
 	virtual void clone(VSResourceLib *res);
 	/** implementation of the superclass abstract method

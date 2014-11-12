@@ -379,8 +379,9 @@ void drawObjects(){
 		bus[i]->draw(vsml);
 	}
 	
-	
-
+	glUniform1i(locBillboard, 1);
+	tree->draw(vsml);
+	glUniform1i(locBillboard, 0);
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -390,7 +391,7 @@ void drawObjects(){
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 
-	tree->draw(vsml);
+	
 
 	
 	
@@ -463,19 +464,6 @@ void renderScene() {
 	glUniform1i(DirLightStateLoc, DirLightState);
 	glUniform1i(PointLightStateLoc, PointLightState);
 	glUniform1i(SpecialLightStateLoc, SpecialLightState);
-	/*
-	if (flagMove != 1000){
-		frog->specialMoveFrog(flagMove, 0.5f);
-		if (moveCounter == 2.0f){
-			flagMove = 1000;
-			moveCounter = 0.0f;
-		}
-		else
-		{
-			moveCounter = moveCounter + 0.5f;
-		}
-	}
-	*/
 
 	if (isColliding() || lives == 0){
 		frog->setX(0.0f);
@@ -627,6 +615,8 @@ void initLocations(){
 
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
 	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
+
+	locBillboard = glGetUniformLocation(shader.getProgramIndex(), "billboard");
 
 	pointLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "positions[0]");
 	pointLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "positions[1]");
@@ -817,7 +807,7 @@ void init()
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
 
-	tree = new Tree(0.0f, 0.0f, 8.0f, objId, idVector);
+	tree = new Tree(0.0f, 0.0f, 0.0f, objId, idVector);
 	tree->create(vsml, mySurfRev);
 	
 	
