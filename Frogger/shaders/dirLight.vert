@@ -27,6 +27,8 @@ out Data {
 
 void main () {
 
+	
+
 	vec4 pos = view * model * position;
 
 	DataOut.normal = normalize(m_normal * normal.xyz);
@@ -42,7 +44,6 @@ void main () {
 	DataOut.spotDir = vec3(-spotDirection);
 
 	DataOut.eye = vec3(-pos);
-	
 
 	gl_Position =  projection * view * model * position;	
 

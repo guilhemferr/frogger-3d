@@ -34,9 +34,9 @@ out vec4 outputF;
 
 //Functions
 vec4 applyFog(in vec4 rgba, in float distance){
-	float fogAmount = exp(-distance*0.04);
+	float fogAmount = exp(-distance*0.25);
 	vec4 fogColor = vec4(0.5, 0.6, 0.7, 1.0);
-	return mix(rgba, fogColor, fogAmount);
+	return mix(fogColor, rgba, fogAmount);
 }
 
 
@@ -196,15 +196,25 @@ void main() {
 			}
 		}
 	}
+
+	float distanceFog = abs(DataIn.eye.y);
+
 	if(texMode > 0){
 		
 		//fog
-		outputF = max(applyFog(dirContribution + pointContribution/3 + spotContribution, abs(e.y)), 0.1*texel);
+		if(texel.a < 0.3){
+			discard;
+		}
+
+		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel), distanceFog);
+		
 		//outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
-		outputF.w = diffuse.w;
+		outputF.a = diffuse.a;
 	}
 	else {
-		outputF = max(applyFog(dirContribution + pointContribution/3 + spotContribution, abs(e.y)), ambient);
+		//fog
+		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, ambient), distanceFog);
+		//outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
 	}
 	
 	
