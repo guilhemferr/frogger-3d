@@ -13,7 +13,7 @@ Defines.
 ************************************************************/
 
 // Get height from width, assuming certain aspect ratio.
-#define HEIGHTFROMWIDTH(w)  ((320*(w)*Flare::height)/(240*Flare::width))
+#define HEIGHTFROMWIDTH(w)  ((320*(w)*Flare::ht)/(240*Flare::wth))
 
 #define isqrt(x)        (int)((double)(x))
 
@@ -34,8 +34,8 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 	flaredist = isqrt((lx - cx)*(lx - cx) +
 		(ly - cy)*(ly - cy));
 	flaredist = (maxflaredist - flaredist);
-	flaremaxsize = (int)(Flare::width * Flare::fMaxSize);
-	flarescale = (int)(Flare::width * Flare::fMaxSize);
+	flaremaxsize = (int)(Flare::wth * Flare::fMaxSize);
+	flarescale = (int)(Flare::wth * Flare::fMaxSize);
 
 	// Destination is opposite side of centre from source
 	dx = cx + (cx - lx);
@@ -77,12 +77,14 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 		height = HEIGHTFROMWIDTH(width);
 		alpha = (flaredist*(element->argb >> 24)) / maxflaredist;
 
+		std::cout << lx << std::endl;
+
 		mySurfRev.createRectangleNotBillboard(px - width / 2, py - height / 2, width, height);
 		objId++;
 	}
 }
 
-void    Flare::draw(VSMathLib *vsml)
+void  Flare::draw(VSMathLib *vsml)
 {
 	int i;
 	int currentId = Flare::flareId;

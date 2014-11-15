@@ -381,7 +381,7 @@ void drawObjects(){
 	
 	
 	glDepthMask(GL_FALSE);
-	flare->setRenderAttr(0, 0, width/2, height/2, width, height);
+	
 	flare->draw(vsml);
 	glDepthMask(GL_TRUE);
 
@@ -823,8 +823,8 @@ void init()
 	tree->create(vsml, mySurfRev);
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
-	
-	//flare->create(vsml, mySurfRev);
+	flare->setRenderAttr(0.0f, 3.0f, 5.0f, 5.0f, 3.0f, 3.0f);
+	flare->create(vsml, mySurfRev);
 	
 }
 

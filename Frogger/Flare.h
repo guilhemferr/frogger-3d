@@ -30,6 +30,8 @@ FLARE_ELEMENT_DEF;
 #endif
 
 class Flare : public StaticObject{
+
+private:
 	int flareId;
 	int nPieces;
 	float fMaxSize;
@@ -37,7 +39,7 @@ class Flare : public StaticObject{
 	unsigned int maxColour;
 
 	//for render purposes
-	int lx, ly, cx, cy, width, height;
+	int lx, ly, cx, cy, wth, ht;
 
 
 	FLARE_ELEMENT_DEF elements[FLARE_MAXELEMENTSPERFLARE];
@@ -53,6 +55,8 @@ public:
 		Flare::fMaxSize = FLARE_MAXELEMENTSPERFLARE;
 		Flare::minColour = FLARE_MINCOLOUR;
 		Flare::maxColour = FLARE_MAXCOLOUR;
+		Flare::wth = 1;
+		Flare::ht = 1;
 
 		Flare::flareId = flareId;
 	}
@@ -75,8 +79,7 @@ public:
 		Flare::ly = ly;
 		Flare::cx = cx;
 		Flare::cy = cy;
-		Flare::width = width;
-		Flare::height = height;
+		Flare::wth = width;
+		Flare::ht = height;
 	}
-	
 };
