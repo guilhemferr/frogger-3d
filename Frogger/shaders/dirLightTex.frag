@@ -212,13 +212,17 @@ void main() {
 
 		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel), distanceFog);
 		
-		//outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
+		if(texMode == 6){
+			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.8*texel);
+		}
 		outputF.a = diffuse.a;
 	}
 	else {
 		//fog
 		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, ambient), distanceFog);
+		
 		//outputF = max(dirContribution + pointContribution/3 + spotContribution, ambient);
+		
 	}
 	
 	

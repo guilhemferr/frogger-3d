@@ -380,11 +380,9 @@ void drawObjects(){
 	}
 	
 	
-	glDepthMask(GL_FALSE);
-	
+	//glDepthMask(GL_FALSE);
 	flare->draw(vsml);
-	glDepthMask(GL_TRUE);
-
+	//glDepthMask(GL_TRUE);
 
 	glUniform1i(locBillboard, 1);
 	//tree->draw(vsml);
@@ -766,7 +764,7 @@ void init()
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
-	TGA_Texture(TextureArray, "ring.tga", 5);
+	TGA_Texture(TextureArray, "sun.tga", 5);
 
 	initTerrain();
 	

@@ -18,6 +18,13 @@ Defines.
 #define isqrt(x)        (int)((double)(x))
 
 void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
+	float amb[] = { 0.25f, 0.25f, 0.25f, 1.0f };
+	float diff[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+	float spec[] = { 0.774597f, 0.774597f, 0.774597f, 1.0f };
+	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float* shininess = new float(128.0f * 0.1f);
+	
+	
 	int             i;
 	float           fFracDist;
 	float           fEnvelopeSize;
@@ -80,6 +87,11 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 		std::cout << lx << std::endl;
 
 		mySurfRev.createRectangleNotBillboard(px - width / 2, py - height / 2, width, height);
+		mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
+		mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
+		mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);
+		mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
+		mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 		objId++;
 	}
 }
