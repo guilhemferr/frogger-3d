@@ -250,6 +250,35 @@ VSResSurfRevLib::createRectangle(float length, float height){
 }
 
 void
+VSResSurfRevLib::createRectangleNotBillboard(int x, int  y, float width, float height){
+	/*
+	float p[] = {
+		        x,          y, 0.0f, 1.0f,
+		x + width,          y, 0.0f, 1.0f,
+		x + width, y + height, 0.0f, 1.0f,
+		        x, y + height, 0.0f, 1.0f
+	};
+	*/
+	float p[] = {
+		0.0f, 0.0f, 0.0f, 1.0f,
+		width, 0.0f, 0.0f, 1.0f,
+		width, height, 0.0f, 1.0f,
+		0.0f, height, 0.0f, 1.0f
+	};
+
+	GLuint faceIndex[] = { 0, 1, 2, 0, 2, 3 };
+
+	float normals[] = {
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f
+	};
+
+	computeVAOSquare(p, faceIndex, normals);
+}
+
+void
 VSResSurfRevLib::computeVAOSquare(float*p, GLuint* faceindex, float* normals){
 	float texCoords[] = {
 		0.0f, 0.0f,

@@ -39,7 +39,7 @@
 
 #include "vsResourceLib.h"
 #define MAX_TEXTURES 4
-#define MAXMESH 50
+#define MAXMESH 60
 
 struct MyMesh{
 	GLuint vao;
@@ -65,7 +65,9 @@ public:
 	~VSResSurfRevLib();
 
 
+
 	void createRectangle(float length, float height);
+	void createRectangleNotBillboard(int x, int  y, float width, float height);
 	void create (float *p, int numP, int sides, int closed, float smoothCos);
 	void createSphere(float radius, int divisions);
 	void createTorus(float innerRadius, float outerRadius, int rings, int sides);

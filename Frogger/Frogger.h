@@ -21,6 +21,7 @@
 #include "Lamp.h"
 #include "LightSource.h"
 #include "Tree.h"
+#include "Flare.h"
 
 #include "TGA.h"
 #include "vsMathLib.h"
@@ -78,7 +79,7 @@ int dirLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int SpecialLightStateLoc;
-int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc;
+int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, texFlareLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
@@ -88,7 +89,7 @@ bool onTurtle = false;
 
 int lives = 5;
 
-GLuint TextureArray[5];
+GLuint TextureArray[6];
 
 Frog* frog;
 
@@ -111,6 +112,8 @@ LightSource* pointLights[6];
 LightSource* spotLight;
 
 StaticObject* tree;
+
+Flare* flare;
 
 int objId = 0;
 

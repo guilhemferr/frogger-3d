@@ -379,8 +379,15 @@ void drawObjects(){
 		bus[i]->draw(vsml);
 	}
 	
+	
+	glDepthMask(GL_FALSE);
+	flare->setRenderAttr(0, 0, width/2, height/2, width, height);
+	flare->draw(vsml);
+	glDepthMask(GL_TRUE);
+
+
 	glUniform1i(locBillboard, 1);
-	tree->draw(vsml);
+	//tree->draw(vsml);
 	glUniform1i(locBillboard, 0);
 	// Enable blending
 	glEnable(GL_BLEND);
@@ -391,9 +398,6 @@ void drawObjects(){
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 
-	
-
-	
 	
 }
 
@@ -497,11 +501,17 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[3]);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[5]);
+
 	glUniform1i(texRoadLoc, 0);
 	glUniform1i(texRiverLoc, 1);
 	glUniform1i(texWoodLoc, 2);
 	glUniform1i(texDirtLoc, 3);
 	glUniform1i(texTreeLoc, 4);
+	glUniform1i(texFlareLoc, 5);
 
 	drawObjects();
 
@@ -645,6 +655,7 @@ void initLocations(){
 	texWoodLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapWood");
 	texDirtLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapDirt");
 	texTreeLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapTree");
+	texFlareLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapFlare");
 }
 
 void initTerrain(){
@@ -749,12 +760,13 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glGenTextures(4, TextureArray);
+	glGenTextures(5, TextureArray);
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
+	TGA_Texture(TextureArray, "ring.tga", 5);
 
 	initTerrain();
 	
@@ -809,7 +821,10 @@ void init()
 
 	tree = new Tree(0.0f, 0.0f, 0.0f, objId, idVector);
 	tree->create(vsml, mySurfRev);
+
+	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
 	
+	//flare->create(vsml, mySurfRev);
 	
 }
 

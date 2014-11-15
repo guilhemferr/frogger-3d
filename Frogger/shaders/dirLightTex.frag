@@ -17,6 +17,7 @@ uniform sampler2D texmapRiver;
 uniform sampler2D texmapWood;
 uniform sampler2D texmapDirt;
 uniform sampler2D texmapTree;
+uniform sampler2D texmapFlare;
 
 in Data {
 	vec3 normal;
@@ -80,6 +81,9 @@ void main() {
 	}
 	if(texMode == 5){
 		texel = texture(texmapTree, DataIn.outTex);
+	}
+	if(texMode == 6){
+		texel = texture(texmapFlare, DataIn.outTex);
 	}
 	
 	//Calculation for DirLight

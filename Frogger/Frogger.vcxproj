@@ -83,6 +83,7 @@
     <ClCompile Include="Bus.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="DynamicObject.cpp" />
+    <ClCompile Include="Flare.cpp" />
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Frogger.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="DynamicObject.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Flare.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Frogger.h" />
     <ClInclude Include="GameObject.h" />
