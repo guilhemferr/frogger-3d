@@ -8,7 +8,7 @@
 
 /* --- Defines --- */
 
-#define FLARE_MAXELEMENTSPERFLARE         5
+#define FLARE_MAXELEMENTSPERFLARE         7
 
 #define FLARE_RANGE(A,B)    ( (rand()%((B)-(A)+1)) + (A) )
 #define FLARE_FRANGE(A,B)   ( ((float)(rand()&0xffffff)/(float)0xfffffe)*((B)-(A)) + (A) )
@@ -17,6 +17,8 @@
 
 #define FLARE_MINCOLOUR        MAKEID(140, 100, 50, 100)
 #define FLARE_MAXCOLOUR        MAKEID(255, 255, 200, 255)
+
+#define FLARE_MAXSIZE                   0.3f
 
 typedef struct FLARE_ELEMENT_DEF
 {
@@ -52,7 +54,7 @@ public:
 		setZ(zcoord);
 
 		Flare::nPieces = FLARE_MAXELEMENTSPERFLARE;
-		Flare::fMaxSize = FLARE_MAXELEMENTSPERFLARE;
+		Flare::fMaxSize = FLARE_MAXSIZE;
 		Flare::minColour = FLARE_MINCOLOUR;
 		Flare::maxColour = FLARE_MAXCOLOUR;
 		Flare::wth = 1;

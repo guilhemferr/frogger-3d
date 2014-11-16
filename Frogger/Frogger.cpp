@@ -821,7 +821,7 @@ void init()
 	tree->create(vsml, mySurfRev);
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
-	flare->setRenderAttr(0.0f, 3.0f, 5.0f, 5.0f, 3.0f, 3.0f);
+	flare->setRenderAttr(10.0f, 10.0f, 2.0, 3.0f, 10.0f, 3.0f);
 	flare->create(vsml, mySurfRev);
 	
 }
