@@ -39,7 +39,7 @@
 
 #include "vsResourceLib.h"
 #define MAX_TEXTURES 4
-#define MAXMESH 60
+#define MAXMESH 200
 
 struct MyMesh{
 	GLuint vao;

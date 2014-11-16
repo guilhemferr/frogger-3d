@@ -87,8 +87,10 @@
     <ClCompile Include="Frog.cpp" />
     <ClCompile Include="Frogger.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="glbmp.c" />
     <ClCompile Include="Lamp.cpp" />
     <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="River.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="TGA.cpp" />
@@ -112,8 +114,10 @@
     <ClInclude Include="Frog.h" />
     <ClInclude Include="Frogger.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="glbmp.h" />
     <ClInclude Include="Lamp.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="River.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="StaticObject.h" />

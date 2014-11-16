@@ -22,6 +22,8 @@
 #include "LightSource.h"
 #include "Tree.h"
 #include "Flare.h"
+#include "glbmp.h"
+#include "Particle.h"
 
 #include "TGA.h"
 #include "vsMathLib.h"
@@ -47,6 +49,12 @@
 
 #define LINE 31
 #define OBJ 5
+
+#define frand()			((float)rand()/RAND_MAX)
+
+#define M_PI			3.14159265
+
+#define PARTICLESMAX 100
 
 VSMathLib *vsml;
 VSShaderLib shader, shaderF;
@@ -79,7 +87,7 @@ int dirLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int SpecialLightStateLoc;
-int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, texFlareLoc;
+int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, texFlareLoc, texStarLoc, texParticulaLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
@@ -89,7 +97,7 @@ bool onTurtle = false;
 
 int lives = 5;
 
-GLuint TextureArray[6];
+GLuint TextureArray[8];
 
 Frog* frog;
 
@@ -111,9 +119,11 @@ LightSource* pointLights[6];
 
 LightSource* spotLight;
 
-StaticObject* tree;
+StaticObject* tree[3];
 
 Flare* flare;
+
+Particle* particles[PARTICLESMAX];
 
 int objId = 0;
 

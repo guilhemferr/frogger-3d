@@ -139,6 +139,7 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 
 void processKeys(unsigned char key, int xx, int yy)
 {
+	
 	switch (key) {
 
 	case 27:
@@ -201,6 +202,19 @@ void processKeys(unsigned char key, int xx, int yy)
 			tortoise[i]->setVelocity(0.005f);
 		}
 
+		break;
+	case 'e':
+		GLfloat v, phi, theta;
+		for (int i = 0; i < PARTICLESMAX; i++){
+			v = 0.8*frand() + 0.2;
+			phi = frand()*M_PI;
+			theta = 2.0*frand()*M_PI;
+			particles[i]->setX(0.0f);
+			particles[i]->setY(0.0f);
+			particles[i]->setZ(10.0f);
+			particles[i]->setLife(1.0f);
+			particles[i]->setVars(v * cos(theta) * sin(phi), v * cos(phi), v * sin(theta) * sin(phi));
+		}
 		break;
 
 	default:
@@ -379,14 +393,14 @@ void drawObjects(){
 		bus[i]->draw(vsml);
 	}
 	
-	
-	//glDepthMask(GL_FALSE);
-	flare->draw(vsml);
-	//glDepthMask(GL_TRUE);
-
 	glUniform1i(locBillboard, 1);
-	//tree->draw(vsml);
+	for (int i = 0; i < 3; i++){
+		tree[i]->draw(vsml);
+	}
 	glUniform1i(locBillboard, 0);
+	
+
+	
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -395,6 +409,38 @@ void drawObjects(){
 	terrain[1]->draw(vsml);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+
+	//flare
+	vsml->pushMatrix(VSMathLib::MODEL);
+	glDepthMask(GL_FALSE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	vsml->translate(0.0f, 0.0f, 8.0f);
+	flare->draw(vsml);
+	glDepthMask(GL_TRUE);
+	vsml->popMatrix(VSMathLib::MODEL);
+	glDisable(GL_BLEND);
+
+	//particles
+	
+
+	int locAux = glGetUniformLocation(shader.getProgramIndex(), "life");
+
+	if (lives == 0){
+		glUniform1i(locBillboard, 1);
+		glDepthMask(GL_FALSE);
+		glEnable(GL_BLEND);
+		for (int i = 0; i < PARTICLESMAX; i++){
+			glUniform1f(locAux, particles[i]->getLife());
+			if (particles[i]->getLife() > 0.0f){
+
+				particles[i]->draw(vsml);
+			}
+		}
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+		glUniform1i(locBillboard, 0);
+	}
 
 	
 }
@@ -503,6 +549,11 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[4]);
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[5]);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[6]);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[7]);
+
 
 	glUniform1i(texRoadLoc, 0);
 	glUniform1i(texRiverLoc, 1);
@@ -510,6 +561,8 @@ void renderScene() {
 	glUniform1i(texDirtLoc, 3);
 	glUniform1i(texTreeLoc, 4);
 	glUniform1i(texFlareLoc, 5);
+	glUniform1i(texStarLoc, 6);
+	glUniform1i(texParticulaLoc, 7);
 
 	drawObjects();
 
@@ -607,6 +660,46 @@ void tick(int value){
 	glutTimerFunc(10000, tick, 0);
 }
 
+
+/* Loads the specified bitmap file from disk and copies it into an OpenGL texture.
+* Returns the GLuint representing the texture (calls exit(1) if the bitmap fails to load).*/
+
+void LoadTexture(const char * bitmap_file)
+{
+
+	glbmp_t bitmap;     //object to fill with data from glbmp
+
+	//try to load the specified file--if it fails, dip out
+	if (!glbmp_LoadBitmap(bitmap_file, 0, &bitmap))
+	{
+		fprintf(stderr, "Error loading bitmap file: %s\n", bitmap_file);
+		exit(1);
+	}
+
+	glBindTexture(GL_TEXTURE_2D, TextureArray[7]);
+	//copy data from bitmap into texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
+		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//free the bitmap
+	glbmp_FreeBitmap(&bitmap);
+}
+
+void iterate(int value){
+	double delta_t;
+
+	delta_t = 0.125;
+	if (lives == 0){
+		for (int i = 0; i < PARTICLESMAX; i++){
+			particles[i]->update(delta_t, mySurfRev);
+		}
+	}
+	glutTimerFunc(33, iterate, 1);
+}
+
 void initLocations(){
 	idVector[MODELID] = glGetUniformLocation(shader.getProgramIndex(), "model");
 	idVector[VIEWID] = glGetUniformLocation(shader.getProgramIndex(), "view");
@@ -654,6 +747,8 @@ void initLocations(){
 	texDirtLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapDirt");
 	texTreeLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapTree");
 	texFlareLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapFlare");
+	texStarLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapStar");
+	texParticulaLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapParticula");
 }
 
 void initTerrain(){
@@ -758,13 +853,16 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glGenTextures(5, TextureArray);
+	glGenTextures(8, TextureArray);
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
 	TGA_Texture(TextureArray, "sun.tga", 5);
+	TGA_Texture(TextureArray, "star.tga", 6);
+	//TGA_Texture(TextureArray, "star.tga", 7);
+	LoadTexture("particula.bmp");
 
 	initTerrain();
 	
@@ -817,13 +915,31 @@ void init()
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
 	lSource->setPosition(posLight);
 
-	tree = new Tree(0.0f, 0.0f, 0.0f, objId, idVector);
-	tree->create(vsml, mySurfRev);
+	tree[0] = new Tree(-3.0f, 16.0f, 0.0f, objId, idVector);
+	tree[0]->create(vsml, mySurfRev);
+	tree[1] = new Tree(0.0f, 0.0f, 0.0f, objId, idVector);
+	tree[1]->create(vsml, mySurfRev);
+	tree[2] = new Tree(3.0f, 16.0f, 0.0f, objId, idVector);
+	tree[2]->create(vsml, mySurfRev);
+	
+	
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
 	flare->setRenderAttr(10.0f, 10.0f, 2.0, 3.0f, 10.0f, 3.0f);
 	flare->create(vsml, mySurfRev);
 	
+	GLfloat v, theta, phi;
+
+	for (int i = 0; i < PARTICLESMAX; i++){
+		v = 0.8*frand() + 0.2;
+		phi = frand()*M_PI;
+		theta = 2.0*frand()*M_PI;
+		particles[i] = new Particle(0.0f, 0.0f, 10.0f, objId, 0.0f, idVector);
+		particles[i]->create(vsml, mySurfRev);
+		particles[i]->setVars(v * cos(theta) * sin(phi), v * cos(phi), v * sin(theta) * sin(phi));
+	}
+
+
 }
 
 void initVSL() {
@@ -857,6 +973,7 @@ int main(int argc, char **argv) {
 	glutTimerFunc(0, fpsTimer, 0);
 	glutTimerFunc(0, tick, 0);
 	glutTimerFunc(0, fpsShow, 0);
+	glutTimerFunc(0, iterate, 0);
 	//	Mouse and Keyboard Callbacks
 	
 	glutKeyboardFunc(processKeys);

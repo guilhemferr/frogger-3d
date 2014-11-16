@@ -83,9 +83,8 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 		// width scaled by aspect ratio.
 		height = HEIGHTFROMWIDTH(width);
 		alpha = (flaredist*(element->argb >> 24)) / maxflaredist;
-
-		std::cout << lx << std::endl;
-
+		//diff[3] = alpha;
+		
 		mySurfRev.createRectangleNotBillboard(px - width / 2, py - height / 2, width, height);
 		mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 		mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
@@ -106,7 +105,14 @@ void  Flare::draw(VSMathLib *vsml)
 	{
 		vsml->pushMatrix(VSMathLib::MODEL);
 			initShadersVars(vsml, currentId);
-			glUniform1i(getIdVector()[TEXID], 6);
+			if (i % 2 == 0){
+				glUniform1i(getIdVector()[TEXID], 6);
+			}
+			else {
+				glUniform1i(getIdVector()[TEXID], 7);
+			}
+
+			
 			glBindVertexArray(mesh[currentId].vao);
 			glDrawElements(mesh[currentId].type, mesh[currentId].numIndexes, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);

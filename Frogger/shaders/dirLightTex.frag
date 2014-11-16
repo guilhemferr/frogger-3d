@@ -11,6 +11,7 @@ uniform int OnPointLight;
 uniform int OnSpecialLights;
 uniform float spotCutOff;
 uniform int texMode;
+uniform float life;
 
 uniform sampler2D texmapRoad;
 uniform sampler2D texmapRiver;
@@ -18,6 +19,8 @@ uniform sampler2D texmapWood;
 uniform sampler2D texmapDirt;
 uniform sampler2D texmapTree;
 uniform sampler2D texmapFlare;
+uniform sampler2D texmapStar;
+uniform sampler2D texmapParticula;
 
 in Data {
 	vec3 normal;
@@ -84,6 +87,12 @@ void main() {
 	}
 	if(texMode == 6){
 		texel = texture(texmapFlare, DataIn.outTex);
+	}
+	if(texMode == 7){
+		texel = texture(texmapStar, DataIn.outTex);
+	}
+	if(texMode == 8){
+		texel = texture(texmapParticula, DataIn.outTex);
 	}
 	
 	//Calculation for DirLight
@@ -212,10 +221,13 @@ void main() {
 
 		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel), distanceFog);
 		
-		if(texMode == 6){
+		if(texMode >= 6 ){
 			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.8*texel);
 		}
 		outputF.a = diffuse.a;
+		if(texMode == 8){
+			outputF.a = life;
+		}
 	}
 	else {
 		//fog
