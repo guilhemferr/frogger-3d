@@ -14,8 +14,8 @@ uniform vec4 l_dir;	   // camera space
 
 uniform int billboard; //billboard
 
-in vec4 position;	// local space
-in vec3 normal;		// local space
+in vec4 position;	
+in vec3 normal;		
 in vec2 texCoord;
 
 // the data to be sent to the fragment shader
