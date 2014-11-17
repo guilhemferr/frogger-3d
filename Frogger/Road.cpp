@@ -92,7 +92,7 @@ void Road::draw(VSMathLib *vsml){
 	glClear(GL_STENCIL_BUFFER_BIT);
 
 	currentObjId++;
-
+	
 	vsml->pushMatrix(VSMathLib::MODEL);
 	vsml->translate(getX(), getY() - 4.5f, getZ());
 	vsml->scale(1.0f, 3.5f, 1.0f);
@@ -122,5 +122,5 @@ void Road::draw(VSMathLib *vsml){
 	glDrawElements(mesh[currentObjId].type, mesh[currentObjId].numIndexes, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	vsml->popMatrix(VSMathLib::MODEL);
-
+	
 }

@@ -204,7 +204,7 @@ void processKeys(unsigned char key, int xx, int yy)
 
 		break;
 	case 'e':
-		GLfloat v, phi, theta;
+		double v, phi, theta;
 		for (int i = 0; i < PARTICLESMAX; i++){
 			v = 0.8*frand() + 0.2;
 			phi = frand()*M_PI;
@@ -215,6 +215,7 @@ void processKeys(unsigned char key, int xx, int yy)
 			particles[i]->setLife(1.0f);
 			particles[i]->setVars(v * cos(theta) * sin(phi), v * cos(phi), v * sin(theta) * sin(phi));
 		}
+		lives = 0;
 		break;
 
 	default:
@@ -427,9 +428,10 @@ void drawObjects(){
 	int locAux = glGetUniformLocation(shader.getProgramIndex(), "life");
 
 	if (lives == 0){
-		glUniform1i(locBillboard, 1);
+		//glUniform1i(locBillboard, 1);
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		for (int i = 0; i < PARTICLESMAX; i++){
 			glUniform1f(locAux, particles[i]->getLife());
 			if (particles[i]->getLife() > 0.0f){
@@ -439,7 +441,7 @@ void drawObjects(){
 		}
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
-		glUniform1i(locBillboard, 0);
+		//glUniform1i(locBillboard, 0);
 	}
 
 	
@@ -861,7 +863,7 @@ void init()
 	TGA_Texture(TextureArray, "tree.tga", 4);
 	TGA_Texture(TextureArray, "sun.tga", 5);
 	TGA_Texture(TextureArray, "star.tga", 6);
-	//TGA_Texture(TextureArray, "star.tga", 7);
+	//TGA_Texture(TextureArray, "particle4u.tga", 7);
 	LoadTexture("particula.bmp");
 
 	initTerrain();
@@ -925,10 +927,10 @@ void init()
 	
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
-	flare->setRenderAttr(10.0f, 10.0f, 2.0, 3.0f, 10.0f, 3.0f);
+	flare->setRenderAttr(10.0f, 10.0f, 2.0f, 3.0f, 10.0f, 3.0f);
 	flare->create(vsml, mySurfRev);
 	
-	GLfloat v, theta, phi;
+	double v, theta, phi;
 
 	for (int i = 0; i < PARTICLESMAX; i++){
 		v = 0.8*frand() + 0.2;

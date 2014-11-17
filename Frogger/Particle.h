@@ -11,8 +11,8 @@ private:
 	float life;
 	float fade;
 	float r, g, b;
-	GLfloat vx, vy, vz;
-	GLfloat ax, ay, az;
+	double vx, vy, vz;
+	double ax, ay, az;
 
 public:
 	Particle(float xcoord, float ycoord, float zcoord, int objId, float velocity, int* idVector) :
@@ -39,7 +39,7 @@ public:
 
 	void draw(VSMathLib* vsml);
 
-	void setVars(GLfloat vx, GLfloat vy, GLfloat vz){
+	void setVars(double vx, double vy, double vz){
 		Particle::vx = vx;
 		Particle::vy = vy;
 		Particle::vz = vz;
@@ -48,7 +48,7 @@ public:
 	float getLife(){
 		return life;
 	}
-	void setLife(int l){
+	void setLife(float l){
 		life = l;
 	}
 
