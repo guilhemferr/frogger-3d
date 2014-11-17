@@ -18,6 +18,7 @@ Defines.
 #define isqrt(x)        (int)((double)(x))
 
 void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
+	int lastObjId = objId;
 	float amb[] = { 0.25f, 0.25f, 0.25f, 1.0f };
 	float diff[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 	float spec[] = { 0.774597f, 0.774597f, 0.774597f, 1.0f };
@@ -38,16 +39,21 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 
 	// Compute how far off-center the flare source is.
 	maxflaredist = isqrt(cx*cx + cy*cy);
-	flaredist = isqrt((lx - cx)*(lx - cx) +
-		(ly - cy)*(ly - cy));
+	int aux1 = (lx - cx) * (lx - cx);
+	int aux2 = (ly - cy) * (ly - cy);
+	flaredist = aux1+aux2;
 	flaredist = (maxflaredist - flaredist);
 	flaremaxsize = (int)(Flare::wth * Flare::fMaxSize);
+	
+	//DECREASED ONE TO HAVE A BETTER EFFECT
 	flarescale = (int)(Flare::wth * Flare::fMaxSize);
 
 	// Destination is opposite side of centre from source
 	dx = cx + (cx - lx);
 	dy = cy + (cy - ly);
-
+	if (alive == true){
+		objId = Flare::flareId;
+	}
 	for (i = 0; i < Flare::nPieces; ++i)
 	{
 		element = &Flare::elements[i];
@@ -69,11 +75,16 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 
 		// Piece size are 0 to 1; flare size is proportion of
 		// screen width; scale by flaredist/maxflaredist.
-		width = (int)((flaredist*flarescale*element->fSize) / maxflaredist);
-
+		if (i == Flare::nPieces - 1){
+			width = (int)((flaredist*flarescale*3*element->fSize) / maxflaredist);
+		}
+		else{
+			width = (int)((flaredist*flarescale*element->fSize) / maxflaredist);
+		}
 		// Width gets clamped, to allows the off-axis flares
 		// to keep a good size without letting the elements get
 		// too big when centered.
+		
 		if (width > flaremaxsize)
 		{
 			width = flaremaxsize;
@@ -92,6 +103,15 @@ void Flare::create(VSMathLib *vsml, VSResSurfRevLib mySurfRev){
 		mySurfRev.setColor(VSResourceLib::MaterialSemantics::EMISSIVE, emissive);
 		mySurfRev.setColor(VSResourceLib::MaterialSemantics::SHININESS, shininess);
 		objId++;
+		
+		
+		
+	}
+	if (alive == false){
+		Flare::alive = true;
+	}
+	else {
+		objId = lastObjId;
 	}
 }
 
@@ -99,24 +119,42 @@ void  Flare::draw(VSMathLib *vsml)
 {
 	int i;
 	int currentId = Flare::flareId;
+	
 
 	// Render each element.
 	for (i = 0; i < Flare::nPieces; ++i)
 	{
+		
 		vsml->pushMatrix(VSMathLib::MODEL);
 			initShadersVars(vsml, currentId);
-			if (i % 2 == 0){
+			
+			switch (i){
+			case FLARE_MAXELEMENTSPERFLARE - 1:
 				glUniform1i(getIdVector()[TEXID], 6);
-			}
-			else {
-				glUniform1i(getIdVector()[TEXID], 7);
+				break;
+			case FLARE_MAXELEMENTSPERFLARE - 2:
+				glUniform1i(getIdVector()[TEXID], 9);
+				break;
+			case 3:
+				glUniform1i(getIdVector()[TEXID], 9);
+				break;
+			default:
+				if (i % 2 == 0){
+					glUniform1i(getIdVector()[TEXID], 7);
+				}
+				else
+				{
+					glUniform1i(getIdVector()[TEXID], 10);
+				}
+				break;
+			
 			}
 
-			
 			glBindVertexArray(mesh[currentId].vao);
 			glDrawElements(mesh[currentId].type, mesh[currentId].numIndexes, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		vsml->popMatrix(VSMathLib::MODEL);
+		
 		currentId++;
 	}
 }

@@ -87,7 +87,8 @@ int dirLocs[6];
 int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int SpecialLightStateLoc;
-int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, texFlareLoc, texStarLoc, texParticulaLoc;
+int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, 
+    texFlareLoc, texStarLoc, texParticulaLoc, texHaloLoc, texHardGlowLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
@@ -97,7 +98,7 @@ bool onTurtle = false;
 
 int lives = 5;
 
-GLuint TextureArray[8];
+GLuint TextureArray[10];
 
 Frog* frog;
 

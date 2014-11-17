@@ -21,6 +21,8 @@ uniform sampler2D texmapTree;
 uniform sampler2D texmapFlare;
 uniform sampler2D texmapStar;
 uniform sampler2D texmapParticula;
+uniform sampler2D texmapHalo;
+uniform sampler2D texmapHardGlow;
 
 in Data {
 	vec3 normal;
@@ -93,6 +95,12 @@ void main() {
 	}
 	if(texMode == 8){
 		texel = texture(texmapParticula, DataIn.outTex);
+	}
+	if(texMode == 9){
+		texel = texture(texmapHalo, DataIn.outTex);
+	}
+	if(texMode == 10){
+		texel = texture(texmapHardGlow, DataIn.outTex);
 	}
 	
 	//Calculation for DirLight
@@ -221,10 +229,17 @@ void main() {
 
 		outputF = applyFog(max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel), distanceFog);
 		
-		if(texMode >= 6 ){
+		//lensFlare special treatment
+		if(texMode >= 6){
 			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.8*texel);
 		}
+
+		if(texMode == 8){
+			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
+		}
+
 		outputF.a = diffuse.a;
+		
 		if(texMode == 8){
 			outputF.a = life;
 		}

@@ -394,6 +394,7 @@ void drawObjects(){
 		bus[i]->draw(vsml);
 	}
 	
+	//trees
 	glUniform1i(locBillboard, 1);
 	for (int i = 0; i < 3; i++){
 		tree[i]->draw(vsml);
@@ -411,24 +412,13 @@ void drawObjects(){
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 
-	//flare
-	vsml->pushMatrix(VSMathLib::MODEL);
-	glDepthMask(GL_FALSE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	vsml->translate(0.0f, 0.0f, 8.0f);
-	flare->draw(vsml);
-	glDepthMask(GL_TRUE);
-	vsml->popMatrix(VSMathLib::MODEL);
-	glDisable(GL_BLEND);
+
 
 	//particles
-	
-
 	int locAux = glGetUniformLocation(shader.getProgramIndex(), "life");
 
 	if (lives == 0){
-		//glUniform1i(locBillboard, 1);
+		glUniform1i(locBillboard, 1);
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -441,8 +431,37 @@ void drawObjects(){
 		}
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
-		//glUniform1i(locBillboard, 0);
+		glUniform1i(locBillboard, 0);
 	}
+
+
+
+	int SCREENwidth, SCREENheight;
+
+	SCREENwidth = glutGet(GLUT_WINDOW_WIDTH);
+	SCREENheight = glutGet(GLUT_WINDOW_HEIGHT);
+	//flare
+	glUniform1i(locBillboard, 1);
+	vsml->pushMatrix(VSMathLib::PROJECTION);
+	vsml->loadIdentity(VSMathLib::PROJECTION);
+	vsml->ortho(0, SCREENwidth, 0, SCREENheight, -1, 100);
+	vsml->pushMatrix(VSMathLib::MODEL);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	
+	flare->draw(vsml);
+	glDepthMask(GL_TRUE);
+	vsml->popMatrix(VSMathLib::MODEL);
+	vsml->popMatrix(VSMathLib::PROJECTION);
+	glDisable(GL_BLEND);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	
+	glUniform1i(locBillboard, 0);
 
 	
 }
@@ -555,6 +574,10 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[6]);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[7]);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[8]);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[9]);
 
 
 	glUniform1i(texRoadLoc, 0);
@@ -565,6 +588,8 @@ void renderScene() {
 	glUniform1i(texFlareLoc, 5);
 	glUniform1i(texStarLoc, 6);
 	glUniform1i(texParticulaLoc, 7);
+	glUniform1i(texHaloLoc, 8);
+	glUniform1i(texHardGlowLoc, 9);
 
 	drawObjects();
 
@@ -611,14 +636,17 @@ void changeSize(int w, int h) {
 		vsml->ortho(right, left, bottom, top, nearp, farp);
 		break;
 	case PERSPECTIVE:
+		
 		vsml->perspective(30, ratio, 1.0f, 1000.0f);
+		
 		break;
 	case FROGCAM:
 		vsml->perspective(30, ratio, 1.0f, 1000.0f);
 		break;
 	}
 
-	
+	flare->setRenderAttr(10.0f, 10.0f, (w ) / 2, (h ) / 2, w , h );
+	flare->create(vsml, mySurfRev);
 
 }
 
@@ -666,7 +694,7 @@ void tick(int value){
 /* Loads the specified bitmap file from disk and copies it into an OpenGL texture.
 * Returns the GLuint representing the texture (calls exit(1) if the bitmap fails to load).*/
 
-void LoadTexture(const char * bitmap_file)
+void LoadTexture(const char * bitmap_file, int id)
 {
 
 	glbmp_t bitmap;     //object to fill with data from glbmp
@@ -678,7 +706,7 @@ void LoadTexture(const char * bitmap_file)
 		exit(1);
 	}
 
-	glBindTexture(GL_TEXTURE_2D, TextureArray[7]);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[id]);
 	//copy data from bitmap into texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.width, bitmap.height,
 		0, GL_RGB, GL_UNSIGNED_BYTE, bitmap.rgb_data);
@@ -751,6 +779,8 @@ void initLocations(){
 	texFlareLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapFlare");
 	texStarLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapStar");
 	texParticulaLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapParticula");
+	texHaloLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapHalo");
+	texHardGlowLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapHardGlow");
 }
 
 void initTerrain(){
@@ -855,16 +885,20 @@ void init()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	glGenTextures(8, TextureArray);
+	glGenTextures(10, TextureArray);
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
-	TGA_Texture(TextureArray, "sun.tga", 5);
-	TGA_Texture(TextureArray, "star.tga", 6);
+	//TGA_Texture(TextureArray, "sun2.tga", 5);
+	LoadTexture("sun2.bmp", 5);
+	//TGA_Texture(TextureArray, "star.tga", 6);
+	LoadTexture("streaks4.bmp", 6);
 	//TGA_Texture(TextureArray, "particle4u.tga", 7);
-	LoadTexture("particula.bmp");
+	LoadTexture("particula.bmp", 7);
+	LoadTexture("Halo3.bmp", 8);
+	LoadTexture("HardGlow2.bmp", 9);
 
 	initTerrain();
 	
@@ -927,7 +961,8 @@ void init()
 	
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
-	flare->setRenderAttr(10.0f, 10.0f, 2.0f, 3.0f, 10.0f, 3.0f);
+	//flare->setRenderAttr(10.0f, 10.0f, 2.0f, 3.0f, 10.0f, 3.0f);
+	flare->setRenderAttr(10.0f, 10.0f, 412 / 2, 412 / 2, 412, 412);
 	flare->create(vsml, mySurfRev);
 	
 	double v, theta, phi;

@@ -8,7 +8,7 @@
 
 /* --- Defines --- */
 
-#define FLARE_MAXELEMENTSPERFLARE         7
+#define FLARE_MAXELEMENTSPERFLARE         20
 
 #define FLARE_RANGE(A,B)    ( (rand()%((B)-(A)+1)) + (A) )
 #define FLARE_FRANGE(A,B)   ( ((float)(rand()&0xffffff)/(float)0xfffffe)*((B)-(A)) + (A) )
@@ -18,7 +18,7 @@
 #define FLARE_MINCOLOUR        MAKEID(140, 100, 50, 100)
 #define FLARE_MAXCOLOUR        MAKEID(255, 255, 200, 255)
 
-#define FLARE_MAXSIZE                   0.3f
+#define FLARE_MAXSIZE                   3.0f
 
 typedef struct FLARE_ELEMENT_DEF
 {
@@ -39,6 +39,8 @@ private:
 	float fMaxSize;
 	unsigned int minColour;
 	unsigned int maxColour;
+
+	bool alive;
 
 	//for render purposes
 	int lx, ly, cx, cy, wth, ht;
@@ -61,6 +63,8 @@ public:
 		Flare::ht = 1;
 
 		Flare::flareId = flareId;
+
+		Flare::alive = false;
 	}
 	
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
