@@ -27,6 +27,22 @@ GLuint setupShaders() {
 
 void processMouseButtons(int button, int state, int xx, int yy)
 {
+	if (state == GLUT_DOWN){
+		if (button == GLUT_RIGHT_BUTTON){
+			tracking = 2;
+			startX = xx;
+			startY = yy;
+
+			flare->setRenderAttr(startX * 512 / glutGet(GLUT_WINDOW_WIDTH), startY * 512 / glutGet(GLUT_WINDOW_HEIGHT), glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+			flare->create(vsml, mySurfRev);
+		}
+	}
+
+	else if (state == GLUT_UP) {
+		
+		tracking = 0;
+	}
+
 	if (selectedCamera == FROGCAM){
 		// start tracking the mouse
 		if (state == GLUT_DOWN)  {
@@ -34,26 +50,6 @@ void processMouseButtons(int button, int state, int xx, int yy)
 			startY = yy;
 			if (button == GLUT_LEFT_BUTTON){
 				tracking = 1;
-			}
-			else if (button == GLUT_RIGHT_BUTTON){
-				tracking = 2;
-
-				if (xx > (frog->getX() - 3.0f) && xx < (frog->getX() + 3.0f)){
-					if (yy >(frog->getY())){
-						frog->moveFrog(UP);
-					}
-					else {
-						frog->moveFrog(DOWN);
-					}
-				}
-				else if (xx > frog->getX()){
-					frog->moveFrog(RIGHT);
-				}
-				else{
-					frog->moveFrog(LEFT);
-				}
-
-				glutPostRedisplay();
 			}
 		}
 
@@ -82,6 +78,31 @@ void processMouseMotion(int xx, int yy)
 	int deltaX, deltaY;
 	float alphaAux, betaAux;
 	float rAux;
+
+	if (tracking == 2)
+	{
+		deltaX = -xx + startX;
+		deltaY = yy - startY;
+
+		float xFlare = deltaX * 512 / glutGet(GLUT_WINDOW_WIDTH);
+		float yFlare = deltaY * 512 / glutGet(GLUT_WINDOW_HEIGHT);
+
+		// Clamping -- wouldn't be needed in fullscreen mode.
+		if (xFlare >= 512)
+			xFlare = 512 - 1;
+		if (xFlare < 0)
+			xFlare = 0;
+		if (yFlare >= 512)
+			yFlare = 512 - 1;
+		if (yFlare < 0)
+			yFlare = 0;
+		
+
+		flare->setRenderAttr(xFlare, yFlare, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+		flare->create(vsml, mySurfRev);
+
+		glutPostRedisplay();
+	}
 
 	if (selectedCamera == FROGCAM){
 		deltaX = -xx + startX;
