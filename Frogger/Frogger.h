@@ -95,6 +95,7 @@ int SpecialLightState = 0;
 float frogDirAux[4];
 bool onLog = false;
 bool onTurtle = false;
+bool win = false;
 
 int lives = 5;
 

@@ -33,7 +33,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 			startX = xx;
 			startY = yy;
 
-			flare->setRenderAttr(startX * 512 / glutGet(GLUT_WINDOW_WIDTH), startY * 512 / glutGet(GLUT_WINDOW_HEIGHT), glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+			flare->setRenderAttr(startX, startY, glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 			flare->create(vsml, mySurfRev);
 		}
 	}
@@ -84,16 +84,16 @@ void processMouseMotion(int xx, int yy)
 		deltaX = -xx + startX;
 		deltaY = yy - startY;
 
-		float xFlare = deltaX * 512 / glutGet(GLUT_WINDOW_WIDTH);
-		float yFlare = deltaY * 512 / glutGet(GLUT_WINDOW_HEIGHT);
+		float xFlare = deltaX; 
+		float yFlare = deltaY;
 
 		// Clamping -- wouldn't be needed in fullscreen mode.
-		if (xFlare >= 512)
-			xFlare = 512 - 1;
+		if (xFlare >= glutGet(GLUT_WINDOW_WIDTH))
+			xFlare = glutGet(GLUT_WINDOW_WIDTH) - 1;
 		if (xFlare < 0)
 			xFlare = 0;
-		if (yFlare >= 512)
-			yFlare = 512 - 1;
+		if (yFlare >= glutGet(GLUT_WINDOW_HEIGHT))
+			yFlare = glutGet(GLUT_WINDOW_HEIGHT) - 1;
 		if (yFlare < 0)
 			yFlare = 0;
 		
@@ -208,6 +208,7 @@ void processKeys(unsigned char key, int xx, int yy)
 
 	case 'r':
 		lives = 5;
+		win = false;
 		for (int i = 0; i < 3; i++){
 			cars[i]->setVelocity(0.008f); 
 		}
@@ -237,6 +238,7 @@ void processKeys(unsigned char key, int xx, int yy)
 			particles[i]->setVars(v * cos(theta) * sin(phi), v * cos(phi), v * sin(theta) * sin(phi));
 		}
 		lives = 0;
+		win = true;
 		break;
 
 	default:
@@ -321,6 +323,7 @@ bool isColliding(){
 	bool colliding = false;
 	if (frog->getY() == 16.0f){
 		lives = 0;
+		win = true;
 		return true;
 	}
 	if (frog->getY() > 0.0f && frog->getY() < 16.0f){
@@ -438,7 +441,7 @@ void drawObjects(){
 	//particles
 	int locAux = glGetUniformLocation(shader.getProgramIndex(), "life");
 
-	if (lives == 0){
+	if (win){
 		glUniform1i(locBillboard, 1);
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
@@ -916,8 +919,8 @@ void init()
 	LoadTexture("sun2.bmp", 5);
 	//TGA_Texture(TextureArray, "star.tga", 6);
 	LoadTexture("streaks4.bmp", 6);
-	//TGA_Texture(TextureArray, "particle4u.tga", 7);
-	LoadTexture("particula.bmp", 7);
+	TGA_Texture(TextureArray, "sun.tga", 7);
+	//LoadTexture("particula.bmp", 7);
 	LoadTexture("Halo3.bmp", 8);
 	LoadTexture("HardGlow2.bmp", 9);
 

@@ -234,10 +234,6 @@ void main() {
 			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.8*texel);
 		}
 
-		if(texMode == 8){
-			outputF = max(dirContribution + pointContribution/3 + spotContribution, 0.1*texel);
-		}
-
 		outputF.a = diffuse.a;
 		
 		if(texMode == 8){
