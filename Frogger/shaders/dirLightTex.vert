@@ -32,7 +32,10 @@ out Data {
 } DataOut;
 
 void main () {
+	
 	mat4 viewModel = view * model;
+
+
 
 	if(billboard == 1){
 		/*
