@@ -10,7 +10,7 @@ void Particle::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 
 	mySurfRev.createRectangle(1.0f, 1.0f);
 
-	//mySurfRev.createCylinder(5.0f, 5.0f, 2);
+
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);

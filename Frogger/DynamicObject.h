@@ -44,12 +44,7 @@ public:
 	void setVelocity(float v) {
 		velocity = v;
 	}
-	/*
-	int* getIdVector(){
-		return idVector;
-	}
-	*/
-
+	
 	//AABB
 	//Small = Canto superior esquerdo
 	//Big = Canto inferior direito

@@ -70,7 +70,6 @@ public:
 	void create(VSMathLib* vsml, VSResSurfRevLib mySurfRev);
 	void draw(VSMathLib *vsml);
 
-	//setAttr(5, )
 	//FLARE_randomize(&renderFlare, NPIECETEXTURES, FLARE_RANGE(FLARE_MINELEMENTSPERFLARE, FLARE_MAXELEMENTSPERFLARE), FLARE_MAXSIZE, FLARE_MINCOLOUR, FLARE_MAXCOLOUR);
 	//NOT USED
 	void setAttr(int nPieces, unsigned int minColour, unsigned int maxColour){

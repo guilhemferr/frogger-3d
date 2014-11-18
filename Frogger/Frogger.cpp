@@ -494,9 +494,6 @@ void updateVelocity(){
 	// calculates game elapsed time
 	double delta_t = calcElapsedTime();
 	// Update objects
-
-
-
 	for (int i = 0; i < 3; i++){
 		cars[i]->update(delta_t);
 	}
@@ -769,7 +766,6 @@ void initLocations(){
 	idVector[TEXID] = glGetUniformLocation(shader.getProgramIndex(), "texMode");
 
 	locLDir = glGetUniformLocation(shader.getProgramIndex(), "l_dir");
-	//locPos = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
 
 	locBillboard = glGetUniformLocation(shader.getProgramIndex(), "billboard");
 
@@ -915,12 +911,12 @@ void init()
 	TGA_Texture(TextureArray, "wood.tga", 2);
 	TGA_Texture(TextureArray, "grass.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
-	//TGA_Texture(TextureArray, "sun2.tga", 5);
+	
 	LoadTexture("sun2.bmp", 5);
-	//TGA_Texture(TextureArray, "star.tga", 6);
+
 	LoadTexture("streaks4.bmp", 6);
 	TGA_Texture(TextureArray, "sun.tga", 7);
-	//LoadTexture("particula.bmp", 7);
+
 	LoadTexture("Halo3.bmp", 8);
 	LoadTexture("HardGlow2.bmp", 9);
 
@@ -969,7 +965,7 @@ void init()
 	camZ = 5.0f;
 
 	lSource = new LightSource();
-	//x10 y20 z-10
+
 	float dirLight[3] = { 0.0f, 0.0f, 3.0f };
 	lSource->setDirection(dirLight);
 	float posLight[4] = { 0.0f, 0.0f, 20.0f };
@@ -985,7 +981,7 @@ void init()
 	
 
 	flare = new Flare(0.0f, 0.0f, 0.0f, objId, idVector);
-	//flare->setRenderAttr(10.0f, 10.0f, 2.0f, 3.0f, 10.0f, 3.0f);
+	
 	flare->setRenderAttr(10.0f, 10.0f, 412 / 2, 412 / 2, 412, 412);
 	flare->create(vsml, mySurfRev);
 	
@@ -1030,7 +1026,7 @@ int main(int argc, char **argv) {
 	//  Callback Registration
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	//glutIdleFunc(renderScene);
+	
 	glutTimerFunc(0, fpsTimer, 0);
 	glutTimerFunc(0, tick, 0);
 	glutTimerFunc(0, fpsShow, 0);

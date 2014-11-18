@@ -13,8 +13,6 @@ public:
 		setY(ycoord);
 		setZ(zcoord);
 
-
-
 		Road::roadObjId = rObjId;
 
 	}

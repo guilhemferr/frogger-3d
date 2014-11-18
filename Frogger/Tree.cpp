@@ -21,7 +21,7 @@ void Tree::draw(VSMathLib* vsml){
 	
 	vsml->pushMatrix(VSMathLib::MODEL);
 		vsml->translate(getX(), getY(), getZ());
-		//vsml->rotate(90.0f, 1.0f, 0.0f, 0.0f);
+		
 		initShadersVars(vsml, Tree::treeId);
 		glUniform1i(getIdVector()[TEXID], 5);
 		glBindVertexArray(mesh[Tree::treeId].vao);

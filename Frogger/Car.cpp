@@ -84,7 +84,6 @@ void Car::draw(VSMathLib* vsml){
 	
 	vsml->rotate(90.0f, 0, 0, 1);
 	vsml->rotate(45.0f, 0, 1, 0);
-	//mySurfRev.createCylinder(4.0f, 1.2f, 4);
 
 	initShadersVars(vsml, currentObjId);
 	glBindVertexArray(mesh[currentObjId].vao);

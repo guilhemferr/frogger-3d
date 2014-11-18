@@ -10,10 +10,4 @@ public:
 	StaticObject(int* idVector) : GameObject(idVector){
 	}
 	~StaticObject(){}
-	/*
-	int* getIdVector(){
-		return idVector;
-	}
-	*/
-
 };
