@@ -81,6 +81,8 @@ int modelID, projID, viewID, colorInID, normalID;
 int idVector[9];
 int locLDir;
 int locBillboard;
+int locFogState;
+int FogState = 1;
 int locPos;
 int pointLocs[6];
 int dirLocs[6];

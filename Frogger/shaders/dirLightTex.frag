@@ -12,6 +12,7 @@ uniform int OnSpecialLights;
 uniform float spotCutOff;
 uniform int texMode;
 uniform float life;
+uniform int fogState;
 
 uniform sampler2D texmapRoad;
 uniform sampler2D texmapRiver;
@@ -42,7 +43,12 @@ out vec4 outputF;
 vec4 applyFog(in vec4 rgba, in float distance){
 	float fogAmount = exp(-distance*0.25);
 	vec4 fogColor = vec4(0.5, 0.6, 0.7, 1.0);
-	return mix(fogColor, rgba, fogAmount);
+	if(fogState == 1){
+		return mix(fogColor, rgba, fogAmount);
+	}else {
+		return rgba;
+	}
+	
 }
 
 

@@ -240,7 +240,10 @@ void processKeys(unsigned char key, int xx, int yy)
 		lives = 0;
 		win = true;
 		break;
-
+	case 't':
+		FogState = (FogState + 1) % 2;
+		glUniform1i(locFogState, FogState);
+		break;
 	default:
 		break;
 
@@ -521,6 +524,8 @@ void updateVelocity(){
 
 void renderScene() {
 
+	glUniform1i(locFogState, FogState);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearStencil(0x0);
 	glClear(GL_STENCIL_BUFFER_BIT);
@@ -769,6 +774,9 @@ void initLocations(){
 
 	locBillboard = glGetUniformLocation(shader.getProgramIndex(), "billboard");
 
+	locFogState = glGetUniformLocation(shader.getProgramIndex(), "fogState");
+
+
 	pointLocs[0] = glGetUniformLocation(shader.getProgramIndex(), "positions[0]");
 	pointLocs[1] = glGetUniformLocation(shader.getProgramIndex(), "positions[1]");
 	pointLocs[2] = glGetUniformLocation(shader.getProgramIndex(), "positions[2]");
@@ -995,7 +1003,7 @@ void init()
 		particles[i]->create(vsml, mySurfRev);
 		particles[i]->setVars(v * cos(theta) * sin(phi), v * cos(phi), v * sin(theta) * sin(phi));
 	}
-
+	
 
 }
 
