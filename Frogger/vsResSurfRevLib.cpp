@@ -337,8 +337,10 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 	float *vertex = (float *)malloc(sizeof(float)*numP * 2 * 4 * (numSides+1));
 	float *normal = (float *)malloc(sizeof(float)*numP * 2 * 4 * (numSides+1));
 	float *textco = (float *)malloc(sizeof(float)*numP * 2 * 4 * (numSides+1));
+	float *tangent = (float *)malloc(sizeof(float)*numP * 2 * 3 * (numSides + 1));
+	float *bitangent = (float *)malloc(sizeof(float)*numP * 2 * 3 * (numSides + 1));
 
-	
+
 	float inc = 2 * 3.14159f / (numSides);
 	float nx,ny;
 	float delta;
@@ -399,6 +401,48 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 		}
 	}
 
+	for (int i = 0; i<sizeof(vertex)/4; i += 12){
+
+		// Shortcuts for vertices
+		float v0[3] = { vertex[i], vertex[i + 1], vertex[i + 2] };
+		float v1[3] = { vertex[i + 4], vertex[i + 5], vertex[i + 6] };
+		float v2[3] = { vertex[i + 8], vertex[i + 9], vertex[i + 10] };
+		
+		// Shortcuts for UVs
+		float uv0[2] = { textco[i], textco[i + 1] };
+		float uv1[2] = { textco[i + 4], textco[i + 5] };
+		float uv2[2] = { textco[i + 8], textco[i + 9] };
+
+		// Edges of the triangle : postion delta
+		float deltaPos1[3] = { v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]};
+		float deltaPos2[3] = { v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]};
+	
+		// UV delta
+		float deltaUV1[2] = { uv1[0] - uv0[0], uv1[1] - uv0[1] };
+		float deltaUV2[2] = { uv2[0] - uv0[0], uv2[1] - uv0[1] };
+
+		float r = 1.0f / (deltaUV1[0] * deltaUV2[1] - deltaUV1[1] * deltaUV2[0]);
+		float tangents[3] = { (deltaPos1[0] * deltaUV2[1] - deltaPos2[0] * deltaUV1[1]) * r,
+							 (deltaPos1[1] * deltaUV2[1] - deltaPos2[1] * deltaUV1[1]) * r, 
+							 (deltaPos1[2] * deltaUV2[1] - deltaPos2[2] * deltaUV1[1]) * r };
+		float bitangents[3] = { (deltaPos2[0] * deltaUV1[0] - deltaPos1[0] * deltaUV2[0]) * r,
+							   (deltaPos2[1] * deltaUV1[0] - deltaPos1[1] * deltaUV2[0]) * r,
+							   (deltaPos2[2] * deltaUV1[0] - deltaPos1[2] * deltaUV2[0]) * r };
+		
+		// Set the same tangent for all three vertices of the triangle.
+		// They will be merged later, in vboindexer.cpp
+		
+		for (int j = 0; j < 12; j += 3){
+			tangent[j] = tangents[0];
+			tangent[j + 1] = tangents[1];
+			tangent[j + 2] = tangents[2];
+			bitangent[j] = bitangents[0];
+			bitangent[j + 1] = bitangents[1];
+			bitangent[j + 2] = bitangents[2];
+		}
+
+	}
+
 	unsigned int *faceIndex = (unsigned int *)malloc(sizeof(unsigned int) * (numP-1) * (numSides+1 ) * 6);
 	unsigned int count = 0;
 	k = 0;
@@ -429,7 +473,7 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 	glBindVertexArray(mesh[objId].vao);
 
 	//GLuint buffers[4];
-	glGenBuffers(4, buffers);
+	glGenBuffers(6, buffers);
 	//vertex coordinates buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 4, vertex, GL_STATIC_DRAW);
@@ -451,6 +495,18 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 	//index buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh[objId].numIndexes, faceIndex, GL_STATIC_DRAW);
+
+	//tangents buffer
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[4]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, tangent, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::TANGENT_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::TANGENT_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
+
+	//bitangents buffer
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[5]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, bitangent, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(VSShaderLib::BITANGENT_ATTRIB);
+	glVertexAttribPointer(VSShaderLib::BITANGENT_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
 
 	// unbind the VAO
 	glBindVertexArray(0);
