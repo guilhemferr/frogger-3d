@@ -17,13 +17,14 @@ uniform int fogState;
 uniform sampler2D texmapRoad;
 uniform sampler2D texmapRiver;
 uniform sampler2D texmapWood;
-uniform sampler2D texmapDirt;
+uniform sampler2D texmapDirt; //stone grass
 uniform sampler2D texmapTree;
 uniform sampler2D texmapFlare;
 uniform sampler2D texmapStar;
 uniform sampler2D texmapParticula;
 uniform sampler2D texmapHalo;
 uniform sampler2D texmapHardGlow;
+uniform sampler2D texmapNormals;
 
 in Data {
 	vec3 normal;
@@ -88,6 +89,7 @@ void main() {
 		texel = texture(texmapWood, DataIn.outTex);
 	}
 	if(texMode == 4){
+		n =  normalize(texture(texmapNormals, DataIn.outTex).rgb*2.0 - 1.0);
 		texel = texture(texmapDirt, DataIn.outTex);
 	}
 	if(texMode == 5){

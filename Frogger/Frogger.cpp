@@ -389,14 +389,18 @@ bool isColliding(){
 }
 
 void drawObjects(){
-
+	glUniform1i(locBumpObject, 0);
 	if (lives > 0){
 		frog->draw(vsml);
 	}
-
+	
 	for (int i = 0; i < 9; i++){
 		if (i != 1){
+			if (2 >= i <= 4){
+				glUniform1i(locBumpObject, 1);
+			}
 			terrain[i]->draw(vsml);
+			glUniform1i(locBumpObject, 0);
 		}
 	}
 
@@ -604,7 +608,8 @@ void renderScene() {
 	glBindTexture(GL_TEXTURE_2D, TextureArray[8]);
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, TextureArray[9]);
-
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[10]);
 
 	glUniform1i(texRoadLoc, 0);
 	glUniform1i(texRiverLoc, 1);
@@ -616,7 +621,7 @@ void renderScene() {
 	glUniform1i(texParticulaLoc, 7);
 	glUniform1i(texHaloLoc, 8);
 	glUniform1i(texHardGlowLoc, 9);
-
+	glUniform1i(texNormalsLoc, 10);
 	drawObjects();
 
 	updateVelocity();
@@ -774,6 +779,8 @@ void initLocations(){
 
 	locBillboard = glGetUniformLocation(shader.getProgramIndex(), "billboard");
 
+	locBumpObject = glGetUniformLocation(shader.getProgramIndex(), "bumpObject");
+
 	locFogState = glGetUniformLocation(shader.getProgramIndex(), "fogState");
 
 
@@ -809,6 +816,7 @@ void initLocations(){
 	texParticulaLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapParticula");
 	texHaloLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapHalo");
 	texHardGlowLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapHardGlow");
+	texNormalsLoc = glGetUniformLocation(shader.getProgramIndex(), "texmapNormals");
 }
 
 void initTerrain(){
@@ -917,7 +925,7 @@ void init()
 	TGA_Texture(TextureArray, "road.tga", 0);
 	TGA_Texture(TextureArray, "river.tga", 1);
 	TGA_Texture(TextureArray, "wood.tga", 2);
-	TGA_Texture(TextureArray, "grass.tga", 3);
+	TGA_Texture(TextureArray, "stone.tga", 3);
 	TGA_Texture(TextureArray, "tree.tga", 4);
 	
 	LoadTexture("sun2.bmp", 5);
@@ -927,6 +935,7 @@ void init()
 
 	LoadTexture("Halo3.bmp", 8);
 	LoadTexture("HardGlow2.bmp", 9);
+	TGA_Texture(TextureArray, "normal.tga", 10);
 
 	initTerrain();
 	

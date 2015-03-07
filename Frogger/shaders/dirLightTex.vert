@@ -14,9 +14,13 @@ uniform vec4 l_dir;	   // camera space
 
 uniform int billboard; //billboard
 
+uniform int bumpObject; 
+
 in vec4 position;	
 in vec3 normal;		
 in vec2 texCoord;
+in vec3 tangent;
+in vec3 bitangent;
 
 // the data to be sent to the fragment shader
 
@@ -35,8 +39,6 @@ void main () {
 	
 	mat4 viewModel = view * model;
 
-
-
 	if(billboard == 1){
 		viewModel[0].xyz = vec3(1.0, 0.0, 0.0);
 		viewModel[1].xyz = vec3(0.0, 1.0, 0.0);
@@ -44,9 +46,29 @@ void main () {
 	}
 	vec4 pos = viewModel * position;
 
-	DataOut.normal = normalize(m_normal * normal.xyz);
+	if(bumpObject == 1){
+		vec3 vertexNormal_cameraspace = m_normal * normalize(normal);
+		vec3 vertexTangent_cameraspace = m_normal * normalize(tangent);
+		vec3 vertexBitangent_cameraspace = m_normal * normalize(bitangent);
+		
+		//TBN
+		mat3 TBN = transpose(mat3(
+			vertexTangent_cameraspace,
+			vertexBitangent_cameraspace,
+			vertexNormal_cameraspace));
 
-	DataOut.ldir = vec3(l_dir);
+		//ldir
+		DataOut.ldir = TBN * vec3(l_dir);
+   
+		//eye
+		DataOut.eye =  TBN * vec3(-pos);
+
+	} else {
+		DataOut.ldir = vec3(l_dir);
+		DataOut.eye = vec3(-pos);
+	}
+
+	DataOut.normal = normalize(m_normal * normal.xyz);
 
 	for(int i = 0; i < 6; i++){
 		DataOut.pos6[i] = vec3(positions[i] - pos);
@@ -57,7 +79,7 @@ void main () {
 
 	DataOut.spotDir = vec3(-spotDirection);
 
-	DataOut.eye = vec3(-pos);
+	
 	
 	DataOut.outTex = texCoord.st;
 

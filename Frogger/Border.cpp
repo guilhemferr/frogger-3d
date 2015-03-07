@@ -9,7 +9,9 @@ void Border::create(VSMathLib* vsml, VSResSurfRevLib mySurfRev){
 	float* shininess = new float(128.0f * 0.088f);
 	int texcount = 0;
 	
-	mySurfRev.createCylinder(35.0f, 1.5f, 4);
+	mySurfRev.createCylinder(2.0f, 1.5f, 4);
+	//original value
+	//mySurfRev.createCylinder(35.0f, 1.5f, 4);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::AMBIENT, amb);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::DIFFUSE, diff);
 	mySurfRev.setColor(VSResourceLib::MaterialSemantics::SPECULAR, spec);

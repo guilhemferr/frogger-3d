@@ -81,6 +81,7 @@ int modelID, projID, viewID, colorInID, normalID;
 int idVector[9];
 int locLDir;
 int locBillboard;
+int locBumpObject;
 int locFogState;
 int FogState = 1;
 int locPos;
@@ -90,7 +91,7 @@ int DirLightStateLoc, PointLightStateLoc;
 int spotPositionLoc, spotDirectionLoc, spotCutOffLoc;
 int SpecialLightStateLoc;
 int texRoadLoc, texRiverLoc, texWoodLoc, texDirtLoc, texTreeLoc, 
-    texFlareLoc, texStarLoc, texParticulaLoc, texHaloLoc, texHardGlowLoc;
+texFlareLoc, texStarLoc, texParticulaLoc, texHaloLoc, texHardGlowLoc, texNormalsLoc;
 int DirLightState = 1;
 int PointLightState = 1;
 int SpecialLightState = 0;
@@ -101,7 +102,7 @@ bool win = false;
 
 int lives = 5;
 
-GLuint TextureArray[10];
+GLuint TextureArray[11];
 
 Frog* frog;
 
