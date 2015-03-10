@@ -34,7 +34,6 @@
 #include <vector>
 
 
-
 VSResSurfRevLib::VSResSurfRevLib()
 {
 }
@@ -431,16 +430,26 @@ VSResSurfRevLib::computeVAO(int numP, float *p, float *points, int sides, float 
 		
 		// Set the same tangent for all three vertices of the triangle.
 		// They will be merged later, in vboindexer.cpp
-		
+		/*
 		for (int j = 0; j < 9; j += 3){
-			tangent[j] = tangents[0];
-			tangent[j + 1] = tangents[1];
-			tangent[j + 2] = tangents[2];
-			bitangent[j] = bitangents[0];
-			bitangent[j + 1] = bitangents[1];
-			bitangent[j + 2] = bitangents[2];
+			tangent[i + j] = tangents[0];
+			tangent[i + j + 1] = tangents[1];
+			tangent[i + j + 2] = tangents[2];
+			bitangent[i + j] = bitangents[0];
+			bitangent[i + j + 1] = bitangents[1];
+			bitangent[i + j + 2] = bitangents[2];
 		}
+		*/
+		//tangent[a] = (t - n * Dot(n, t)).Normalize();
 
+		for (int j = 0; j < 9; j += 3){
+			tangent[i + j] = tangents[0];
+			tangent[i + j + 1] = tangents[1];
+			tangent[i + j + 2] = tangents[2];
+			bitangent[i + j] = bitangents[0];
+			bitangent[i + j + 1] = bitangents[1];
+			bitangent[i + j + 2] = bitangents[2];
+		}
 	}
 
 	unsigned int *faceIndex = (unsigned int *)malloc(sizeof(unsigned int) * (numP-1) * (numSides+1 ) * 6);
