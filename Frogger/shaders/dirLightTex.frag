@@ -72,7 +72,7 @@ void main() {
 	vec3 sp = vec3(0.0);
 	vec3 sd = vec3(0.0);
 
-	float intensity = max(dot(n,l), 0.0);
+	
 	vec3 h;
 	float intSpec;
 	vec4 spec = vec4(0.0);
@@ -110,6 +110,8 @@ void main() {
 	if(texMode == 10){
 		texel = texture(texmapHardGlow, DataIn.outTex);
 	}
+	
+	float intensity = max(dot(n,l), 0.0);
 	
 	//Calculation for DirLight
 	if (intensity > 0.0) {

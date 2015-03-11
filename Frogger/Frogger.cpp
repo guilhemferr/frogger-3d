@@ -16,6 +16,8 @@ GLuint setupShaders() {
 	shader.setProgramOutput(0, "outputF");
 	shader.setVertexAttribName(VSShaderLib::VERTEX_COORD_ATTRIB, "position");
 	shader.setVertexAttribName(VSShaderLib::NORMAL_ATTRIB, "normal");
+	shader.setVertexAttribName(VSShaderLib::TANGENT_ATTRIB, "tangent");
+	shader.setVertexAttribName(VSShaderLib::BITANGENT_ATTRIB, "bitangent");
 	shader.setVertexAttribName(VSShaderLib::TEXTURE_COORD_ATTRIB, "texCoord");
 
 	shader.prepareProgram();
