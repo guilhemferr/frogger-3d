@@ -110,7 +110,7 @@ public:
 	/// the mesh collection
 	struct MyMesh mMyMesh;
 
-	GLuint buffers[4];
+	GLuint buffers[6];
 
 
 	
